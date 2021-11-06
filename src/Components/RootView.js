@@ -1,6 +1,7 @@
 import { Component, useEffect, useState } from "react";
 import axios from "axios";
 import Card from "./FolderCard";
+import NavBarRootView from "./NavBarRootView"
 
 const baseURL =
   "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
@@ -55,9 +56,7 @@ const RootView = () => {
 
   return (
     <div>
-      {/* <header className="grid-header">
-        <h2>Categories</h2>
-      </header> */}
+      <NavBarRootView />
       <div>
         {Categories.map((name) => (
           <div>

@@ -10,6 +10,7 @@
   color: #111111;
   background-color: #ffffff;
   margin: 10px;
+  cursor: pointer;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -45,14 +46,17 @@ img {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 0 10px;
+  margin: 0 35px;
 }
 
 .grid-item_header {
-  padding: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
   font-size: 22px;
   font-weight: bold;
   color: #111111;
+  margin: 0 45px;
 }
 
 .card_container-header {
