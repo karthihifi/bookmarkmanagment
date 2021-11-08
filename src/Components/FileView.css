@@ -1,0 +1,41 @@
+.FileView-comment {
+  white-space: pre-wrap;
+}
+
+.FileView-head-left {
+  display: flex;
+}
+.FileView-img {
+  width: 160px;
+  aspect-ratio: auto 160 / 123;
+  margin: 0 20px 20px 0;
+}
+
+.FileView-head {
+  display: flex;
+  justify-content: space-between;
+}
+.FileView-header {
+  margin: 0 0 10px;
+}
+
+.FileView {
+  padding: 0 2.43902439%;
+  position: relative;
+  max-width: 840px;
+  margin: 0 auto;
+  border-bottom: (1px black);
+}
+.FileView-comment {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
+  word-wrap: break-word;
+  margin: 0 0 1.5em;
+  color: #393937;
+  -webkit-line-clamp: 7; /* number of lines to show */
+  /* line-clamp: 7; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}

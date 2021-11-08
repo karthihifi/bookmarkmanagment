@@ -1,5 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import FileView from "./FileView";
 import { FaUserCircle, FaMeteor } from "react-icons/fa";
 import "./NavBarRootView.css";
 
@@ -13,6 +15,9 @@ function NavBarRootView() {
               <FaMeteor size="30px"></FaMeteor>
             </span>
           </Navbar.Brand>
+           {/* <Routes>
+                <Route path="/file" element={<FileView />}></Route>
+              </Routes> */}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">

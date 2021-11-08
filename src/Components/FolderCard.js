@@ -1,4 +1,5 @@
 import { Component, useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import FolderEditModal from "./FolderEditModal";
 import {
   Popover,
@@ -11,10 +12,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
 import { AiFillHeart, AiOutlineHeart, AiOutlineDelete } from "react-icons/ai";
 import "./RootView.css";
+import FileView from "./FileView";
 
 const Card = (props) => {
   const [FolderData, SetFolderData] = useState([]);
-  const [CategoriesHelp, setCategoriesHelp ] = useState([]);
+  const [CategoriesHelp, setCategoriesHelp] = useState([]);
   const [CurrentFolderData, SetCurrentFolderData] = useState({});
   const [FolderEditModalShow, setFolderEditModalShow] = useState(false);
   const [CardextradetailsShow, setCardextradetailsShow] = useState(false);
@@ -32,8 +34,8 @@ const Card = (props) => {
 
   useEffect(() => {
     UpdateFolderData(props.fulldata);
-    setCategoriesHelp(props.categoryHelp)
-    console.log('cat1',props.categoryHelp)
+    setCategoriesHelp(props.categoryHelp);
+    console.log("cat1", props.categoryHelp);
   }, []);
 
   const onEdit = (folder) => () => {
@@ -74,33 +76,22 @@ const Card = (props) => {
       </Popover>
     );
   };
-  // const popover = (
-  //   <Popover id="popover-basic">
-  //     <Popover.Body>
-  //       <div onClick={onEdit} className="card_container-popover">
-  //         <span>
-  //           <BiCommentEdit></BiCommentEdit>
-  //         </span>
-  //         <span>Edit</span>
-  //       </div>
-  //       <div onClick={onDelete} className="card_container-popover">
-  //         <span>
-  //           <AiOutlineDelete />
-  //         </span>
-  //         <span>Delete</span>
-  //       </div>
-  //     </Popover.Body>
-  //   </Popover>
-  // );
 
   return (
+    // <BrowserRouter>
     <div className="grid-item">
       {FolderData.map((folder) => (
         <div className="root_card">
           <img src={folder.imageurl} />
           <div class="card_container">
             <div className="card_container-header">
-              <b>{folder.folder_name}</b>
+              {/* <Link to="/file"> */}
+                <b>{folder.folder_name}</b>
+              {/* </Link> */}
+              
+              {/* <Routes>
+                <Route path="/file" element={<FileView />}></Route>
+              </Routes> */}
               <div>
                 <OverlayTrigger
                   trigger="click"
@@ -108,8 +99,6 @@ const Card = (props) => {
                   delay={{ show: 250, hide: 400 }}
                   overlay={popover({ folder })}
                   rootClose
-                  // show = {CardextradetailsShow}
-                  // onHide={() => setCardextradetailsShow(false)}
                 >
                   <span className="card_container-svg">
                     <BiDotsVerticalRounded></BiDotsVerticalRounded>
@@ -136,14 +125,16 @@ const Card = (props) => {
             </div>
           </div>
         </div>
+       
       ))}
       <FolderEditModal
         show={FolderEditModalShow}
         FolderData={CurrentFolderData}
-        CategoriesHelp = {props.categoryHelp}
+        CategoriesHelp={props.categoryHelp}
         onHide={() => setFolderEditModalShow(false)}
       />
     </div>
+    // </BrowserRouter>
   );
 };
 
