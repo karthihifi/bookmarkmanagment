@@ -1,10 +1,13 @@
 import { Component, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "./FileView.css";
 
 const FileView = () => {
+  let { id } = useParams();
+
   return (
     <div className="FileView">
       {/* <Container> */}
@@ -18,7 +21,8 @@ const FileView = () => {
             <div>
               <h3 className="FileView-header">BookMark URL handling</h3>
               <div className="FileView-comment">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                ID : {id}
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
                 nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
@@ -31,7 +35,7 @@ const FileView = () => {
                 set overflow to hidden, otherwise the contents won't be clipped
                 but an ellipsis will still be shown after the specified number
                 of lines. When applied to anchor elements, the truncating can
-                happen in the middle of the text, not necessarily at the end.
+                happen in the middle of the text, not necessarily at the end. */}
               </div>
             </div>
           </div>

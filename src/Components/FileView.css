@@ -30,12 +30,15 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-height: 1.5;
+  /* max-height: 7.5em; */
   word-wrap: break-word;
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
   margin: 0 0 1.5em;
   color: #393937;
-  -webkit-line-clamp: 7; /* number of lines to show */
-  /* line-clamp: 7; */
-  overflow: hidden;
+  -webkit-line-clamp: 6; 
+   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
 }

@@ -85,9 +85,9 @@ const Card = (props) => {
           <img src={folder.imageurl} />
           <div class="card_container">
             <div className="card_container-header">
-              {/* <Link to="/file"> */}
+              <Link to= {'/file/' + folder.ID}>
                 <b>{folder.folder_name}</b>
-              {/* </Link> */}
+              </Link>
               
               {/* <Routes>
                 <Route path="/file" element={<FileView />}></Route>
