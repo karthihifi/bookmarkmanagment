@@ -1,22 +1,75 @@
-.FileView-comment {
+/* .FileView-comment {
   white-space: pre-wrap;
-}
+  margin: 0 0 3em;
+} */
 
 .FileView-head-left {
-  display: flex;
+  /* display: flex; */
+  /* display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto; */
 }
 .FileView-img {
+  float: left;
   width: 160px;
+  height: 124px;
   aspect-ratio: auto 160 / 123;
   margin: 0 20px 20px 0;
 }
 
 .FileView-head {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
 }
 .FileView-header {
   margin: 0 0 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.1;
+  color: #4e454c;
+  text-shadow: 0 1px 0 #fff;
+  display: block;
+  -webkit-box-orient: vertical;
+}
+
+.FileView-container {
+  float: left;
+  width: 80%;
+  margin-right: 0;
+  max-height: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:pre-wrap
+  /* padding-right: 20%; */
+}
+
+.FileView p {
+  /* white-space:nowrap; */
+  margin: 0 0 1.5em;
+  color: #393937;
+  line-height: 1.5;
+  max-height: 14.5em;
+  /* overflow: scroll; */
+  /* word-wrap: break-word;  */
+  /* -webkit-line-clamp: 10; */
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  /* display: -webkit-box; */
+}
+
+.FileView-date {
+  width: 18%;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  float: right;
+  /* font-family: Tiempos-Semibold; */
+  margin-left: 20px;
+  display: block;
+  font-size: 1.2em;
+  line-height: 1.8;
+  font-family: GT-America-Mono-Thin-Italic;
+  /* text-transform: uppercase; */
 }
 
 .FileView {
@@ -24,21 +77,25 @@
   position: relative;
   max-width: 840px;
   margin: 0 auto;
-  border-bottom: (1px black);
+  min-height: 250px;
+  padding: 30px 2.43902439%;
+  display: block;
+  /* border-bottom: (1px black); */
 }
 .FileView-comment {
-  display: -webkit-box;
+  /* display: -webkit-box;
   -webkit-box-orient: vertical;
-  line-height: 1.5;
+  line-height: 1.5; */
   /* max-height: 7.5em; */
-  word-wrap: break-word;
+  /* word-wrap: break-word;
   overflow: hidden;
   word-wrap: break-word;
   white-space: pre-wrap;
   margin: 0 0 1.5em;
   color: #393937;
-  -webkit-line-clamp: 6; 
-   overflow: hidden;
+  -webkit-line-clamp: 15;
+  overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
+  margin: 0 0 3em; */
 }

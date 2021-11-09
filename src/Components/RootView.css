@@ -28,7 +28,7 @@
   justify-content: space-evenly;
 }
 
-img {
+root_card-img {
   border-radius: 5px 5px 0 0;
   /* width: 150px; */
   height: 150px;
@@ -100,7 +100,6 @@ img {
 .card_container-popover span {
   margin: 5px;
 }
-
 
 .card_container-popover:hover {
   /* background-color: skyblue; */
