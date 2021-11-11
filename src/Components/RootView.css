@@ -28,7 +28,7 @@
   justify-content: space-evenly;
 }
 
-root_card-img {
+.root_card-img {
   border-radius: 5px 5px 0 0;
   /* width: 150px; */
   height: 150px;

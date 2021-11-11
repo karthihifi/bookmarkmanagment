@@ -5,7 +5,7 @@ import FileView from "./FileView";
 import { FaUserCircle, FaMeteor } from "react-icons/fa";
 import "./NavBarRootView.css";
 
-function NavBarRootView() {
+function NavBarRootView(props) {
   return (
     <div className="RootView_Navbar">
       <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
@@ -15,9 +15,6 @@ function NavBarRootView() {
               <FaMeteor size="30px"></FaMeteor>
             </span>
           </Navbar.Brand>
-           {/* <Routes>
-                <Route path="/file" element={<FileView />}></Route>
-              </Routes> */}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -26,8 +23,10 @@ function NavBarRootView() {
                 title="Add"
                 id="collasible-nav-dropdown"
               >
-                <NavDropdown.Item>New Folder</NavDropdown.Item>
-                <NavDropdown.Item>New Category</NavDropdown.Item>
+                <NavDropdown.Item onClick={(event) => console.log(props.view)}>
+                  {props.view == "Folder" ? "New Folder" :  "New Article"}
+                </NavDropdown.Item>
+                <NavDropdown.Item> {props.view == "Folder" ? "New Folder Category" :  "New Article Category"}</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav>

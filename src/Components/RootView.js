@@ -56,7 +56,7 @@ const RootView = () => {
 
   return (
     <div>
-      <NavBarRootView />
+      <NavBarRootView view = "Folder"/>
       <div>
         {Categories.map((name) => (
           <div>

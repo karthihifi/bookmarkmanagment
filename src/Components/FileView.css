@@ -48,7 +48,7 @@
   margin: 0 0 1.5em;
   color: #393937;
   line-height: 1.5;
-  max-height: 14.5em;
+  max-height: 7.5em;
   /* overflow: scroll; */
   /* word-wrap: break-word;  */
   /* -webkit-line-clamp: 10; */
@@ -63,12 +63,12 @@
   top: 40px;
   right: 0;
   float: right;
-  /* font-family: Tiempos-Semibold; */
+  font-family: Tiempos-Semibold;
   margin-left: 20px;
   display: block;
-  font-size: 1.2em;
-  line-height: 1.8;
-  font-family: GT-America-Mono-Thin-Italic;
+  font-size: 0.9em;
+  /* line-height: 1.8; */
+  /* font-family: GT-America-Mono-Thin-Italic; */
   /* text-transform: uppercase; */
 }
 
@@ -80,8 +80,16 @@
   min-height: 250px;
   padding: 30px 2.43902439%;
   display: block;
+  border-bottom: 0.8px solid lightslategrey;
   /* border-bottom: (1px black); */
 }
+
+.FileView:last-child{
+  border-bottom: none;
+}
+/* .FileView :not(:last-child){
+  border-bottom: 0.8px solid lightslategrey;
+} */
 .FileView-comment {
   /* display: -webkit-box;
   -webkit-box-orient: vertical;
