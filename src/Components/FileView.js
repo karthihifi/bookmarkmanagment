@@ -4,12 +4,15 @@ import axios from "axios";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "./FileView.css";
-import NavBarRootView from "./NavBarRootView"
+import NavBarRootView from "./NavBarRootView";
+import { Breadcrumb } from "react-bootstrap";
+import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
+// import { useHistory } from "react-router-dom";
 
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
 
-  let { id } = useParams();
+  let { id, folder } = useParams();
 
   let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files`;
 
@@ -37,15 +40,32 @@ const FileView = () => {
       });
   }, []);
 
+  // var location: Location;
+  // const homeurl = location.host;
+  // let history = useHistory();
+  // const goToPreviousPath = () => {
+  //     history.goBack()
+  // }
+
   return (
     <div className="FileView-root">
-      <NavBarRootView view="File"/>
+      <NavBarRootView view="File" />
+      <div className="FileView-header">
+        <h2>Discover New Possiblities</h2>
+        <div className="FileView-breadcrumb">
+          <Breadcrumb>
+            <Breadcrumb.Item href="http://localhost:3000">Home</Breadcrumb.Item>
+            <Breadcrumb.Item active>{folder}</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
+      </div>
       {FullData.map((file) => (
         <div className="FileView">
           <div className="FileView-container">
             <img className="FileView-img" src={file.imageurl}></img>
             <h3 className="FileView-header">{file.title}</h3>
-            <div className="FileView-date">{file.lastvisited}</div>
+            {/* <div className="FileView-date">{file.lastvisited}</div> */}
+            <span className="FileView-date"><BiDotsVerticalRounded/></span>
             <p></p>
             <p className="FileView-comment">{file.comments}</p>
             <p></p>

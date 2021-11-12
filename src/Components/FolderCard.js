@@ -85,13 +85,9 @@ const Card = (props) => {
           <img className= "root_card-img" src={folder.imageurl} />
           <div class="card_container">
             <div className="card_container-header">
-              <Link to= {'/file/' + folder.ID}>
+              <Link to= {'/file/' + folder.ID + '/' + folder.folder_name}>
                 <b>{folder.folder_name}</b>
               </Link>
-              
-              {/* <Routes>
-                <Route path="/file" element={<FileView />}></Route>
-              </Routes> */}
               <div>
                 <OverlayTrigger
                   trigger="click"

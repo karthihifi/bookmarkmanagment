@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainView />} />
-        <Route path="/file/:id" element={<FileView />} />
+        <Route path="/file/:id/:folder" element={<FileView />} />
       </Routes>
     </BrowserRouter>
   );

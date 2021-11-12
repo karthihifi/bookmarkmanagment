@@ -39,7 +39,7 @@
   max-height: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space:pre-wrap
+  white-space: pre-wrap;
   /* padding-right: 20%; */
 }
 
@@ -66,7 +66,7 @@
   font-family: Tiempos-Semibold;
   margin-left: 20px;
   display: block;
-  font-size: 0.9em;
+  font-size: 1.2em;
   /* line-height: 1.8; */
   /* font-family: GT-America-Mono-Thin-Italic; */
   /* text-transform: uppercase; */
@@ -84,7 +84,38 @@
   /* border-bottom: (1px black); */
 }
 
-.FileView:last-child{
+.FileView-breadcrumb{
+  margin: 0 auto;
+  max-width: 840px;
+  display: block;
+  font-size: 0.6em;
+  position: relative;
+  padding: 10px 0;
+  /* padding: 15px 2.43902439%; */
+}
+.FileView-header {
+  margin: 0 auto;
+  position: relative;
+  max-width: 840px;
+  display: block;
+  padding: 0 2.43902439%;
+  /* padding: 10px 2.43902439%; */
+  /* text-align: center; */
+  /* font-family: Tiempos-Semibold;
+  font-size: 40px;
+  line-height: 45px;
+  margin-bottom: 24px; */
+  /* padding: 0 2.43902439%;
+  position: relative;
+  max-width: 840px;
+  margin: 0 auto;
+  min-height: 250px;
+  padding: 30px 2.43902439%;
+  display: block;
+  padding: 30px 2.43902439%; */
+}
+
+.FileView:last-child {
   border-bottom: none;
 }
 /* .FileView :not(:last-child){
