@@ -19,3 +19,7 @@
   .FileViewEdit-container{
       padding: 20px 15%;
   }
+
+  .FileViewEdit-header{
+      padding: 10px 0;
+  }
