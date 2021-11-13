@@ -1,0 +1,108 @@
+.FileViewSingle-container {
+  padding: 0 15%;
+}
+.FileViewSingle-date {
+  clear: both;
+  /* margin: 0 0 8px; */
+  margin: 0;
+  margin: 10px 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+  font-family: GT-America-Mono-Thin-Italic;
+  text-transform: uppercase;
+  font-size: 1em;
+  color: #666;
+}
+
+.FileViewSingle-header {
+  font-family: Tiempos-Semibold;
+  font-size: 3em;
+  margin: 0 0 20px;
+  color: #634c5c;
+  text-shadow: 0 1px 0 #fff;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.FileViewSingle-adhoc {
+  display: flex;
+  font-family: GT-America-Mono-Thin-Italic;
+  text-transform: uppercase;
+  align-items: center;
+}
+.FileViewSingle-adhoc dl {
+  color: #666;
+  font-size: 1.1em;
+  margin: 0 0 0.5em;
+  font-size: 0.95em;
+  padding: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  font-family: GT-America-Mono-Thin-Italic;
+}
+
+.FileViewSingle-adhoc dd {
+  margin-left: 0.2em;
+  text-transform: uppercase;
+  /* margin: 0 0 0.2em 0.5em; */
+  font-size: 1em;
+  letter-spacing: 0.025em;
+  color: #393937;
+  font-family: GT-America-Mono-Thin-Italic;
+}
+
+.FileViewSingle-img {
+  /* width: 30%; */
+  max-height: 250px;
+  width: 300px;
+  grid-area: img;
+  /* max-height: ; */
+}
+
+.FileViewSingle-body {
+  /* display: flex; */
+  display: grid;
+  /* grid-template-columns: 30% auto;
+  grid-template-rows: auto auto; */
+  grid-template-areas:
+    "img text"
+    "text1 text2";
+  gap: 10px;
+}
+
+.FileViewSingle-left {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+.FileViewSingle-tag {
+  margin: 2px;
+  display: flex;
+  align-items: flex-start;
+  padding: 2px;
+  /* justify-content: center;
+  text-align: center;
+  margin: 0 auto; */
+}
+
+.FileViewSingle-tag div {
+  line-height: 1;
+}
+
+.FileViewSingle-badge {
+    padding-left: 2px;
+  }
+
+.FileViewSingle-comment {
+  grid-auto-flow: dense;
+  /* overflow: hidden; */
+  grid-area: img / text2;
+  /* grid-column-start: 2;
+   grid-row-start: 1;
+   grid-row-end: span 2; */
+}
+
+.FileViewSingle-breadcrumb{
+    font-size: 0.8em;
+    color: #393937;
+}

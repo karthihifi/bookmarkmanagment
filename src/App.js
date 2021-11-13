@@ -3,6 +3,7 @@ import "./App.css";
 import RootView from "./Components/RootView";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import FileView from "./Components/FileView";
+import FileViewSingle from "./Components/FileViewSingle";
 
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
       <Routes>
         <Route path="/" element={<MainView />} />
         <Route path="/file/:id/:folder" element={<FileView />} />
+        <Route
+          path="/file/:id/:folder/:fileid/:file"
+          element={<FileViewSingle />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

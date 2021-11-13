@@ -7,7 +7,7 @@ import "./FileView.css";
 import NavBarRootView from "./NavBarRootView";
 import { Breadcrumb } from "react-bootstrap";
 import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
-// import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
@@ -63,9 +63,14 @@ const FileView = () => {
         <div className="FileView">
           <div className="FileView-container">
             <img className="FileView-img" src={file.imageurl}></img>
-            <h3 className="FileView-header">{file.title}</h3>
+            <Link to={"/file/" + id + "/" + folder + "/" + file.ID + "/" + file.title}>
+              <h3 className="FileView-header">{file.title}</h3>
+            </Link>
+
             {/* <div className="FileView-date">{file.lastvisited}</div> */}
-            <span className="FileView-date"><BiDotsVerticalRounded/></span>
+            <span className="FileView-date">
+              <BiDotsVerticalRounded />
+            </span>
             <p></p>
             <p className="FileView-comment">{file.comments}</p>
             <p></p>

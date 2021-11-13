@@ -5,6 +5,26 @@ import FileView from "./FileView";
 import { FaUserCircle, FaMeteor } from "react-icons/fa";
 import "./NavBarRootView.css";
 
+const getnavbaritems = (view) => {
+  if (view == "Folder") {
+    return "New Folder";
+  } else if (view == "File") {
+    return "New Article";
+  } else if (view == "FileViewSingle") {
+    return "New Reference Link";
+  }
+};
+
+const getnavbaritems1 = (view) => {
+  if (view == "Folder") {
+    return "New Folder Category";
+  } else if (view == "File") {
+    return "New Article Category";
+  } else if (view == "FileViewSingle") {
+    return "New Tag";
+  }
+};
+
 function NavBarRootView(props) {
   return (
     <div className="RootView_Navbar">
@@ -24,10 +44,13 @@ function NavBarRootView(props) {
                 id="collasible-nav-dropdown"
               >
                 <NavDropdown.Item onClick={(event) => console.log(props.view)}>
-                  {props.view == "Folder" ? "New Folder" :  "New Article"}
+                  {getnavbaritems(props.view)}
                 </NavDropdown.Item>
-                <NavDropdown.Item> {props.view == "Folder" ? "New Folder Category" :  "New Article Category"}</NavDropdown.Item>
+                <NavDropdown.Item>
+                  {getnavbaritems1(props.view)}
+                </NavDropdown.Item>
               </NavDropdown>
+              {props.view == "FileViewSingle" ? <Nav.Link>Edit</Nav.Link> : ""}
             </Nav>
             <Nav>
               <Nav.Link>

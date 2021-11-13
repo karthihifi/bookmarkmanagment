@@ -22,6 +22,7 @@
   justify-content: space-between; */
 }
 .FileView-header {
+  cursor: pointer;
   margin: 0 0 10px;
   font-size: 1.5em;
   font-weight: bold;
