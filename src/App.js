@@ -4,6 +4,7 @@ import RootView from "./Components/RootView";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import FileView from "./Components/FileView";
 import FileViewSingle from "./Components/FileViewSingle";
+import FileViewEdit from "./Components/FileViewEdit";
 
 function App() {
   return (
@@ -14,6 +15,10 @@ function App() {
         <Route
           path="/file/:id/:folder/:fileid/:file"
           element={<FileViewSingle />}
+        ></Route>
+        <Route
+          path="/file/:id/:folder/:fileid/:file/edit"
+          element={<FileViewEdit />}
         ></Route>
       </Routes>
     </BrowserRouter>

@@ -54,7 +54,7 @@ const FileView = () => {
         <h2>Discover New Possiblities</h2>
         <div className="FileView-breadcrumb">
           <Breadcrumb>
-            <Breadcrumb.Item href="http://localhost:3000">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href={window.location.origin}>Home</Breadcrumb.Item>
             <Breadcrumb.Item active>{folder}</Breadcrumb.Item>
           </Breadcrumb>
         </div>

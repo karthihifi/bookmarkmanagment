@@ -14,9 +14,13 @@ const FileViewSingle = (props) => {
   const [FileData, setFileData] = useState({});
 
   const folderUrl = () => {
-    var url = "http://localhost:3000/file/" + id + folder;
+    // var url = "http://localhost:3000/file/" + id + "/" + folder;
+    var url = window.location.origin + "/file/" + id + "/" + folder;
     return url;
   };
+
+  let homeurl = window.location.origin + "/file/" + id + "/" + folder;
+  console.log(homeurl);
 
   let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/file_path`;
 
@@ -52,15 +56,22 @@ const FileViewSingle = (props) => {
 
   return (
     <div className="FileViewSingle">
-      <NavBarRootView view="FileViewSingle" />
+      <NavBarRootView
+        view="FileViewSingle"
+        url={"/file/" + id + "/" + folder + "/" + fileid + "/" + file + "/" + "edit"}
+        data = {FileData}
+      />
       <div className="FileViewSingle-container">
         <div className="FileViewSingle-date">{FileData.lastvisited}</div>
         <h1 className="FileViewSingle-header">{FileData.title}</h1>
         <div className="FileViewSingle-breadcrumb">
           <Breadcrumb>
-            <Breadcrumb.Item href="http://localhost:3000">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href={window.location.origin}>
+              Home
+            </Breadcrumb.Item>
             <Breadcrumb.Item
-              href={"http://localhost:3000/file/" + id + "/" + folder}
+              href={homeurl}
+              //   href={"http://localhost:3000/file/" + id + "/" + folder}
             >
               {folder}
             </Breadcrumb.Item>
