@@ -60,13 +60,13 @@
 }
 
 .FileViewSingle-body {
-  /* display: flex; */
-  display: grid;
+  display: flex;
+  /* display: grid; */
   /* grid-template-columns: 30% auto;
   grid-template-rows: auto auto; */
-  grid-template-areas:
+  /* grid-template-areas:
     "img text"
-    "text1 text2";
+    "text1 text2"; */
   gap: 10px;
 }
 
@@ -94,9 +94,13 @@
   }
 
 .FileViewSingle-comment {
-  grid-auto-flow: dense;
+    white-space: pre-wrap;
+    align-items: flex-start;
+    padding: none;
+    float: left;
+  /* grid-auto-flow: dense; */
   /* overflow: hidden; */
-  grid-area: img / text2;
+  /* grid-area: img / text2; */
   /* grid-column-start: 2;
    grid-row-start: 1;
    grid-row-end: span 2; */
