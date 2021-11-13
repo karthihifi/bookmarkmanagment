@@ -31,7 +31,7 @@ function NavBarRootView(props) {
     <div className="RootView_Navbar">
       <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href={window.location.origin}>
             <span>
               <FaMeteor size="30px"></FaMeteor>
             </span>
