@@ -64,7 +64,7 @@ const FileView = () => {
           <div className="FileView-container">
             <img className="FileView-img" src={file.imageurl}></img>
             <Link to={"/file/" + id + "/" + folder + "/" + file.ID + "/" + file.title}>
-              <h3 className="FileView-header">{file.title}</h3>
+              <h3 className="FileView-header1">{file.title}</h3>
             </Link>
 
             {/* <div className="FileView-date">{file.lastvisited}</div> */}
