@@ -26,7 +26,7 @@ const getnavbaritems1 = (view) => {
 
 function NavBarRootView(props) {
   const navigate = useNavigate();
-  console.log("File View",props.data)
+  console.log("File View", props.LinksData);
   return (
     <div className="RootView_Navbar">
       <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
@@ -59,7 +59,19 @@ function NavBarRootView(props) {
                 ""
               )}
               {props.view == "FileViewSingle" ? (
-                <Nav.Link onClick={() => navigate(props.url,{ state: props.data })}>Edit</Nav.Link>
+                <Nav.Link
+                  onClick={() =>
+                    navigate(props.url, 
+                      { state: { filedata: props.data, LinksData: props.LinksData } }
+                    //   {
+                    //   state: props.data,
+                    //   LinksData: props.LinksData,
+                    // }
+                    )
+                  }
+                >
+                  Edit
+                </Nav.Link>
               ) : (
                 ""
               )}

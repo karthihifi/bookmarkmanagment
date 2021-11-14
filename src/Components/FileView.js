@@ -72,7 +72,8 @@ const FileView = () => {
               <BiDotsVerticalRounded />
             </span>
             <p></p>
-            <p className="FileView-comment">{file.comments}</p>
+            <div className="FileView-comment" dangerouslySetInnerHTML={{__html: file.comments}} />
+            {/* <p className="FileView-comment">{file.comments}</p> */}
             <p></p>
           </div>
         </div>

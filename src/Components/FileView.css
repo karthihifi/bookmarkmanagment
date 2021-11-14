@@ -53,17 +53,12 @@ a:visited {
 }
 
 .FileView p {
-  /* white-space:nowrap; */
-  margin: 0 0 1.5em;
+  margin-bottom: 0.5em;
+  /* margin: 0 0 1.5em;
   color: #393937;
   line-height: 1.5;
   max-height: 7.5em;
-  /* overflow: scroll; */
-  /* word-wrap: break-word;  */
-  /* -webkit-line-clamp: 10; */
-  /* overflow: hidden; */
-  text-overflow: ellipsis;
-  /* display: -webkit-box; */
+  text-overflow: ellipsis; */
 }
 
 .FileView-date {
@@ -131,19 +126,15 @@ a:visited {
   border-bottom: 0.8px solid lightslategrey;
 } */
 .FileView-comment {
-  /* display: -webkit-box;
-  -webkit-box-orient: vertical;
-  line-height: 1.5; */
-  /* max-height: 7.5em; */
-  /* word-wrap: break-word;
-  overflow: hidden;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  margin: 0 0 1.5em;
-  color: #393937;
-  -webkit-line-clamp: 15;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  margin: 0 0 3em; */
+   /* white-space:nowrap; */
+   margin: 0 0 1.5em;
+   color: #393937;
+   line-height: 1.4;
+   max-height: 7.5em;
+   /* overflow: scroll; */
+   /* word-wrap: break-word;  */
+   /* -webkit-line-clamp: 10; */
+   /* overflow: hidden; */
+   text-overflow: ellipsis;
+   /* display: -webkit-box; */
 }

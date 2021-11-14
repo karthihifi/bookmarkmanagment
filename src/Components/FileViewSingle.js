@@ -58,8 +58,21 @@ const FileViewSingle = (props) => {
     <div className="FileViewSingle">
       <NavBarRootView
         view="FileViewSingle"
-        url={"/file/" + id + "/" + folder + "/" + fileid + "/" + file + "/" + "edit"}
-        data = {FileData}
+        url={
+          "/file/" +
+          id +
+          "/" +
+          folder +
+          "/" +
+          fileid +
+          "/" +
+          file +
+          "/" +
+          "edit"
+        }
+        data={FileData}
+        LinksData={LinksData}
+        TagsData={TagsData}
       />
       <div className="FileViewSingle-container">
         <div className="FileViewSingle-date">{FileData.lastvisited}</div>
@@ -105,7 +118,8 @@ const FileViewSingle = (props) => {
               ))}
             </div>
           </div>
-          <p className="FileViewSingle-comment">{FileData.comments}</p>
+          <div dangerouslySetInnerHTML={{__html: FileData.comments}} />
+          {/* <p className="FileViewSingle-comment">{FileData.comments}</p> */}
         </div>
       </div>
     </div>

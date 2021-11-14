@@ -23,3 +23,40 @@
   .FileViewEdit-header{
       padding: 10px 0;
   }
+
+  .FileViewEdit-subhead1{
+    text-align: center;
+  }
+
+  .FileViewEdit-subhead2{
+    text-align: center;
+  }
+
+  .FileViewEdit-refform{
+    display: flex;
+    align-items: flex-end;
+    /* justify-content: space-between; */
+  }
+
+  .FileViewEdit-refform-btn{
+    margin-left: 5px;
+    /* padding-left: 5px; */
+  }
+
+  .FileViewEdit-ref{
+    padding: 20px;
+  }
+
+  .FileViewEdit-footer-btn{
+    /* display: flex; */
+    padding: 5px;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .FileViewEdit-footer{
+    background: lightslategrey;
+    /* display: flex;
+    padding: 5px;
+    align-items: flex-end; */
+  }
