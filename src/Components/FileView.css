@@ -77,6 +77,10 @@ a:visited {
   /* text-transform: uppercase; */
 }
 
+.FileView-root{
+     background: #e5e5e5;
+}
+
 .FileView {
   padding: 0 2.43902439%;
   position: relative;
@@ -85,7 +89,10 @@ a:visited {
   min-height: 250px;
   padding: 30px 2.43902439%;
   display: block;
-  border-bottom: 0.8px solid lightslategrey;
+  margin-bottom: 10px;
+  /* border-bottom: 0.8px solid lightslategrey; */
+  background-color: white;
+  border-radius:10px ;
   /* border-bottom: (1px black); */
 }
 
