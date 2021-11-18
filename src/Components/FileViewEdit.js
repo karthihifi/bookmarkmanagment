@@ -163,7 +163,7 @@ const FileViewEdit = (props) => {
                     <Form.Label size="sm">Ref. Title</Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="Enter email"
+                      placeholder="Ente Reference Title"
                       value={link.title}
                       name="title"
                       onChange={(e) => handleInputChange(e, index)}
@@ -175,8 +175,9 @@ const FileViewEdit = (props) => {
                     <Form.Label>Ref. Link</Form.Label>
                     {/* <Col sm={40}> */}
                     <Form.Control
+                      className="FileViewEdit-refform-link"
                       type="text"
-                      placeholder="Password"
+                      placeholder="Enter Reference Link"
                       value={link.url}
                       name="url"
                       onChange={(e) => handleInputChange(e, index)}

@@ -1,4 +1,14 @@
-.FileAdd-Container{
-    display: flex;
-    flex-direction: column;
+.FileAdd-Container {
+  display: flex;
+  flex-direction: column;
+}
+
+.FileAdd-commentEditor {
+  margin-top: 50px;
+  /* height: 200px; */
+}
+
+.FileAdd-Reflink {
+  /* display: flex;
+  gap: 10px; */
 }

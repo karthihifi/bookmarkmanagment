@@ -1,13 +1,15 @@
-.FileViewSingle{
-     background: #e5e5e5;
-     min-height: 100vh;
+.FileViewSingle {
+  background: #e5e5e5;
+  min-height: 100vh;
 }
 
 .FileViewSingle-container {
   margin: 0 15%;
   background: white;
   min-height: 100vh;
-  padding:10px
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
 }
 .FileViewSingle-date {
   clear: both;
@@ -98,14 +100,14 @@
 }
 
 .FileViewSingle-badge {
-    padding-left: 2px;
-  }
+  padding-left: 2px;
+}
 
 .FileViewSingle-comment {
-    white-space: pre-wrap;
-    align-items: flex-start;
-    padding: none;
-    float: left;
+  white-space: pre-wrap;
+  align-items: flex-start;
+  padding: none;
+  float: left;
   /* grid-auto-flow: dense; */
   /* overflow: hidden; */
   /* grid-area: img / text2; */
@@ -114,7 +116,7 @@
    grid-row-end: span 2; */
 }
 
-.FileViewSingle-breadcrumb{
-    font-size: 0.8em;
-    color: #393937;
+.FileViewSingle-breadcrumb {
+  font-size: 0.8em;
+  color: #393937;
 }

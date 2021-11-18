@@ -1,76 +1,80 @@
 .wrapper-class {
-    padding: 1rem;
-    border: 1px solid #ccc;
-  }
-  .editor-class {
-    background-color:whitesmoke;
-    padding: 1rem;
-    border: 1px solid #ccc;
-  }
-  .toolbar-class {
-    border: 1px solid #ccc;
-     /* background-color:lightgray; */
-  }
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.editor-class {
+  background-color: whitesmoke;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.toolbar-class {
+  border: 1px solid #ccc;
+  /* background-color:lightgray; */
+}
 
-  .Wysig_editor{
-      max-height: 500px;
-      overflow: scroll;
-  }
+.Wysig_editor {
+  max-height: 500px;
+  overflow: scroll;
+}
 
-  .FileViewEdit{
-      background: #e5e5e5;
-  }
-  .FileViewEdit-container{
-      padding : 10px;
-      margin: 0 15%;
-      background: white;
-      margin-bottom: 15px;
-  }
+.FileViewEdit {
+  background: #e5e5e5;
+}
+.FileViewEdit-container {
+  padding: 10px;
+  margin: 0 15%;
+  background: white;
+  margin-bottom: 15px;
+}
 
-  .FileViewEdit-header{
-      padding: 10px 0;
-  }
+.FileViewEdit-header {
+  padding: 10px 0;
+}
 
-  .FileViewEdit-subhead1{
-    text-align: center;
-  }
+.FileViewEdit-subhead1 {
+  text-align: center;
+}
 
-  .FileViewEdit-subhead2{
-    text-align: center;
-  }
+.FileViewEdit-subhead2 {
+  text-align: center;
+}
 
-  .FileViewEdit-refform{
-    display: flex;
-    align-items: flex-end;
-    /* justify-content: space-between; */
-  }
+.FileViewEdit-refform {
+  display: flex;
+  align-items: flex-end;
+  /* justify-content: space-between; */
+}
 
-  .FileViewEdit-refform-btn{
-    margin-left: 5px;
-    /* padding-left: 5px; */
-  }
+.FileViewEdit-refform-btn {
+  margin-left: 5px;
+  /* padding-left: 5px; */
+}
 
-  .FileViewEdit-ref{
-    padding: 20px;
-  }
+.FileViewEdit-ref {
+  padding: 20px;
+}
 
-  .FileViewEdit-footer-btn{
-    /* display: flex; */
-    padding: 5px;
-    align-items: flex-end;
-    text-align: right;
-  }
+.FileViewEdit-footer-btn {
+  /* display: flex; */
+  padding: 5px;
+  align-items: flex-end;
+  text-align: right;
+}
 
-  .FileViewEdit-footer{
-    background: rgb(35, 76, 117);
-    margin-top: 1rem;
+.FileViewEdit-refform-link {
+  min-width: 350px;
+}
+
+.FileViewEdit-footer {
+  background: rgb(35, 76, 117);
+  margin-top: 1rem;
   padding: 0.2rem;
   /* background-color: rgb(235, 195, 64); */
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-    /* display: flex;
+  /* display: flex;
     padding: 5px;
     align-items: flex-end; */
-  }
+}
