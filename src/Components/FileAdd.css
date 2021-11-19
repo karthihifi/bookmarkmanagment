@@ -12,3 +12,12 @@
   /* display: flex;
   gap: 10px; */
 }
+
+.FileAdd-refsec,
+.FileAdd-tagsec {
+  margin-bottom: 30px;
+}
+
+.FileAdd-header {
+  /* text-align: center; */
+}
