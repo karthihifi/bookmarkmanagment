@@ -2,7 +2,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaMeteor } from "react-icons/fa";
+import { AiOutlineMenu } from "react-icons/ai";
 import "./NavBarRootView.css";
+import { Component, useEffect, useState } from "react";
+import { Divider, Link, Drawer } from "@mui/material";
+import FolderDrawerCat from "./FolderDrawerCat";
 
 const getnavbaritems = (view) => {
   if (view == "Folder") {
@@ -27,15 +31,48 @@ const getnavbaritems1 = (view) => {
 function NavBarRootView(props) {
   const navigate = useNavigate();
   console.log("File View", props.LinksData);
+
+  const [Drawerstate, setDrawerstate] = useState(false);
+
+  const toggleDrawer = (open) => (event) => {
+    console.log(open);
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setDrawerstate(open);
+    console.log(Drawerstate);
+  };
+
   return (
     <div className="RootView_Navbar">
       <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
         <Container>
+          <Navbar.Brand onClick={toggleDrawer(true)}>
+            <span>
+              <AiOutlineMenu size="30px"></AiOutlineMenu>
+            </span>
+          </Navbar.Brand>
+          <Drawer
+            anchor="left"
+            open={Drawerstate}
+            onClose={toggleDrawer(false)}
+          >
+            <FolderDrawerCat
+              toggleDrawer={toggleDrawer}
+              Category={props.Categories}
+            ></FolderDrawerCat>
+          </Drawer>
+
           <Navbar.Brand href={window.location.origin}>
             <span>
               <FaMeteor size="30px"></FaMeteor>
             </span>
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             {/* {props.view != "FileViewEdit" ? :} */}
@@ -61,12 +98,18 @@ function NavBarRootView(props) {
               {props.view == "FileViewSingle" ? (
                 <Nav.Link
                   onClick={() =>
-                    navigate(props.url, 
-                      { state: { filedata: props.data, LinksData: props.LinksData } }
-                    //   {
-                    //   state: props.data,
-                    //   LinksData: props.LinksData,
-                    // }
+                    navigate(
+                      props.url,
+                      {
+                        state: {
+                          filedata: props.data,
+                          LinksData: props.LinksData,
+                        },
+                      }
+                      //   {
+                      //   state: props.data,
+                      //   LinksData: props.LinksData,
+                      // }
                     )
                   }
                 >

@@ -9,6 +9,7 @@ import { Breadcrumb } from "react-bootstrap";
 import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
+const cat = [];
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
 
@@ -49,12 +50,14 @@ const FileView = () => {
 
   return (
     <div className="FileView-root">
-      <NavBarRootView view="File" />
+      <NavBarRootView view="File" Categories={cat} />
       <div className="FileView-header">
         <h2>Discover New Possiblities</h2>
         <div className="FileView-breadcrumb">
           <Breadcrumb>
-            <Breadcrumb.Item href={window.location.origin}>Home</Breadcrumb.Item>
+            <Breadcrumb.Item href={window.location.origin}>
+              Home
+            </Breadcrumb.Item>
             <Breadcrumb.Item active>{folder}</Breadcrumb.Item>
           </Breadcrumb>
         </div>
@@ -63,7 +66,11 @@ const FileView = () => {
         <div className="FileView">
           <div className="FileView-container">
             <img className="FileView-img" src={file.imageurl}></img>
-            <Link to={"/file/" + id + "/" + folder + "/" + file.ID + "/" + file.title}>
+            <Link
+              to={
+                "/file/" + id + "/" + folder + "/" + file.ID + "/" + file.title
+              }
+            >
               <h3 className="FileView-header1">{file.title}</h3>
             </Link>
 
@@ -72,7 +79,10 @@ const FileView = () => {
               <BiDotsVerticalRounded />
             </span>
             <p></p>
-            <div className="FileView-comment" dangerouslySetInnerHTML={{__html: file.comments}} />
+            <div
+              className="FileView-comment"
+              dangerouslySetInnerHTML={{ __html: file.comments }}
+            />
             {/* <p className="FileView-comment">{file.comments}</p> */}
             <p></p>
           </div>
