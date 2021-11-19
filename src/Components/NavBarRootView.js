@@ -7,6 +7,7 @@ import "./NavBarRootView.css";
 import { Component, useEffect, useState } from "react";
 import { Divider, Link, Drawer } from "@mui/material";
 import FolderDrawerCat from "./FolderDrawerCat";
+import FileAdd from "./FileAdd";
 
 const getnavbaritems = (view) => {
   if (view == "Folder") {
@@ -84,7 +85,11 @@ function NavBarRootView(props) {
                   id="collasible-nav-dropdown"
                 >
                   <NavDropdown.Item
-                    onClick={(event) => console.log(props.view)}
+                    onClick={() => {
+                      if (props.view == "File") {
+                        navigate("/fileadd");
+                      }
+                    }}
                   >
                     {getnavbaritems(props.view)}
                   </NavDropdown.Item>
@@ -98,19 +103,12 @@ function NavBarRootView(props) {
               {props.view == "FileViewSingle" ? (
                 <Nav.Link
                   onClick={() =>
-                    navigate(
-                      props.url,
-                      {
-                        state: {
-                          filedata: props.data,
-                          LinksData: props.LinksData,
-                        },
-                      }
-                      //   {
-                      //   state: props.data,
-                      //   LinksData: props.LinksData,
-                      // }
-                    )
+                    navigate(props.url, {
+                      state: {
+                        filedata: props.data,
+                        LinksData: props.LinksData,
+                      },
+                    })
                   }
                 >
                   Edit
