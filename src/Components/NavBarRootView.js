@@ -8,6 +8,7 @@ import { Component, useEffect, useState } from "react";
 import { Divider, Link, Drawer } from "@mui/material";
 import FolderDrawerCat from "./FolderDrawerCat";
 import FileAdd from "./FileAdd";
+import FolderAddModal from "./FolderAddModal";
 
 const getnavbaritems = (view) => {
   if (view == "Folder") {
@@ -47,6 +48,8 @@ function NavBarRootView(props) {
     setDrawerstate(open);
     console.log(Drawerstate);
   };
+
+  const [FolderAddModalShow, setFolderAddModalShow] = useState(false);
 
   return (
     <div className="RootView_Navbar">
@@ -88,6 +91,8 @@ function NavBarRootView(props) {
                     onClick={() => {
                       if (props.view == "File") {
                         navigate("/fileadd");
+                      } else if (props.view == "Folder") {
+                        setFolderAddModalShow(true);
                       }
                     }}
                   >
@@ -146,6 +151,11 @@ function NavBarRootView(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <FolderAddModal
+        show={FolderAddModalShow}
+        CategoriesHelp={[1, 2]}
+        onHide={() => setFolderAddModalShow(false)}
+      />
     </div>
   );
 }
