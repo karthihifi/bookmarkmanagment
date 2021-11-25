@@ -1,3 +1,7 @@
 /* .RootView_Navbar-img{
     font-size: 25px;
 } */
+
+.RootView_Navbar-menu{
+    cursor: pointer;
+}

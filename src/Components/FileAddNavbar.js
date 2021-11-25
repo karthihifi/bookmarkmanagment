@@ -32,7 +32,7 @@ export default function FileAddNavbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             onClick={toggleDrawer(true)}
             size="large"
             edge="start"
@@ -51,7 +51,7 @@ export default function FileAddNavbar() {
               toggleDrawer={toggleDrawer}
               Category={cat}
             ></FolderDrawerCat>
-          </Drawer>
+          </Drawer> */}
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link

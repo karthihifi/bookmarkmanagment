@@ -3,28 +3,36 @@ import { Form, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import { PinDropSharp } from "@mui/icons-material";
 
 const FolderAddForm = (props) => {
-
-  const baseUrlCategories = "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/VH_categories"
-// 'Access-Control-Allow-Origin' : 'http://localhost:3000' }
+  const baseUrlCategories =
+    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/VH_categories";
+  // 'Access-Control-Allow-Origin' : 'http://localhost:3000' }
 
   const [CategoriesHelp, setCategoriesHelp] = useState([]);
 
   useEffect(() => {
     const CategoriesUrl = axios.get(baseUrlCategories);
-    let CategoriesHelp = []
+    let CategoriesHelp = [];
 
-    axios.all([CategoriesUrl]).then(axios.spread((...responses) => {
-      const responseOne = responses[0]
-      Object.values(responseOne.data.value).forEach((item) => CategoriesHelp.push(item.maincategory))
-      setCategoriesHelp(CategoriesHelp);
-    })).catch(errors => {
-      // react on errors.
-    })
+    axios
+      .all([CategoriesUrl])
+      .then(
+        axios.spread((...responses) => {
+          const responseOne = responses[0];
+          Object.values(responseOne.data.value).forEach((item) =>
+            CategoriesHelp.push(item.maincategory)
+          );
+          setCategoriesHelp(CategoriesHelp);
+        })
+      )
+      .catch((errors) => {
+        // react on errors.
+      });
   }, []);
 
-  console.log('Form',props)
+  // console.log("Form", props);
   const CategoriesDropdown = (props) => {
     return CategoriesHelp.map((folder) => (
       <option key={folder} value={folder}>
@@ -32,8 +40,6 @@ const FolderAddForm = (props) => {
       </option>
     ));
   };
-
-
 
   return (
     <div>
@@ -45,7 +51,9 @@ const FolderAddForm = (props) => {
           <Col sm="10">
             <Form.Control
               size="sm"
-              //   defaultValue={props.FolderData.folder_name}
+              onChange={(event) => {
+                props.setFolderName(event.target.value);
+              }}
             />
           </Col>
         </Form.Group>
@@ -59,12 +67,10 @@ const FolderAddForm = (props) => {
               size="sm"
               aria-label="Default select example"
               //   defaultValue={props.FolderData.maincategory}
-              //   value={maincategory}
-              //   onChange={(val) => {
-              //     console.log(val.target.value);
-              //     setmaincategory(val.target.value);
-              //     // setUpdatedFolderData(UpdatedFolderData.maincategory = val.target.value);
-              //   }}
+              value={props.Category}
+              onChange={(val) => {
+                props.setCategory(val.target.value);
+              }}
             >
               <CategoriesDropdown></CategoriesDropdown>
             </Form.Select>
@@ -79,6 +85,9 @@ const FolderAddForm = (props) => {
             <Form.Control
               size="sm"
               placeholder="New Image"
+              onChange={(event) => {
+                props.setImageurl(event.target.value);
+              }}
               //   defaultValue={props.FolderData.imageurl}
             />
           </Col>

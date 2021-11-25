@@ -32,7 +32,8 @@ const getnavbaritems1 = (view) => {
 
 function NavBarRootView(props) {
   const navigate = useNavigate();
-  console.log("File View", props.LinksData);
+  // console.log("File View", props.LinksData);
+  console.log("view", props.view)
 
   const [Drawerstate, setDrawerstate] = useState(false);
 
@@ -55,21 +56,27 @@ function NavBarRootView(props) {
     <div className="RootView_Navbar">
       <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
         <Container>
-          <Navbar.Brand onClick={toggleDrawer(true)}>
-            <span>
-              <AiOutlineMenu size="30px"></AiOutlineMenu>
-            </span>
-          </Navbar.Brand>
-          <Drawer
-            anchor="left"
-            open={Drawerstate}
-            onClose={toggleDrawer(false)}
-          >
-            <FolderDrawerCat
-              toggleDrawer={toggleDrawer}
-              Category={props.Categories}
-            ></FolderDrawerCat>
-          </Drawer>
+          {props.view == "File" || props.view == "Folder" ? (
+            <div className="RootView_Navbar-menu">
+              <Navbar.Brand onClick={toggleDrawer(true)}>
+                <span>
+                  <AiOutlineMenu size="30px"></AiOutlineMenu>
+                </span>
+              </Navbar.Brand>
+              <Drawer
+                anchor="left"
+                open={Drawerstate}
+                onClose={toggleDrawer(false)}
+              >
+                <FolderDrawerCat
+                  toggleDrawer={toggleDrawer}
+                  Category={props.Categories}
+                ></FolderDrawerCat>
+              </Drawer>
+            </div>
+          ) : (
+            ""
+          )}
 
           <Navbar.Brand href={window.location.origin}>
             <span>
