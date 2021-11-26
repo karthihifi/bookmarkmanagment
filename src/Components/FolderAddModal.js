@@ -7,7 +7,7 @@ import axios from "axios";
 function FolderAddModal(props) {
   const [FolderName, setFolderName] = useState("");
   const [Email, setEmail] = useState("");
-  const [Category, setCategory] = useState("");
+  const [Category, setCategory] = useState("Study");
   const [Imageurl, setImageurl] = useState("");
   const [FolderId, setFolderId] = useState("");
   // console.log("Folder Modal", Category);
@@ -15,20 +15,73 @@ function FolderAddModal(props) {
   const basurl =
     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
   const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${FolderId},IsActiveEntity=false)/ContentManagService.draftActivate`;
-  
+
   const AddFolder = () => {
     const payload = {
       folder_name: { FolderName },
-      email: { Email },
+      email: "test@gmail.com", //{ Email },
       maincategory: { Category },
       imageurl: { Imageurl },
     };
 
-    console.log("Payload", payload);
-    axios.post(basurl, payload).then((response) => {
-      console.log(response);
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+
+    // console.log("Payload", "payload", axiosConfig);
+    // axios
+    //   .post(basurl, {}, axiosConfig)
+    //   .then((response) => {
+    //     console.log(response);
+    //     setFolderId(response.data.ID);
+    //     // axios.post(basurl1).then((resp) => console.log(resp));
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        folder_name: "Africa",
+        email: "test@gmail.com",
+        maincategory: "Culture",
+      }),
+    };
+    // fetch(basurl, requestOptions)
+    //   .then((response) => console.log(response))
+    // .then((data) => this.setState({ postId: data.id }));
+
+    axios({
+      method: "POST",
+      url: `https://cors-anywhere.herokuapp.com/${basurl}`,
+      data: {
+        folder_name: "Africa",
+        email: "test@gmail.com",
+        maincategory: "Culture",
+      },
+      headers: {
+        // "Access-Control-Allow-Origin": "*",
+        "Content-type": "application/json",
+      },
+    }).then((response) => {
       setFolderId(response.data.ID);
-      axios.post(basurl1).then((resp) => console.log(resp));
+      console.log(response.data.ID);
+      let url = 'https://cors-anywhere.herokuapp.com/https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=' + response.data.ID + ',IsActiveEntity=false)/ContentManagService.draftActivate'
+      console.log(url);
+      axios({
+        method: "POST",
+        url: url,
+        data: {},
+        headers: {
+          // "Access-Control-Allow-Origin": "*",
+          "Content-type": "application/json",
+        },
+      });
     });
     props.onHide();
   };
