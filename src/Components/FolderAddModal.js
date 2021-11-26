@@ -16,54 +16,45 @@ function FolderAddModal(props) {
     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
   const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${FolderId},IsActiveEntity=false)/ContentManagService.draftActivate`;
 
-  const AddFolder = () => {
-    const payload = {
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    console.log(validated);
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log("Inside", validated);
+    }
+
+    setValidated(true);
+    console.log(validated);
+  };
+
+  const AddFolder = (event) => {
+    handleSubmit(event);
+    let payload = {
       folder_name: { FolderName },
       email: "test@gmail.com", //{ Email },
       maincategory: { Category },
       imageurl: { Imageurl },
     };
 
-    let axiosConfig = {
-      headers: {
-        "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*",
-      },
+    let payload1 = {
+      folder_name: payload.folder_name.FolderName,
+      email: "test@gmail.com", //{ Email },
+      maincategory: payload.maincategory.Category,
+      imageurl: payload.imageurl.Imageurl,
     };
 
-    // console.log("Payload", "payload", axiosConfig);
-    // axios
-    //   .post(basurl, {}, axiosConfig)
-    //   .then((response) => {
-    //     console.log(response);
-    //     setFolderId(response.data.ID);
-    //     // axios.post(basurl1).then((resp) => console.log(resp));
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        folder_name: "Africa",
-        email: "test@gmail.com",
-        maincategory: "Culture",
-      }),
-    };
-    // fetch(basurl, requestOptions)
-    //   .then((response) => console.log(response))
-    // .then((data) => this.setState({ postId: data.id }));
+    if (payload1.folder_name == "") {
+      return;
+    }
 
     axios({
       method: "POST",
       url: `https://cors-anywhere.herokuapp.com/${basurl}`,
-      data: {
-        folder_name: "Africa",
-        email: "test@gmail.com",
-        maincategory: "Culture",
-      },
+      data: payload1,
       headers: {
         // "Access-Control-Allow-Origin": "*",
         "Content-type": "application/json",
@@ -71,7 +62,10 @@ function FolderAddModal(props) {
     }).then((response) => {
       setFolderId(response.data.ID);
       console.log(response.data.ID);
-      let url = 'https://cors-anywhere.herokuapp.com/https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=' + response.data.ID + ',IsActiveEntity=false)/ContentManagService.draftActivate'
+      let url =
+        "https://cors-anywhere.herokuapp.com/https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+        response.data.ID +
+        ",IsActiveEntity=false)/ContentManagService.draftActivate";
       console.log(url);
       axios({
         method: "POST",
@@ -81,9 +75,16 @@ function FolderAddModal(props) {
           // "Access-Control-Allow-Origin": "*",
           "Content-type": "application/json",
         },
+      }).then((res) => {
+        if (payload1.folder_name != "") {
+          setValidated(false);
+          setFolderName("");
+          setEmail("");
+          setImageurl("");
+          props.onHide();
+        }
       });
     });
-    props.onHide();
   };
 
   const ClearForm = () => {
@@ -116,6 +117,8 @@ function FolderAddModal(props) {
           Imageurl={Imageurl}
           setImageurl={setImageurl}
           ClearForm={ClearForm}
+          validated={validated}
+          handleSubmit={handleSubmit}
         ></FolderAddForm>
       </Modal.Body>
       <Modal.Footer>
@@ -127,7 +130,9 @@ function FolderAddModal(props) {
         >
           Close
         </Button>
-        <Button onClick={AddFolder}>Submit</Button>
+        <Button type="submit" onClick={AddFolder}>
+          Submit
+        </Button>
       </Modal.Footer>
     </Modal>
   );

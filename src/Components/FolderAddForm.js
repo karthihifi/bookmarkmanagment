@@ -43,18 +43,23 @@ const FolderAddForm = (props) => {
 
   return (
     <div>
-      <Form>
+      <Form validated={props.validated} onSubmit={props.handleSubmit}>
         <Form.Group as={Row} className="mb-3">
           <Form.Label size="sm" column sm="2">
             Folder
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              required
               size="sm"
               onChange={(event) => {
+                console.log(event.target.value)
                 props.setFolderName(event.target.value);
               }}
             />
+            <Form.Control.Feedback type="invalid">
+              Please Enter a Name.
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -64,6 +69,7 @@ const FolderAddForm = (props) => {
           </Form.Label>
           <Col sm="10">
             <Form.Select
+              required
               size="sm"
               aria-label="Default select example"
               //   defaultValue={props.FolderData.maincategory}
