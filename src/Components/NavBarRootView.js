@@ -165,6 +165,8 @@ function NavBarRootView(props) {
         Msg={props.Msg}
         setMsg={props.setMsg}
         setSnackbaropen={props.setSnackbaropen}
+        LoadingDone={props.LoadingDone}
+        setLoadingDone={props.setLoadingDone}
       />
     </div>
   );

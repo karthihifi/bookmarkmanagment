@@ -56,6 +56,10 @@ function FolderAddModal(props) {
       return;
     }
 
+    // LoadingDone={props.LoadingDone}
+    props.onHide();
+    props.setLoadingDone(false)
+
     axios({
       method: "POST",
       url: basurl,
@@ -89,6 +93,7 @@ function FolderAddModal(props) {
               setEmail("");
               setImageurl("");
               props.onHide();
+              // props.setLoadingDone(true)
               props.setSnackbaropen(true);
               window.location.reload(); 
             }
@@ -98,11 +103,13 @@ function FolderAddModal(props) {
               props.setMsg(err.response.data.error.message);
               console.log("Error", props.Msg);
               props.onHide();
+              props.setLoadingDone(true)
               props.setSnackbaropen(true);
             }
           });
       })
       .catch((err) => {
+        props.setLoadingDone(true)
         console.log("Error", err);
       });
   };
