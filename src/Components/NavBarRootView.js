@@ -33,7 +33,7 @@ const getnavbaritems1 = (view) => {
 function NavBarRootView(props) {
   const navigate = useNavigate();
   // console.log("File View", props.LinksData);
-  console.log("view", props.view)
+  console.log("view", props.view);
 
   const [Drawerstate, setDrawerstate] = useState(false);
 
@@ -162,6 +162,9 @@ function NavBarRootView(props) {
         show={FolderAddModalShow}
         CategoriesHelp={[1, 2]}
         onHide={() => setFolderAddModalShow(false)}
+        Msg={props.Msg}
+        setMsg={props.setMsg}
+        setSnackbaropen={props.setSnackbaropen}
       />
     </div>
   );

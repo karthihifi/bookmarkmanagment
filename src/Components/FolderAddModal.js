@@ -1,8 +1,11 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Modal, Button } from "react-bootstrap";
 import FolderAddForm from "./FolderAddForm";
-import { Component, useEffect, useState } from "react";
+import { Component, useEffect, useState, Fragment } from "react";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 function FolderAddModal(props) {
   const [FolderName, setFolderName] = useState("");
@@ -10,6 +13,8 @@ function FolderAddModal(props) {
   const [Category, setCategory] = useState("Study");
   const [Imageurl, setImageurl] = useState("");
   const [FolderId, setFolderId] = useState("");
+  // const [ErrorMsg, setErrorMsg] = useState("");
+  // const [Snackbaropen, setSnackbaropen] = useState(false);
   // console.log("Folder Modal", Category);
 
   const basurl =
@@ -53,38 +58,53 @@ function FolderAddModal(props) {
 
     axios({
       method: "POST",
-      url: `https://cors-anywhere.herokuapp.com/${basurl}`,
+      url: basurl,
       data: payload1,
       headers: {
-        // "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "*",
         "Content-type": "application/json",
       },
-    }).then((response) => {
-      setFolderId(response.data.ID);
-      console.log(response.data.ID);
-      let url =
-        "https://cors-anywhere.herokuapp.com/https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
-        response.data.ID +
-        ",IsActiveEntity=false)/ContentManagService.draftActivate";
-      console.log(url);
-      axios({
-        method: "POST",
-        url: url,
-        data: {},
-        headers: {
-          // "Access-Control-Allow-Origin": "*",
-          "Content-type": "application/json",
-        },
-      }).then((res) => {
-        if (payload1.folder_name != "") {
-          setValidated(false);
-          setFolderName("");
-          setEmail("");
-          setImageurl("");
-          props.onHide();
-        }
+    })
+      .then((response) => {
+        setFolderId(response.data.ID);
+        console.log(response.data.ID);
+        let url =
+          "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+          response.data.ID +
+          ",IsActiveEntity=false)/ContentManagService.draftActivate";
+        console.log(url);
+        axios({
+          method: "POST",
+          url: url,
+          data: {},
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+          .then((res) => {
+            if (payload1.folder_name != "") {
+              props.setMsg(`New Collection ${payload1.folder_name} Created`);
+              setValidated(false);
+              setFolderName("");
+              setEmail("");
+              setImageurl("");
+              props.onHide();
+              props.setSnackbaropen(true);
+              window.location.reload(); 
+            }
+          })
+          .catch((err, resp) => {
+            if (err.response.data.error.message) {
+              props.setMsg(err.response.data.error.message);
+              console.log("Error", props.Msg);
+              props.onHide();
+              props.setSnackbaropen(true);
+            }
+          });
+      })
+      .catch((err) => {
+        console.log("Error", err);
       });
-    });
   };
 
   const ClearForm = () => {
@@ -93,6 +113,31 @@ function FolderAddModal(props) {
     setCategory("");
     setImageurl("");
   };
+
+  // const handleClose = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+
+  //   setSnackbaropen(false);
+  // };
+
+  // const action = (
+  //   <Fragment>
+  //     <Button color="secondary" size="small" onClick={handleClose}>
+  //       UNDO
+  //     </Button>
+  //     <IconButton
+  //       size="small"
+  //       aria-label="close"
+  //       color="inherit"
+  //       onClick={handleClose}
+  //     >
+  //       <CloseIcon fontSize="small" />
+  //     </IconButton>
+  //   </Fragment>
+  // );
+
   return (
     <Modal
       {...props}
@@ -134,6 +179,13 @@ function FolderAddModal(props) {
           Submit
         </Button>
       </Modal.Footer>
+      {/* <Snackbar
+        open={Snackbaropen}
+        autoHideDuration={60000}
+        onClose={handleClose}
+        message="Note archived"
+        action={action}
+      /> */}
     </Modal>
   );
 }
