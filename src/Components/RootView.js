@@ -24,6 +24,7 @@ const RootView = () => {
   const [Snackbaropen, setSnackbaropen] = useState(false);
   const [Msg, setMsg] = useState("");
   const [LoadingDone, setLoadingDone] = useState(false);
+  const dummycat = ['All']
 
   const updateCategories = (fulldata) => {
     let catgories = [];
@@ -31,10 +32,12 @@ const RootView = () => {
 
     for (let i = 0; i < fulldata.length; i++) {
       catTemp.push(fulldata[i].maincategory);
+      // dummycat.push(fulldata[i].maincategory);
     }
     catgories = [...new Set(catTemp)];
+    // dummycat = [...catgories]
     setCategories(catgories);
-    console.log(FullData);
+    // console.log(FullData);
   };
 
   const handleClose = (event, reason) => {
@@ -75,6 +78,7 @@ const RootView = () => {
           Object.values(responseTwo.data.value).forEach((item) =>
             CategoriesHelp.push(item.maincategory)
           );
+          CategoriesHelp.push('All')
           setFullData(responses[0].data.value);
           updateCategories(responses[0].data.value);
           setCategoriesHelp(CategoriesHelp);
@@ -100,9 +104,9 @@ const RootView = () => {
       {LoadingDone == false ? (
         <LoadingScreen></LoadingScreen>
       ) : (
-        <div>
+        <div id="RootView-Container" className="RootView-Container">
           {Categories.map((name) => (
-            <div>
+            <div className={"RootView-Container" + '_' + name}>
               <div className="grid-item_header">{name}</div>
               <Card
                 maincategory={name}
