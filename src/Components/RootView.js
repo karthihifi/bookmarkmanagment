@@ -19,25 +19,27 @@ const baseUrlCategories =
 
 const RootView = () => {
   const [Categories, setCategories] = useState([]);
+  const [Categoriessidebar, setCategoriessidebar] = useState([]);
   const [FullData, setFullData] = useState([]);
   const [CategoriesHelp, setCategoriesHelp] = useState([]);
   const [Snackbaropen, setSnackbaropen] = useState(false);
   const [Msg, setMsg] = useState("");
   const [LoadingDone, setLoadingDone] = useState(false);
-  const dummycat = ['All']
 
   const updateCategories = (fulldata) => {
     let catgories = [];
+    let catgories1 = [];
     let catTemp = [];
+    let catDummy = ['All'];
 
     for (let i = 0; i < fulldata.length; i++) {
       catTemp.push(fulldata[i].maincategory);
-      // dummycat.push(fulldata[i].maincategory);
+      catDummy.push(fulldata[i].maincategory);
     }
     catgories = [...new Set(catTemp)];
-    // dummycat = [...catgories]
+    catgories1 = [...new Set(catDummy)];
     setCategories(catgories);
-    // console.log(FullData);
+    setCategoriessidebar(catgories1)
   };
 
   const handleClose = (event, reason) => {
@@ -94,7 +96,7 @@ const RootView = () => {
     <div>
       <NavBarRootView
         view="Folder"
-        Categories={Categories}
+        Categories={Categoriessidebar}
         Msg={Msg}
         setMsg={setMsg}
         setSnackbaropen={setSnackbaropen}
