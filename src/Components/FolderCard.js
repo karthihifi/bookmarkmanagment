@@ -1,5 +1,6 @@
 import { Component, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import axios from "axios";
 import FolderEditModal from "./FolderEditModal";
 import {
   Popover,
@@ -13,13 +14,20 @@ import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
 import { AiFillHeart, AiOutlineHeart, AiOutlineDelete } from "react-icons/ai";
 import "./RootView.css";
 import FileView from "./FileView";
+import DeleteConf from "./DeleteConf";
 
 const Card = (props) => {
   const [FolderData, SetFolderData] = useState([]);
   const [CategoriesHelp, setCategoriesHelp] = useState([]);
   const [CurrentFolderData, SetCurrentFolderData] = useState({});
+  const [CurrentFolderDatatoDelete, SetCurrentFolderDatatoDelete] = useState(
+    {}
+  );
   const [FolderEditModalShow, setFolderEditModalShow] = useState(false);
+  const [FolderDeleteModalShow, setFolderDeleteModalShow] = useState(false);
   const [CardextradetailsShow, setCardextradetailsShow] = useState(false);
+
+  const baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${CurrentFolderDatatoDelete.ID},IsActiveEntity=false)`;
 
   const UpdateFolderData = (fulldata) => {
     let FolderData = [];
@@ -46,8 +54,22 @@ const Card = (props) => {
     setFolderEditModalShow(true);
   };
 
-  const onDelete = () => {
-    console.log("Delete");
+  const onDelete = (folder) => () => {
+    SetCurrentFolderDatatoDelete(folder.folder);
+    console.log(baseURL);
+    let url =
+      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      folder.folder.ID +
+      ",IsActiveEntity=true)";
+      var popover = document.getElementById("popover-basic");
+      popover.classList.remove("show");
+      setFolderDeleteModalShow(true)
+    // axios
+    //   .delete(url)
+    //   .then((response) => console.log(response))
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   // const onShowextra = () =>{
@@ -66,7 +88,7 @@ const Card = (props) => {
             </span>
             <span>Edit</span>
           </div>
-          <div onClick={onDelete} className="card_container-popover">
+          <div onClick={onDelete(props)} className="card_container-popover">
             <span>
               <AiOutlineDelete />
             </span>
@@ -82,10 +104,10 @@ const Card = (props) => {
     <div className="grid-item">
       {FolderData.map((folder) => (
         <div className="root_card">
-          <img className= "root_card-img" src={folder.imageurl} />
+          <img className="root_card-img" src={folder.imageurl} />
           <div class="card_container">
             <div className="card_container-header">
-              <Link to= {'/file/' + folder.ID + '/' + folder.folder_name}>
+              <Link to={"/file/" + folder.ID + "/" + folder.folder_name}>
                 <b>{folder.folder_name}</b>
               </Link>
               <div>
@@ -121,7 +143,6 @@ const Card = (props) => {
             </div>
           </div>
         </div>
-       
       ))}
       <FolderEditModal
         show={FolderEditModalShow}
@@ -129,6 +150,11 @@ const Card = (props) => {
         CategoriesHelp={props.categoryHelp}
         onHide={() => setFolderEditModalShow(false)}
       />
+      <DeleteConf
+        FolderData={CurrentFolderDatatoDelete}
+        show={FolderDeleteModalShow}
+        onHide={() => setFolderDeleteModalShow(false)}
+      ></DeleteConf>
     </div>
     // </BrowserRouter>
   );
