@@ -38,6 +38,7 @@ const FolderEditForm = (props) => {
             <Form.Control
               size="sm"
               defaultValue={props.FolderData.folder_name}
+              onChange={props.onTitleChange}
             />
           </Col>
         </Form.Group>
@@ -51,12 +52,14 @@ const FolderEditForm = (props) => {
               size="sm"
               aria-label="Default select example"
               defaultValue={props.FolderData.maincategory}
-              value={maincategory}
-              onChange={(val) => {
-                console.log(val.target.value);
-                setmaincategory(val.target.value);
-                // setUpdatedFolderData(UpdatedFolderData.maincategory = val.target.value);
-              }}
+              value={props.newCategory} //{maincategory}
+              onChange={props.onCategoryChange}
+              // onChange={(val) => {
+              //   // console.log(val.target.value);
+              //   setmaincategory(val.target.value);
+              //   props.onCategoryChange()
+              //   // setUpdatedFolderData(UpdatedFolderData.maincategory = val.target.value);
+              // }}
             >
               <CategoriesDropdown></CategoriesDropdown>
             </Form.Select>
@@ -69,6 +72,7 @@ const FolderEditForm = (props) => {
           </Form.Label>
           <Col sm="10">
             <Form.Control
+              onChange={props.onImgUrlChange}
               size="sm"
               placeholder="New Image"
               defaultValue={props.FolderData.imageurl}
@@ -79,6 +83,7 @@ const FolderEditForm = (props) => {
         <Form.Group as={Row} className="mb-3" controlId="formBasicCheckbox">
           <Col sm={{ span: 10, offset: 2 }}>
             <Form.Check
+              onChange={props.onfavChange}
               size="sm"
               type="checkbox"
               id="default-checkbox"
