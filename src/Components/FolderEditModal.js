@@ -13,6 +13,72 @@ function FolderEditModal(props) {
   const [newImgUrl, setnewImgUrl] = useState("");
   const [newfav, setnewfav] = useState("");
 
+  const onSubmit = (ID) => () => {
+    const basurl =
+      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      ID +
+      ",IsActiveEntity=true)/ContentManagService.draftEdit";
+    const basurl2 =
+      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      ID +
+      ",IsActiveEntity=false)";
+    const basurl1 =
+      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      ID +
+      ",IsActiveEntity=false)/ContentManagService.draftActivate";
+
+    console.log(newTitle);
+
+    // let payload1 = {
+    //   folder_name: { newTitle },
+    //   email: "test@gmail.com", //{ Email },
+    //   maincategory: { Category },
+    //   imageurl: { Imageurl },
+    // };
+
+    let payload = {
+      folder_name: newTitle, //{ payload1.folder_name.folder_name },
+    };
+
+    console.log(payload);
+    props.onHide();
+    axios
+      .post(basurl, { PreserveChanges: true })
+      .then((response) => {
+        axios
+          .patch(basurl2, payload)
+          .then((response) => {
+            console.log(response);
+            axios
+              .post(basurl1, {})
+              .then((response) => {
+                console.log(response);
+                props.setSnackbaropen(true);
+                props.setMsg("Updaed Successfully");
+                window.location.reload();
+              })
+              .catch((err, resp) => {
+                if (err.response.data.error.message) {
+                  props.setMsg(err.response.data.error.message);
+                  props.setSnackbaropen(true);
+                }
+              });
+          })
+          .catch((err, resp) => {
+            if (err.response.data.error.message) {
+              props.setMsg(err.response.data.error.message);
+              props.setSnackbaropen(true);
+            }
+          });
+      })
+      .catch((err, resp) => {
+        if (err.response.data.error.message) {
+          props.setMsg(err.response.data.error.message);
+          props.setSnackbaropen(true);
+        }
+      });
+  };
+
   const onTitleChange = (event) => {
     setnewTitle(event.target.value);
     SubmitBtnVisible == false &&
@@ -20,9 +86,15 @@ function FolderEditModal(props) {
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 
-      if (SubmitBtnVisible == true && newCategory == "" && newfav == "" && newImgUrl == "") {
-        setSubmitBtnVisible(false)
-      }
+    if (
+      SubmitBtnVisible == true &&
+      newCategory == "" &&
+      newfav == "" &&
+      newImgUrl == "" &&
+      event.target.value == props.FolderData.folder_name
+    ) {
+      setSubmitBtnVisible(false);
+    }
   };
 
   const onCategoryChange = (event) => {
@@ -32,9 +104,15 @@ function FolderEditModal(props) {
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 
-      if (SubmitBtnVisible == true && newTitle == "" && newfav == "" && newImgUrl == "") {
-        setSubmitBtnVisible(false)
-      }
+    if (
+      SubmitBtnVisible == true &&
+      newTitle == "" &&
+      newfav == "" &&
+      newImgUrl == "" &&
+      event.target.value == props.FolderData.folder_name
+    ) {
+      setSubmitBtnVisible(false);
+    }
   };
 
   const onImgUrlChange = (event) => {
@@ -44,24 +122,35 @@ function FolderEditModal(props) {
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 
-      if (SubmitBtnVisible == true && newTitle == "" && newfav == "" && newCategory == "") {
-        setSubmitBtnVisible(false)
-      }
+    if (
+      SubmitBtnVisible == true &&
+      newTitle == "" &&
+      newfav == "" &&
+      newCategory == "" &&
+      event.target.value == props.FolderData.folder_name
+    ) {
+      setSubmitBtnVisible(false);
+    }
   };
 
   const onfavChange = (event) => {
-    console.log(props.FolderData.favourites,event.target.value)
+    console.log(props.FolderData.favourites, event.target.value);
     setnewfav(event.target.value);
     // SubmitBtnVisible == false &&
     event.target.value == props.FolderData.favourites
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 
-      if (SubmitBtnVisible == true && newTitle == "" && newImgUrl == "" && newCategory == "") {
-        setSubmitBtnVisible(false)
-      }
+    if (
+      SubmitBtnVisible == true &&
+      newTitle == "" &&
+      newImgUrl == "" &&
+      newCategory == "" &&
+      event.target.value == props.FolderData.folder_name
+    ) {
+      setSubmitBtnVisible(false);
+    }
   };
-
 
   return (
     <Modal
@@ -80,15 +169,15 @@ function FolderEditModal(props) {
           CategoriesHelp={props.CategoriesHelp}
           FolderData={props.FolderData}
           onTitleChange={onTitleChange}
-          onCategoryChange = {onCategoryChange}
-          newCategory = {newCategory}
-          onImgUrlChange = {onImgUrlChange}
-          onfavChange = {onfavChange}
+          onCategoryChange={onCategoryChange}
+          newCategory={newCategory}
+          onImgUrlChange={onImgUrlChange}
+          onfavChange={onfavChange}
         ></FolderEditForm>
       </Modal.Body>
       <Modal.Footer>
         {SubmitBtnVisible == true ? (
-          <Button variant="success" onClick={props.onHide}>
+          <Button variant="success" onClick={onSubmit(props.FolderData.ID)}>
             Submit
           </Button>
         ) : (

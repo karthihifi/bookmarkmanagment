@@ -149,6 +149,8 @@ const Card = (props) => {
         FolderData={CurrentFolderData}
         CategoriesHelp={props.categoryHelp}
         onHide={() => setFolderEditModalShow(false)}
+        setSnackbaropen = {props.setSnackbaropen}
+        setMsg = {props.setMsg}
       />
       <DeleteConf
         FolderData={CurrentFolderDatatoDelete}

@@ -114,6 +114,8 @@ const RootView = () => {
                 maincategory={name}
                 categoryHelp={CategoriesHelp}
                 fulldata={FullData}
+                setSnackbaropen={setSnackbaropen}
+                setMsg={setMsg}
               ></Card>
             </div>
           ))}
