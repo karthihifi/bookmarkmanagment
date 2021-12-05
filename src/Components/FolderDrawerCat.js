@@ -13,19 +13,39 @@ const FolderDrawerCat = (props) => {
   // console.log(props);
   const SetSelectedCategory = (event) => {
     // console.log(event.target.outerText);
-    let cont = document.getElementById("RootView-Container");
+    let cont = "";
+    let classname = "";
+    if (props.view == "File") {
+      cont = document.getElementById("FileView-Container");
+    } else {
+      cont = document.getElementById("RootView-Container");
+    }
+
     if (event.target.outerText == "All") {
       for (let i = 0; i < cont.childNodes.length; i++) {
         cont.childNodes[i].style.display = "block";
       }
       return;
     }
+    if (cont == undefined) {
+      return;
+    }
+
+    console.log(props.view,"cont",cont)
 
     for (let i = 0; i < cont.childNodes.length; i++) {
-      let classname = cont.childNodes[i].classList[0].split(
-        "RootView-Container_"
-      )[1];
+      if (props.view == "File") {
+        classname = cont.childNodes[i].classList[1].split("FileView_")[1];
+      } else {
+        classname = cont.childNodes[i].classList[0].split(
+          "RootView-Container_"
+        )[1];
+      }
+
       let val = event.target.outerText;
+      if (props.view == "File") {
+        val = val.replace(/\s/g,'')
+      }
       if (classname != val) {
         cont.childNodes[i].style.display = "none";
       } else {

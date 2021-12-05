@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 const cat = [];
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
+  const [CategoryData, setCategoryData] = useState([]);
 
   let { id, folder } = useParams();
 
@@ -20,6 +21,7 @@ const FileView = () => {
   const baseURL1 =
     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
 
+    let Category = ["All"]
   useEffect(() => {
     console.log(id);
     const FileUrl = axios.get(baseURL);
@@ -34,6 +36,11 @@ const FileView = () => {
           // const responseTwo = responses[1]
           console.log(responseOne.data.value);
           setFullData(responseOne.data.value);
+          for (let index = 0; index < responseOne.data.value.length; index++) {
+            Category.push(responseOne.data.value[index].category);
+            
+          }
+          setCategoryData(Category)
         })
       )
       .catch((errors) => {
@@ -50,7 +57,7 @@ const FileView = () => {
 
   return (
     <div className="FileView-root">
-      <NavBarRootView view="File" Categories={cat} />
+      <NavBarRootView view="File" Categories={CategoryData} />
       <div className="FileView-header">
         <h2>Discover New Possiblities</h2>
         <div className="FileView-breadcrumb">
@@ -62,8 +69,9 @@ const FileView = () => {
           </Breadcrumb>
         </div>
       </div>
+      <div id="FileView-Container">
       {FullData.map((file) => (
-        <div className="FileView">
+        <div className={"FileView" + " " + "FileView_" + file.category.replace(/\s/g,'')}>
           <div className="FileView-container">
             <img className="FileView-img" src={file.imageurl}></img>
             <Link
@@ -88,7 +96,7 @@ const FileView = () => {
           </div>
         </div>
       ))}
-      ;
+      </div>
     </div>
   );
 };

@@ -71,6 +71,7 @@ function NavBarRootView(props) {
                 <FolderDrawerCat
                   toggleDrawer={toggleDrawer}
                   Category={props.Categories}
+                  view={props.view}
                 ></FolderDrawerCat>
               </Drawer>
             </div>
