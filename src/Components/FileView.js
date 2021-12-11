@@ -57,7 +57,7 @@ const FileView = () => {
 
   return (
     <div className="FileView-root">
-      <NavBarRootView view="File" Categories={CategoryData} />
+      <NavBarRootView FolderId = {id} view="File" Categories={CategoryData} />
       <div className="FileView-header">
         <h2>Discover New Possiblities</h2>
         <div className="FileView-breadcrumb">

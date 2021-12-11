@@ -38,9 +38,7 @@ const theme = createTheme({
   },
 });
 
-
-
-export default function AppBarBottom() {
+export default function AppBarBottom(props) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -48,7 +46,7 @@ export default function AppBarBottom() {
         position="fixed"
         color="primary"
         sx={{ top: "auto", bottom: 0 }}
-        theme = {theme}
+        theme={theme}
       >
         {/* <Toolbar> */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -57,7 +55,7 @@ export default function AppBarBottom() {
         <div className="AppBarBottom-btn">
           {/* <Fab variant="extended"> */}
           {/* Submit */}
-          <Button size="small" variant="contained">
+          <Button onClick={props.addArticle} size="small" variant="contained">
             Submit
           </Button>
           {/* </Fab> */}

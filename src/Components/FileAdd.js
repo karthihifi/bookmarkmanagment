@@ -21,39 +21,154 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
-import { Component, useEffect, useState } from "react";
+import { Component, useEffect, useState, useParams } from "react";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 import FileAddNavbar from "./FileAddNavbar";
 import AppBarBottom from "./AppBarBottom";
 import "./FileAdd.css";
 
-const FileAdd = () => {
+const FileAdd = (props) => {
+  // let { id } = useParams();
+  // console.log("File Add", id);
+
   const [editorState, setContentState] = useState(EditorState.createEmpty());
   const [inputUrlList, setUrlList] = useState([{ title: "", url: "" }]);
   const [inputTagList, setTagList] = useState([""]);
 
+  const [FileTitle, setFileTitle] = useState("");
+  const [FileCat, setFileCat] = useState("");
+  const [FileImgurl, setFileFileImgurl] = useState("");
+  const [FileComments, setFileComments] = useState("");
+  const [FileReference, setFileReference] = useState([{ title: "", url: "" }]);
+  const [FileTags, setFileTags] = useState([""]);
+
   const onEditorStateChange = (editorState) => {
     setContentState(editorState);
-    console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setFileComments(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    // console.log(FileComments);
   };
 
   const addRow = () => {
     setUrlList([...inputUrlList, { title: "", url: "" }]);
+    setFileReference([...FileReference, { title: "", url: "" }]);
   };
 
   const removeRow = (index) => {
     const list = [...inputUrlList];
     list.splice(index, 1);
     setUrlList(list);
+
+    const list1 = [...FileReference];
+    list1.splice(index, 1);
+    setFileReference(list1);
   };
 
   const addTagRow = () => {
     setTagList([...inputTagList, ""]);
+    setFileTags([...FileTags, ""]);
   };
 
   const removeTagRow = (index) => {
     const list = [...inputTagList];
     list.splice(index, 1);
     setTagList(list);
+
+    const list1 = [...FileTags];
+    list1.splice(index, 1);
+    setFileTags(list1);
+  };
+
+  let payload = {
+    // "ID": "935a6833-53f9-4c3a-a115-715ec2c22a5c",
+    category: FileCat,
+    comments: FileComments,
+    title: FileTitle,
+    imageurl: FileImgurl,
+    favourites: null,
+  };
+
+  console.log(payload);
+  let RefList = FileReference;
+  let tagList = FileTags;
+
+  const { state } = useLocation();
+  const { id } = state;
+  let newID = "";
+  let newPathID = "";
+  let newtagID = "";
+
+  const basurl = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftEdit`;
+  const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+  let basurl2 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=${newID},IsActiveEntity=false)`;
+  // const basurl3 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+
+  let basurl3 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/file_path`;
+  let basurl4 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
+
+  let basurl5 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
+  let basurl6 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
+
+  const basurl7 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftPrepare`;
+  const basurl8 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftActivate`;
+
+  console.log(basurl);
+
+  const addArticle = () => {
+    console.log(FileTitle);
+    axios.post(basurl, { PreserveChanges: true }).then((response) => {
+      axios.post(basurl1, {}).then((response) => {
+        console.log(response);
+        newID = response.data.ID;
+        basurl2 =
+          "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=" +
+          newID +
+          ",IsActiveEntity=false)";
+        axios.patch(basurl2, payload).then((response) => {
+          if (RefList.length > 0) {
+            for (let i = 0; i < RefList.length; i++) {
+              let payload1 = {
+                title: RefList[i].title,
+                url: RefList[i].url,
+              };
+              basurl3 =
+                `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+                newID +
+                ",IsActiveEntity=false)/file_path";
+              axios.post(basurl3, {}).then((response) => {
+                newPathID = response.data.ID;
+                basurl4 =
+                  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=" +
+                  newPathID +
+                  ",IsActiveEntity=false)";
+                axios.patch(basurl4, payload1).then((response) => {});
+              });
+            }
+          }
+          if (tagList.length > 0) {
+            for (let i = 0; i < tagList.length; i++) {
+              let payload2 = { tag_name: tagList[i] };
+              basurl5 =
+                `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+                newID +
+                ",IsActiveEntity=false)/tags";
+              axios.post(basurl5, {}).then((response) => {
+                newtagID = response.data.ID;
+                basurl6 =
+                  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/tag_path(ID=" +
+                  newtagID +
+                  ",IsActiveEntity=false)";
+                axios.patch(basurl6, payload2).then((response) => {});
+              });
+            }
+          }
+          axios.post(basurl7, {}).then((response) => {
+            axios.post(basurl8, {}).then((response) => {});
+          });
+        });
+      });
+    });
   };
 
   function navbar() {
@@ -96,9 +211,18 @@ const FileAdd = () => {
         <div className="FileAdd-Container">
           <section>
             <h4 className="FileAdd-header">Main Section</h4>
-            <FormControl error = {!errortit} variant="standard" required sx={{ mr: 4 }}>
+            <FormControl
+              error={!errortit}
+              variant="standard"
+              required
+              sx={{ mr: 4 }}
+            >
               <InputLabel htmlFor="my-input">Article Title</InputLabel>
               <Input
+                onChange={(event) => {
+                  setFileTitle(event.target.value);
+                  // console.log(FileTitle)
+                }}
                 id="my-input"
                 aria-describedby="my-helper-text"
                 placeholder="Article Title"
@@ -114,6 +238,10 @@ const FileAdd = () => {
                 id="my-input"
                 aria-describedby="my-helper-text"
                 placeholder="Article Category"
+                onChange={(event) => {
+                  setFileCat(event.target.value);
+                  // console.log(FileTitle)
+                }}
               />
               <FormHelperText id="my-helper-text">
                 Enter Article Category.
@@ -126,6 +254,10 @@ const FileAdd = () => {
                 id="my-input"
                 aria-describedby="my-helper-text"
                 placeholder="Article Image"
+                onChange={(event) => {
+                  setFileFileImgurl(event.target.value);
+                  // console.log(FileTitle)
+                }}
               />
               <FormHelperText id="my-helper-text">
                 Enter Cover Image.
@@ -158,6 +290,11 @@ const FileAdd = () => {
                       id="my-input"
                       aria-describedby="my-helper-text"
                       placeholder="Reference Title"
+                      onChange={(event) => {
+                        let newrefitems = [...FileReference];
+                        newrefitems[index].title = event.target.value;
+                        setFileReference(newrefitems);
+                      }}
                     />
                     <FormHelperText id="my-helper-text">
                       Enter Ref. Title.
@@ -170,6 +307,11 @@ const FileAdd = () => {
                       id="my-input"
                       aria-describedby="my-helper-text"
                       placeholder="Reference Title"
+                      onChange={(event) => {
+                        let newrefitems = [...FileReference];
+                        newrefitems[index].url = event.target.value;
+                        setFileReference(newrefitems);
+                      }}
                     />
                     <FormHelperText id="my-helper-text">
                       Enter Ref. Link.
@@ -201,6 +343,13 @@ const FileAdd = () => {
                     id="my-input"
                     aria-describedby="my-helper-text"
                     placeholder="Enter Tag"
+                    onChange={(event) => {
+                      let newrefitems = [...FileTags];
+                      // console.log(newrefitems)
+                      newrefitems[index] = event.target.value;
+                      setFileTags(newrefitems);
+                      // console.log(FileTags)
+                    }}
                   />
                   <FormHelperText id="my-helper-text">
                     Enter Tag. Title.
@@ -224,7 +373,7 @@ const FileAdd = () => {
           </section>
         </div>
       </Box>
-      <AppBarBottom></AppBarBottom>
+      <AppBarBottom addArticle={addArticle}></AppBarBottom>
     </div>
   );
 };

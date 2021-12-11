@@ -98,7 +98,8 @@ function NavBarRootView(props) {
                   <NavDropdown.Item
                     onClick={() => {
                       if (props.view == "File") {
-                        navigate("/fileadd");
+                        console.log(props.FolderId);
+                        navigate("/fileadd", { state: { id: props.FolderId } });
                       } else if (props.view == "Folder") {
                         setFolderAddModalShow(true);
                       }
