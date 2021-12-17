@@ -1,5 +1,6 @@
-import { Component, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Component, useEffect, useState, Fragment } from "react";
+import * as React from "react";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
@@ -8,22 +9,81 @@ import NavBarRootView from "./NavBarRootView";
 import { Breadcrumb } from "react-bootstrap";
 import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const cat = [];
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
   const [CategoryData, setCategoryData] = useState([]);
+  const [Refresh, setRefresh] = useState(false);
+  const [Snackbaropen, setSnackbaropen] = useState(false);
+  const [successMsg, setsuccessMsg] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
+  const [Msg, setMsg] = useState(false);
 
+  // const success = `New Aritcle Added.Click <a href="#">here</a> to refresh...!`
   let { id, folder } = useParams();
+  let counter = 0;
+  const { state } = useLocation();
+  if (state != null) {
+    const { refresh } = state;
+  }
 
   let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files`;
 
   const baseURL1 =
     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
 
-    let Category = ["All"]
+  let Category = ["All"];
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbaropen(false);
+  };
+
+  // const CheckFileAddMsg = () => {
+  //   // return()
+  //   if (successMsg == true) {
+  //     <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+  //       New Aritcle Added.Click <a href="#">here</a> to refresh...!
+  //     </Alert>;
+  //   } else if (ErrorMsg == true) {
+  //     <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+  //       Error Occured!
+  //     </Alert>;
+  //   }
+  // };
+
+  const action = (
+    <Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
+
   useEffect(() => {
-    console.log(id);
+    if (state != null) {
+      console.log("Refresh", Refresh, "State", state.refresh, "Metod", state.setRefresh);
+      setSnackbaropen(true);
+      setsuccessMsg(true);
+      setMsg(true)
+    }
+
     const FileUrl = axios.get(baseURL);
     // const FileUrl1 = axios.get(baseURL1);
     let CategoriesHelp = [];
@@ -38,9 +98,8 @@ const FileView = () => {
           setFullData(responseOne.data.value);
           for (let index = 0; index < responseOne.data.value.length; index++) {
             Category.push(responseOne.data.value[index].category);
-            
           }
-          setCategoryData(Category)
+          setCategoryData(Category);
         })
       )
       .catch((errors) => {
@@ -57,7 +116,12 @@ const FileView = () => {
 
   return (
     <div className="FileView-root">
-      <NavBarRootView FolderId = {id} view="File" Categories={CategoryData} />
+      <NavBarRootView
+        folder={folder}
+        FolderId={id}
+        view="File"
+        Categories={CategoryData}
+      />
       <div className="FileView-header">
         <h2>Discover New Possiblities</h2>
         <div className="FileView-breadcrumb">
@@ -70,33 +134,61 @@ const FileView = () => {
         </div>
       </div>
       <div id="FileView-Container">
-      {FullData.map((file) => (
-        <div className={"FileView" + " " + "FileView_" + file.category.replace(/\s/g,'')}>
-          <div className="FileView-container">
-            <img className="FileView-img" src={file.imageurl}></img>
-            <Link
-              to={
-                "/file/" + id + "/" + folder + "/" + file.ID + "/" + file.title
-              }
-            >
-              <h3 className="FileView-header1">{file.title}</h3>
-            </Link>
+        {FullData.map((file) => (
+          <div
+            className={
+              "FileView" + " " + "FileView_" + file.category.replace(/\s/g, "")
+            }
+          >
+            <div className="FileView-container">
+              <img className="FileView-img" src={file.imageurl}></img>
+              <Link
+                to={
+                  "/file/" +
+                  id +
+                  "/" +
+                  folder +
+                  "/" +
+                  file.ID +
+                  "/" +
+                  file.title
+                }
+              >
+                <h3 className="FileView-header1">{file.title}</h3>
+              </Link>
 
-            {/* <div className="FileView-date">{file.lastvisited}</div> */}
-            <span className="FileView-date">
-              <BiDotsVerticalRounded />
-            </span>
-            <p></p>
-            <div
-              className="FileView-comment"
-              dangerouslySetInnerHTML={{ __html: file.comments }}
-            />
-            {/* <p className="FileView-comment">{file.comments}</p> */}
-            <p></p>
+              {/* <div className="FileView-date">{file.lastvisited}</div> */}
+              <span className="FileView-date">
+                <BiDotsVerticalRounded />
+              </span>
+              <p></p>
+              <div
+                className="FileView-comment"
+                dangerouslySetInnerHTML={{ __html: file.comments }}
+              />
+              {/* <p className="FileView-comment">{file.comments}</p> */}
+              <p></p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
       </div>
+      <Snackbar
+        open={Snackbaropen}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        {successMsg == true ? (
+          <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+            New Aritcle Added.Click <a href={window.location.href}>here</a> to refresh...!
+          </Alert>
+        ) : ErrorMsg == true ? (
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            Error Occured!
+          </Alert>
+        ) : (
+          ""
+        )}
+      </Snackbar>
     </div>
   );
 };

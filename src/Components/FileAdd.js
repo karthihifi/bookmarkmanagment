@@ -22,8 +22,9 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import { Component, useEffect, useState, useParams } from "react";
+import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FileAddNavbar from "./FileAddNavbar";
 import AppBarBottom from "./AppBarBottom";
 import "./FileAdd.css";
@@ -31,6 +32,8 @@ import "./FileAdd.css";
 const FileAdd = (props) => {
   // let { id } = useParams();
   // console.log("File Add", id);
+
+  const navigate = useNavigate();
 
   const [editorState, setContentState] = useState(EditorState.createEmpty());
   const [inputUrlList, setUrlList] = useState([{ title: "", url: "" }]);
@@ -42,6 +45,11 @@ const FileAdd = (props) => {
   const [FileComments, setFileComments] = useState("");
   const [FileReference, setFileReference] = useState([{ title: "", url: "" }]);
   const [FileTags, setFileTags] = useState([""]);
+
+  const [LoadingDone, setLoadingDone] = useState(true);
+  const [Refresh, setRefresh] = useState(false);
+
+  // let history = useHistory();
 
   const onEditorStateChange = (editorState) => {
     setContentState(editorState);
@@ -94,7 +102,8 @@ const FileAdd = (props) => {
   let tagList = FileTags;
 
   const { state } = useLocation();
-  const { id } = state;
+  const { id, folder } = state;
+  console.log("/file/" + id + folder);
   let newID = "";
   let newPathID = "";
   let newtagID = "";
@@ -116,7 +125,8 @@ const FileAdd = (props) => {
   console.log(basurl);
 
   const addArticle = () => {
-    console.log(FileTitle);
+    // console.log(FileTitle);
+    setLoadingDone(false);
     axios.post(basurl, { PreserveChanges: true }).then((response) => {
       axios.post(basurl1, {}).then((response) => {
         console.log(response);
@@ -166,6 +176,11 @@ const FileAdd = (props) => {
           axios.post(basurl7, {}).then((response) => {
             axios.post(basurl8, {}).then((response) => {});
           });
+          setRefresh(true)
+          setLoadingDone(true);
+          // history.go(0)
+          navigate("/file/" + id + "/" + folder, { replace: true } ,{ state: { refresh: {Refresh}} });
+          // navigate(-1);
         });
       });
     });
@@ -200,179 +215,187 @@ const FileAdd = (props) => {
   return (
     <div className="FileAdd">
       <FileAddNavbar />
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 4, width: "50ch" },
-        }}
-        noValidate
-        autoComplete="on"
-      >
-        <div className="FileAdd-Container">
-          <section>
-            <h4 className="FileAdd-header">Main Section</h4>
-            <FormControl
-              error={!errortit}
-              variant="standard"
-              required
-              sx={{ mr: 4 }}
-            >
-              <InputLabel htmlFor="my-input">Article Title</InputLabel>
-              <Input
-                onChange={(event) => {
-                  setFileTitle(event.target.value);
-                  // console.log(FileTitle)
-                }}
-                id="my-input"
-                aria-describedby="my-helper-text"
-                placeholder="Article Title"
-              />
-              <FormHelperText id="my-helper-text">
-                Enter Article Title.
-              </FormHelperText>
-            </FormControl>
+      {LoadingDone == false ? (
+        <LoadingScreen></LoadingScreen>
+      ) : (
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 4, width: "50ch" },
+          }}
+          noValidate
+          autoComplete="on"
+        >
+          <div className="FileAdd-Container">
+            <section>
+              <h4 className="FileAdd-header">Main Section</h4>
+              <FormControl
+                error={!errortit}
+                variant="standard"
+                required
+                sx={{ mr: 4 }}
+              >
+                <InputLabel htmlFor="my-input">Article Title</InputLabel>
+                <Input
+                  onChange={(event) => {
+                    setFileTitle(event.target.value);
+                    // console.log(FileTitle)
+                  }}
+                  id="my-input"
+                  aria-describedby="my-helper-text"
+                  placeholder="Article Title"
+                />
+                <FormHelperText id="my-helper-text">
+                  Enter Article Title.
+                </FormHelperText>
+              </FormControl>
 
-            <FormControl variant="standard" required>
-              <InputLabel htmlFor="my-input">Article Category</InputLabel>
-              <Input
-                id="my-input"
-                aria-describedby="my-helper-text"
-                placeholder="Article Category"
-                onChange={(event) => {
-                  setFileCat(event.target.value);
-                  // console.log(FileTitle)
-                }}
-              />
-              <FormHelperText id="my-helper-text">
-                Enter Article Category.
-              </FormHelperText>
-            </FormControl>
+              <FormControl variant="standard" required>
+                <InputLabel htmlFor="my-input">Article Category</InputLabel>
+                <Input
+                  id="my-input"
+                  aria-describedby="my-helper-text"
+                  placeholder="Article Category"
+                  onChange={(event) => {
+                    setFileCat(event.target.value);
+                    // console.log(FileTitle)
+                  }}
+                />
+                <FormHelperText id="my-helper-text">
+                  Enter Article Category.
+                </FormHelperText>
+              </FormControl>
 
-            <FormControl variant="standard" sx={{ width: "100ch" }}>
-              <InputLabel htmlFor="my-input">Article Image</InputLabel>
-              <Input
-                id="my-input"
-                aria-describedby="my-helper-text"
-                placeholder="Article Image"
-                onChange={(event) => {
-                  setFileFileImgurl(event.target.value);
-                  // console.log(FileTitle)
-                }}
-              />
-              <FormHelperText id="my-helper-text">
-                Enter Cover Image.
-              </FormHelperText>
-            </FormControl>
-          </section>
+              <FormControl variant="standard" sx={{ width: "100ch" }}>
+                <InputLabel htmlFor="my-input">Article Image</InputLabel>
+                <Input
+                  id="my-input"
+                  aria-describedby="my-helper-text"
+                  placeholder="Article Image"
+                  onChange={(event) => {
+                    setFileFileImgurl(event.target.value);
+                    // console.log(FileTitle)
+                  }}
+                />
+                <FormHelperText id="my-helper-text">
+                  Enter Cover Image.
+                </FormHelperText>
+              </FormControl>
+            </section>
 
-          <FormControl variant="standard" sx={{ width: "100ch", mb: 4 }}>
-            <InputLabel htmlFor="DraftEditor">Comments</InputLabel>
-            {/* <div>Comments</div> */}
-            <div className="FileAdd-commentEditor">
-              <Editor
-                id="DraftEditor"
-                editorState={editorState}
-                wrapperClassName="wrapper-class"
-                editorClassName="editor-class"
-                toolbarClassName="toolbar-class"
-                onEditorStateChange={onEditorStateChange}
-              />
-            </div>
-          </FormControl>
-          <section className="FileAdd-refsec">
-            <h4 className="FileAdd-header">Reference Section</h4>
-            {inputUrlList.map((link, index) => (
-              <div className="FileAdd-Reflink">
+            <FormControl variant="standard" sx={{ width: "100ch", mb: 4 }}>
+              <InputLabel htmlFor="DraftEditor">Comments</InputLabel>
+              {/* <div>Comments</div> */}
+              <div className="FileAdd-commentEditor">
+                <Editor
+                  id="DraftEditor"
+                  editorState={editorState}
+                  wrapperClassName="wrapper-class"
+                  editorClassName="editor-class"
+                  toolbarClassName="toolbar-class"
+                  onEditorStateChange={onEditorStateChange}
+                />
+              </div>
+            </FormControl>
+            <section className="FileAdd-refsec">
+              <h4 className="FileAdd-header">Reference Section</h4>
+              {inputUrlList.map((link, index) => (
+                <div className="FileAdd-Reflink">
+                  <Stack direction="row" spacing={2} sx={{ width: "100ch" }}>
+                    <FormControl variant="standard" sx={{ width: "40ch" }}>
+                      <InputLabel htmlFor="my-input">Article Title</InputLabel>
+                      <Input
+                        id="my-input"
+                        aria-describedby="my-helper-text"
+                        placeholder="Reference Title"
+                        onChange={(event) => {
+                          let newrefitems = [...FileReference];
+                          newrefitems[index].title = event.target.value;
+                          setFileReference(newrefitems);
+                        }}
+                      />
+                      <FormHelperText id="my-helper-text">
+                        Enter Ref. Title.
+                      </FormHelperText>
+                    </FormControl>
+
+                    <FormControl variant="standard" sx={{ width: "75ch" }}>
+                      <InputLabel htmlFor="my-input">Reference Link</InputLabel>
+                      <Input
+                        id="my-input"
+                        aria-describedby="my-helper-text"
+                        placeholder="Reference Title"
+                        onChange={(event) => {
+                          let newrefitems = [...FileReference];
+                          newrefitems[index].url = event.target.value;
+                          setFileReference(newrefitems);
+                        }}
+                      />
+                      <FormHelperText id="my-helper-text">
+                        Enter Ref. Link.
+                      </FormHelperText>
+                    </FormControl>
+                    <Stack direction="row" spacing={2} sx={{ width: "50ch" }}>
+                      <Button size="small" onClick={() => addRow(index)}>
+                        Add Row
+                      </Button>
+                      {index == 0 ? (
+                        ""
+                      ) : (
+                        <Button size="small" onClick={() => removeRow(index)}>
+                          Delete Row
+                        </Button>
+                      )}
+                    </Stack>
+                  </Stack>
+                </div>
+              ))}
+            </section>
+            <section className="FileAdd-tagsec">
+              <h4>Tags Section</h4>
+              {inputTagList.map((tag, index) => (
                 <Stack direction="row" spacing={2} sx={{ width: "100ch" }}>
-                  <FormControl variant="standard" sx={{ width: "40ch" }}>
-                    <InputLabel htmlFor="my-input">Article Title</InputLabel>
+                  <FormControl variant="standard" sx={{ width: "15ch" }}>
+                    <InputLabel htmlFor="my-input">Tag</InputLabel>
                     <Input
                       id="my-input"
                       aria-describedby="my-helper-text"
-                      placeholder="Reference Title"
+                      placeholder="Enter Tag"
                       onChange={(event) => {
-                        let newrefitems = [...FileReference];
-                        newrefitems[index].title = event.target.value;
-                        setFileReference(newrefitems);
+                        let newrefitems = [...FileTags];
+                        // console.log(newrefitems)
+                        newrefitems[index] = event.target.value;
+                        setFileTags(newrefitems);
+                        // console.log(FileTags)
                       }}
                     />
                     <FormHelperText id="my-helper-text">
-                      Enter Ref. Title.
+                      Enter Tag. Title.
                     </FormHelperText>
                   </FormControl>
 
-                  <FormControl variant="standard" sx={{ width: "75ch" }}>
-                    <InputLabel htmlFor="my-input">Reference Link</InputLabel>
-                    <Input
-                      id="my-input"
-                      aria-describedby="my-helper-text"
-                      placeholder="Reference Title"
-                      onChange={(event) => {
-                        let newrefitems = [...FileReference];
-                        newrefitems[index].url = event.target.value;
-                        setFileReference(newrefitems);
-                      }}
-                    />
-                    <FormHelperText id="my-helper-text">
-                      Enter Ref. Link.
-                    </FormHelperText>
-                  </FormControl>
                   <Stack direction="row" spacing={2} sx={{ width: "50ch" }}>
-                    <Button size="small" onClick={() => addRow(index)}>
+                    <Button
+                      sx={{}}
+                      size="small"
+                      onClick={() => addTagRow(index)}
+                    >
                       Add Row
                     </Button>
                     {index == 0 ? (
                       ""
                     ) : (
-                      <Button size="small" onClick={() => removeRow(index)}>
+                      <Button size="small" onClick={() => removeTagRow(index)}>
                         Delete Row
                       </Button>
                     )}
                   </Stack>
                 </Stack>
-              </div>
-            ))}
-          </section>
-          <section className="FileAdd-tagsec">
-            <h4>Tags Section</h4>
-            {inputTagList.map((tag, index) => (
-              <Stack direction="row" spacing={2} sx={{ width: "100ch" }}>
-                <FormControl variant="standard" sx={{ width: "15ch" }}>
-                  <InputLabel htmlFor="my-input">Tag</InputLabel>
-                  <Input
-                    id="my-input"
-                    aria-describedby="my-helper-text"
-                    placeholder="Enter Tag"
-                    onChange={(event) => {
-                      let newrefitems = [...FileTags];
-                      // console.log(newrefitems)
-                      newrefitems[index] = event.target.value;
-                      setFileTags(newrefitems);
-                      // console.log(FileTags)
-                    }}
-                  />
-                  <FormHelperText id="my-helper-text">
-                    Enter Tag. Title.
-                  </FormHelperText>
-                </FormControl>
-
-                <Stack direction="row" spacing={2} sx={{ width: "50ch" }}>
-                  <Button sx={{}} size="small" onClick={() => addTagRow(index)}>
-                    Add Row
-                  </Button>
-                  {index == 0 ? (
-                    ""
-                  ) : (
-                    <Button size="small" onClick={() => removeTagRow(index)}>
-                      Delete Row
-                    </Button>
-                  )}
-                </Stack>
-              </Stack>
-            ))}
-          </section>
-        </div>
-      </Box>
+              ))}
+            </section>
+          </div>
+        </Box>
+      )}
       <AppBarBottom addArticle={addArticle}></AppBarBottom>
     </div>
   );
