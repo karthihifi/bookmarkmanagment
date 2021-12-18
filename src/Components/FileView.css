@@ -63,6 +63,7 @@ a:visited {
 }
 
 .FileView-date {
+  cursor: pointer;
   width: 18%;
   position: absolute;
   top: 40px;

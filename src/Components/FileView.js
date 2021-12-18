@@ -7,7 +7,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./FileView.css";
 import NavBarRootView from "./NavBarRootView";
 import { Breadcrumb } from "react-bootstrap";
-import { BiDotsVerticalRounded, BiCommentEdit } from "react-icons/bi";
+import { BiX, BiCommentEdit } from "react-icons/bi";
+import { MdOutlineClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -159,7 +160,7 @@ const FileView = () => {
 
               {/* <div className="FileView-date">{file.lastvisited}</div> */}
               <span className="FileView-date">
-                <BiDotsVerticalRounded />
+                <MdOutlineClose />
               </span>
               <p></p>
               <div
