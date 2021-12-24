@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MuiAlert from "@mui/material/Alert";
 import DeleteConfFile from "./DeleteConfFile";
 import LoadingScreen from "./LoadingScreen";
+import { set } from "draft-js/lib/EditorState";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -44,7 +45,7 @@ const FileView = () => {
     const { refresh } = state;
   }
 
-  let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files`;
+  let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files?$count=true&$orderby=visitedtimes%20desc`;
 
   const baseURL1 =
     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
@@ -97,19 +98,19 @@ const FileView = () => {
       setsuccessMsg(true);
       setMsg(true);
     }
-    if (state != null) {
-      console.log(
-        "Refresh",
-        Refresh,
-        "State",
-        state.refresh,
-        "Metod",
-        state.setRefresh
-      );
-      setSnackbaropen(true);
-      setsuccessMsg(true);
-      setMsg(true);
-    }
+    // if (state != null) {
+    //   console.log(
+    //     "Refresh",
+    //     Refresh,
+    //     "State",
+    //     state.refresh,
+    //     "Metod",
+    //     state.setRefresh
+    //   );
+    //   setSnackbaropen(true);
+    //   setsuccessMsg(true);
+    //   setMsg(true);
+    // }
 
     const FileUrl = axios.get(baseURL);
     // const FileUrl1 = axios.get(baseURL1);
@@ -126,7 +127,9 @@ const FileView = () => {
           for (let index = 0; index < responseOne.data.value.length; index++) {
             Category.push(responseOne.data.value[index].category);
           }
-          setCategoryData(Category);
+          const cat1 = [...new Set(Category)];
+          // console.log("set",cat1)
+          setCategoryData(cat1);
         })
       )
       .catch((errors) => {

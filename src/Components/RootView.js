@@ -81,9 +81,10 @@ const RootView = () => {
             CategoriesHelp.push(item.maincategory)
           );
           CategoriesHelp.push('All')
+          let uniqueCategoriesHelp = [...new Set(CategoriesHelp)];
           setFullData(responses[0].data.value);
           updateCategories(responses[0].data.value);
-          setCategoriesHelp(CategoriesHelp);
+          setCategoriesHelp(uniqueCategoriesHelp);
           setLoadingDone(true)
         })
       )
