@@ -13,18 +13,17 @@ function App() {
       <Routes>
         <Route path="/" element={<MainView />} />
         <Route path="/file/:id/:folder" element={<FileView />} />
+        <Route path="/file/:id/:folder/refresh" element={<FileView />}></Route>
         <Route
           path="/file/:id/:folder/:fileid/:file"
           element={<FileViewSingle />}
         ></Route>
+
         <Route
           path="/file/:id/:folder/:fileid/:file/edit"
           element={<FileViewEdit />}
         ></Route>
-        <Route
-          path="/fileadd"
-          element={<FileAdd />}
-        ></Route>
+        <Route path="/fileadd" element={<FileAdd />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -179,7 +179,7 @@ const FileAdd = (props) => {
           setRefresh(true)
           setLoadingDone(true);
           // history.go(0)
-          navigate("/file/" + id + "/" + folder, { replace: true } ,{ state: { refresh: {Refresh}} });
+          navigate("/file/" + id + "/" + folder + "/refresh", { replace: true } ,{ state: { refresh: {Refresh}} });
           // navigate(-1);
         });
       });
