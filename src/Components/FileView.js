@@ -17,6 +17,9 @@ import MuiAlert from "@mui/material/Alert";
 import DeleteConfFile from "./DeleteConfFile";
 import LoadingScreen from "./LoadingScreen";
 import { set } from "draft-js/lib/EditorState";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { values } from "draft-js/lib/DefaultDraftBlockRenderMap";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -25,6 +28,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const cat = [];
 const FileView = () => {
   const [FullData, setFullData] = useState([]);
+  const [FullDefaultData, setFullDefaultData] = useState([]);
   const [CategoryData, setCategoryData] = useState([]);
   const [Refresh, setRefresh] = useState(false);
   const [Snackbaropen, setSnackbaropen] = useState(false);
@@ -35,6 +39,9 @@ const FileView = () => {
   const [FileDeleteModalShow, setFileDeleteModalShow] = useState(false);
 
   const [LoadingDone, setLoadingDone] = useState(true);
+  const [StartIndex, setStartIndex] = useState(0);
+  const [EndIndex, setEndIndex] = useState(3);
+  const [FullLength, setFullLength] = useState(0);
 
   // const success = `New Aritcle Added.Click <a href="#">here</a> to refresh...!`
   let { id, folder } = useParams();
@@ -122,8 +129,10 @@ const FileView = () => {
         axios.spread((...responses) => {
           const responseOne = responses[0];
           // const responseTwo = responses[1]
-          console.log(responseOne.data.value);
+          // console.log(responseOne.data);
           setFullData(responseOne.data.value);
+          setFullDefaultData(responseOne.data.value);
+          setFullLength(Math.ceil(responseOne.data.value.length / 3));
           for (let index = 0; index < responseOne.data.value.length; index++) {
             Category.push(responseOne.data.value[index].category);
           }
@@ -151,6 +160,12 @@ const FileView = () => {
         FolderId={id}
         view="File"
         Categories={CategoryData}
+        setFullData = {setFullData}
+        FullData = {FullData}
+        FullDefaultData ={FullDefaultData}
+        setStartIndex ={setStartIndex}
+        setEndIndex ={setEndIndex}
+        setFullLength ={setFullLength}
       />
       {LoadingDone == false ? (
         <LoadingScreen></LoadingScreen>
@@ -168,47 +183,62 @@ const FileView = () => {
             </div>
           </div>
           <div id="FileView-Container">
-            {FullData.map((file) => (
-              <div
-                className={
-                  "FileView" +
-                  " " +
-                  "FileView_" +
-                  file.category.replace(/\s/g, "")
-                }
-              >
-                <div className="FileView-container">
-                  <img className="FileView-img" src={file.imageurl}></img>
-                  <Link
-                    to={
-                      "/file/" +
-                      id +
-                      "/" +
-                      folder +
-                      "/" +
-                      file.ID +
-                      "/" +
-                      file.title
+            {FullData.map(
+              (file, index) =>
+                index >= StartIndex &&
+                index < EndIndex && (
+                  <div
+                    className={
+                      "FileView" +
+                      " " +
+                      "FileView_" +
+                      file.category.replace(/\s/g, "")
                     }
                   >
-                    <h3 className="FileView-header1">{file.title}</h3>
-                  </Link>
+                    <div className="FileView-content">
+                      <img className="FileView-img" src={file.imageurl}></img>
+                      <Link
+                        to={
+                          "/file/" +
+                          id +
+                          "/" +
+                          folder +
+                          "/" +
+                          file.ID +
+                          "/" +
+                          file.title
+                        }
+                      >
+                        <h3 className="FileView-header1">{file.title}</h3>
+                      </Link>
 
-                  {/* <div className="FileView-date">{file.lastvisited}</div> */}
-                  <span onClick={onDelete(file)} className="FileView-date">
-                    <MdOutlineClose />
-                  </span>
-                  <p></p>
-                  <div
-                    className="FileView-comment"
-                    dangerouslySetInnerHTML={{ __html: file.comments }}
-                  />
-                  {/* <p className="FileView-comment">{file.comments}</p> */}
-                  <p></p>
-                </div>
-              </div>
-            ))}
+                      {/* <div className="FileView-date">{file.lastvisited}</div> */}
+                      <span onClick={onDelete(file)} className="FileView-date">
+                        <MdOutlineClose />
+                      </span>
+                      <p></p>
+                      <div
+                        className="FileView-comment"
+                        dangerouslySetInnerHTML={{ __html: file.comments }}
+                      />
+                      {/* <p className="FileView-comment">{file.comments}</p> */}
+                      <p></p>
+                    </div>
+                  </div>
+                )
+            )}
           </div>
+          <Stack className="FileView-footer" spacing={2}>
+            <Pagination
+              count={FullLength}
+              color="primary"
+              onChange={(event, value) => {
+                setStartIndex((value - 1) * 3);
+                setEndIndex(value * 3);
+                console.log(StartIndex, EndIndex);
+              }}
+            />
+          </Stack>
           <Snackbar
             open={Snackbaropen}
             autoHideDuration={6000}

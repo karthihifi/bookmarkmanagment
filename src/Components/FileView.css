@@ -52,6 +52,17 @@ a:visited {
   /* padding-right: 20%; */
 }
 
+.FileView-content {
+  float: left;
+  width: 80%;
+  margin-right: 0;
+  max-height: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  /* padding-right: 20%; */
+}
+
 .FileView p {
   /* margin-bottom: 0.5em; */
   line-height: 0.3;
@@ -152,4 +163,10 @@ a:visited {
   /* overflow: hidden; */
   text-overflow: ellipsis;
   /* display: -webkit-box; */
+}
+
+
+.FileView-footer{
+  align-items: center;
+  padding: 10px 0;
 }

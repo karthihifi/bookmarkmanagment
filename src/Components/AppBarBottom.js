@@ -12,6 +12,7 @@ import "./AppBarBottom.css";
 import { red } from "@mui/material/colors";
 import Fab from "@mui/material/Fab";
 import { createTheme } from "@mui/material/styles";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const red1 = red[500];
@@ -39,6 +40,7 @@ const theme = createTheme({
 });
 
 export default function AppBarBottom(props) {
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -61,7 +63,13 @@ export default function AppBarBottom(props) {
           {/* </Fab> */}
           {/* <Fab variant="extended"> */}
           {/* Cancel */}
-          <Button size="small" variant="contained">
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+            size="small"
+            variant="contained"
+          >
             Cancel
           </Button>
           {/* </Fab> */}

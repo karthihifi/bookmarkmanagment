@@ -72,6 +72,12 @@ function NavBarRootView(props) {
                   toggleDrawer={toggleDrawer}
                   Category={props.Categories}
                   view={props.view}
+                  setFullData = {props.setFullData}
+                  FullData = {props.FullData}
+                  FullDefaultData ={props.FullDefaultData}
+                  setStartIndex ={props.setStartIndex}
+                  setEndIndex ={props.setEndIndex}
+                  setFullLength ={props.setFullLength}
                 ></FolderDrawerCat>
               </Drawer>
             </div>

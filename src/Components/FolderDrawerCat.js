@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 
 const FolderDrawerCat = (props) => {
-  // console.log(props);
+  console.log(props);
   const SetSelectedCategory = (event) => {
     // console.log(event.target.outerText);
     let cont = "";
@@ -22,6 +22,13 @@ const FolderDrawerCat = (props) => {
     }
 
     if (event.target.outerText == "All") {
+      if (props.view == "File") {
+        props.setFullData(props.FullDefaultData);
+        props.setFullLength(Math.ceil(props.FullDefaultData.length / 3));
+        // props.setStartIndex(1);
+        // props.setEndIndex(Math.ceil(props.FullDefaultData.length / 3));
+      }
+
       for (let i = 0; i < cont.childNodes.length; i++) {
         cont.childNodes[i].style.display = "block";
       }
@@ -31,7 +38,7 @@ const FolderDrawerCat = (props) => {
       return;
     }
 
-    console.log(props.view,"cont",cont)
+    // console.log(props.view,"cont",cont)
 
     for (let i = 0; i < cont.childNodes.length; i++) {
       if (props.view == "File") {
@@ -43,13 +50,32 @@ const FolderDrawerCat = (props) => {
       }
 
       let val = event.target.outerText;
-      if (props.view == "File") {
-        val = val.replace(/\s/g,'')
+      // if (props.view == "File") {
+      //   val = val.replace(/\s/g, "");
+      // }
+      if (props.view != "File") {
+        if (classname != val) {
+          cont.childNodes[i].style.display = "none";
+        } else {
+          cont.childNodes[i].style.display = "block";
+        }
       }
-      if (classname != val) {
-        cont.childNodes[i].style.display = "none";
-      } else {
-        cont.childNodes[i].style.display = "block";
+    }
+
+    if (props.view == "File") {
+      let val = event.target.outerText;
+      val = val.replace(/\s/g, "");
+      console.log(val);
+      let temparr = props.FullDefaultData;
+      let filteredcat = temparr.filter((file) => {
+        return file.category == val;
+      });
+      if (filteredcat != undefined) {
+        // console.log("filteredcat", filteredcat);
+        props.setStartIndex(0);
+        props.setEndIndex(3);
+        props.setFullData(filteredcat);
+        props.setFullLength(Math.ceil(filteredcat.length / 3));
       }
     }
   };
