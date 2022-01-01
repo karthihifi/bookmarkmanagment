@@ -98,7 +98,7 @@ function NavBarRootView(props) {
               {props.view != "FileViewEdit" ? (
                 <NavDropdown
                   className="RootView_Navbar-Add"
-                  title="Add"
+                  title={props.view == "FileViewAdd" ? "" : "Add"}
                   id="collasible-nav-dropdown"
                 >
                   <NavDropdown.Item

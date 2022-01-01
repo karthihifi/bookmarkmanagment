@@ -48,14 +48,17 @@ const deltereq = (props) => () => {
             })
             .catch((err) => {
               console.log(err);
+              props.props.setLoadingDone(true);
             });
         })
         .catch((err) => {
           console.log(err);
+          props.props.setLoadingDone(true);
         });
     })
     .catch((err) => {
       console.log(err);
+      props.props.setLoadingDone(true);
     });
 
   //   window.location.reload()

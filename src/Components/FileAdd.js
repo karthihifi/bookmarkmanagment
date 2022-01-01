@@ -16,17 +16,20 @@ import {
   FormHelperText,
   Stack,
 } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
+// import { htmlToText } from "html-to-text";
 import { Component, useEffect, useState, useParams } from "react";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import FileAddNavbar from "./FileAddNavbar";
 import AppBarBottom from "./AppBarBottom";
+import NavBarRootView from "./NavBarRootView";
 import "./FileAdd.css";
 
 const FileAdd = (props) => {
@@ -46,12 +49,28 @@ const FileAdd = (props) => {
   const [FileReference, setFileReference] = useState([{ title: "", url: "" }]);
   const [FileTags, setFileTags] = useState([""]);
 
+  const [FileTitleError, setFileTitleError] = useState(false);
+  const [FileCatError, setFileCatError] = useState(false);
+  const [FileCommentsError, setFileCommentsError] = useState(false);
+
   const [LoadingDone, setLoadingDone] = useState(true);
   const [Refresh, setRefresh] = useState(false);
 
   // let history = useHistory();
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#212529",
+        light: "#212529",
+        dark: "#212529",
+      },
+    },
+  });
+
   const onEditorStateChange = (editorState) => {
+    setFileCommentsError(false);
     setContentState(editorState);
     // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setFileComments(draftToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -125,6 +144,31 @@ const FileAdd = (props) => {
   console.log(basurl);
 
   const addArticle = () => {
+    let error = false;
+
+    if (FileTitle == null || FileTitle == "") {
+      console.log("Title cannot be empty");
+      setFileTitleError(true);
+      error = true;
+    }
+
+    if (FileCat == null || FileCat == "") {
+      console.log("Category cannot be empty");
+      setFileCatError(true);
+      error = true;
+    }
+
+    let tempComment = FileComments.replace(/<[^>]+>/g, "").trim();
+    console.log("aa", tempComment);
+    if (tempComment == null || tempComment == "") {
+      console.log("Comments cannot be empty");
+      setFileCommentsError(true);
+      error = true;
+    }
+
+    if (error == true) {
+      return;
+    }
     // console.log(FileTitle);
     setLoadingDone(false);
     axios.post(basurl, { PreserveChanges: true }).then((response) => {
@@ -176,10 +220,14 @@ const FileAdd = (props) => {
           axios.post(basurl7, {}).then((response) => {
             axios.post(basurl8, {}).then((response) => {});
           });
-          setRefresh(true)
+          setRefresh(true);
           setLoadingDone(true);
           // history.go(0)
-          navigate("/file/" + id + "/" + folder + "/refresh", { replace: true } ,{ state: { refresh: {Refresh}} });
+          navigate(
+            "/file/" + id + "/" + folder + "/refresh",
+            { replace: true },
+            { state: { refresh: { Refresh } } }
+          );
           // navigate(-1);
         });
       });
@@ -189,7 +237,9 @@ const FileAdd = (props) => {
   function navbar() {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <NavBarRootView></NavBarRootView>
+        {/* <ThemeProvider theme={darkTheme}> */}
+        {/* <AppBar position="static" color="primary" theme={darkTheme}>
           <Toolbar>
             <IconButton
               size="large"
@@ -205,7 +255,8 @@ const FileAdd = (props) => {
             </Typography>
             <Button color="inherit">Login</Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
+        {/* </ThemeProvider> */}
       </Box>
     );
   }
@@ -214,7 +265,8 @@ const FileAdd = (props) => {
 
   return (
     <div className="FileAdd">
-      <FileAddNavbar />
+      {/* <FileAddNavbar /> */}
+      <NavBarRootView view="FileViewAdd"></NavBarRootView>
       {LoadingDone == false ? (
         <LoadingScreen></LoadingScreen>
       ) : (
@@ -230,7 +282,7 @@ const FileAdd = (props) => {
             <section>
               <h4 className="FileAdd-header">Main Section</h4>
               <FormControl
-                error={!errortit}
+                error={FileTitleError}
                 variant="standard"
                 required
                 sx={{ mr: 4 }}
@@ -239,6 +291,7 @@ const FileAdd = (props) => {
                 <Input
                   onChange={(event) => {
                     setFileTitle(event.target.value);
+                    setFileTitleError(false);
                     // console.log(FileTitle)
                   }}
                   id="my-input"
@@ -250,7 +303,7 @@ const FileAdd = (props) => {
                 </FormHelperText>
               </FormControl>
 
-              <FormControl variant="standard" required>
+              <FormControl variant="standard" error={FileCatError} required>
                 <InputLabel htmlFor="my-input">Article Category</InputLabel>
                 <Input
                   id="my-input"
@@ -258,6 +311,7 @@ const FileAdd = (props) => {
                   placeholder="Article Category"
                   onChange={(event) => {
                     setFileCat(event.target.value);
+                    setFileCatError(false);
                     // console.log(FileTitle)
                   }}
                 />
@@ -283,7 +337,11 @@ const FileAdd = (props) => {
               </FormControl>
             </section>
 
-            <FormControl variant="standard" sx={{ width: "100ch", mb: 4 }}>
+            <FormControl
+              variant="standard"
+              error={FileCommentsError}
+              sx={{ width: "100ch", mb: 4 }}
+            >
               <InputLabel htmlFor="DraftEditor">Comments</InputLabel>
               {/* <div>Comments</div> */}
               <div className="FileAdd-commentEditor">
