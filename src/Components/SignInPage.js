@@ -4,6 +4,24 @@ import { Form } from "react-bootstrap";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#fb771a',
+      main: '#fb771a',
+      dark: '#fb771a',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+  },
+});
 
 function SignInPage() {
   return (
@@ -36,7 +54,7 @@ function SignInPage() {
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Remember me" />
               </Form.Group>
-              <Button className = "SignInPage-btn" variant="contained" endIcon={<SendIcon />}>
+              <Button theme = {theme} className = "SignInPage-btn" variant="contained" color="primary" endIcon={<SendIcon />}>
                 Submit
               </Button>
             </Form>
