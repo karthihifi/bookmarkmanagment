@@ -6,12 +6,14 @@ import FileView from "./Components/FileView";
 import FileViewSingle from "./Components/FileViewSingle";
 import FileViewEdit from "./Components/FileViewEdit";
 import FileAdd from "./Components/FileAdd";
+import SignInPage from "./Components/SignInPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainView />} />
+        <Route path="/signin" element={<SignInPage />} />
         <Route path="/file/:id/:folder" element={<FileView />} />
         <Route path="/file/:id/:folder/refresh" element={<FileView />}></Route>
         <Route
