@@ -9,6 +9,13 @@ import { Divider, Link, Drawer } from "@mui/material";
 import FolderDrawerCat from "./FolderDrawerCat";
 import FileAdd from "./FileAdd";
 import FolderAddModal from "./FolderAddModal";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+const auth = getAuth();
 
 const getnavbaritems = (view) => {
   if (view == "Folder") {
@@ -72,12 +79,12 @@ function NavBarRootView(props) {
                   toggleDrawer={toggleDrawer}
                   Category={props.Categories}
                   view={props.view}
-                  setFullData = {props.setFullData}
-                  FullData = {props.FullData}
-                  FullDefaultData ={props.FullDefaultData}
-                  setStartIndex ={props.setStartIndex}
-                  setEndIndex ={props.setEndIndex}
-                  setFullLength ={props.setFullLength}
+                  setFullData={props.setFullData}
+                  FullData={props.FullData}
+                  FullDefaultData={props.FullDefaultData}
+                  setStartIndex={props.setStartIndex}
+                  setEndIndex={props.setEndIndex}
+                  setFullLength={props.setFullLength}
                 ></FolderDrawerCat>
               </Drawer>
             </div>
@@ -105,7 +112,9 @@ function NavBarRootView(props) {
                     onClick={() => {
                       if (props.view == "File") {
                         // console.log(props.FolderId);
-                        navigate("/fileadd", { state: { id: props.FolderId, folder : props.folder } });
+                        navigate("/fileadd", {
+                          state: { id: props.FolderId, folder: props.folder },
+                        });
                       } else if (props.view == "Folder") {
                         setFolderAddModalShow(true);
                       }
@@ -158,7 +167,15 @@ function NavBarRootView(props) {
             </Nav> */}
             <Nav>
               <Nav.Link>
-                <span className="RootView_Navbar-img">
+                <span
+                  className="RootView_Navbar-img"
+                  onClick={() => {
+                    auth.signOut();
+                    sessionStorage.removeItem('Auth Token');
+                    console.log('signout')
+                    navigate("/signin")
+                  }}
+                >
                   <FaUserCircle size="25px"></FaUserCircle>
                 </span>
               </Nav.Link>

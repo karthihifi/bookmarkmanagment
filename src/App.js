@@ -1,3 +1,4 @@
+import { app } from "./firebase";
 import logo from "./logo.svg";
 import "./App.css";
 import RootView from "./Components/RootView";
