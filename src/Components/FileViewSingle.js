@@ -6,6 +6,14 @@ import "bootstrap/dist/css/bootstrap.css";
 import NavBarRootView from "./NavBarRootView";
 import "./FileViewSingle.css";
 import { Badge, Breadcrumb } from "react-bootstrap";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+const auth = getAuth();
 
 const FileViewSingle = (props) => {
   let { id, folder, fileid, file } = useParams();
@@ -28,8 +36,17 @@ const FileViewSingle = (props) => {
 
   const baseURL2 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)`;
 
+  let navigate = useNavigate()
+
   useEffect(() => {
     console.log(baseURL);
+
+    let authToken = sessionStorage.getItem('Auth Token')
+    if (auth.currentUser == null && authToken == null) {
+      navigate("/signin");
+      return;
+    }
+
     const FileUrl = axios.get(baseURL);
     const FileUrl1 = axios.get(baseURL1);
     const FileUrl2 = axios.get(baseURL2);

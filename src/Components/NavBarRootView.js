@@ -170,9 +170,10 @@ function NavBarRootView(props) {
                 <span
                   className="RootView_Navbar-img"
                   onClick={() => {
+                    console.log('signout',auth)
                     auth.signOut();
                     sessionStorage.removeItem('Auth Token');
-                    console.log('signout')
+                    
                     navigate("/signin")
                   }}
                 >

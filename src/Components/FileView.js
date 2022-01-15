@@ -20,6 +20,14 @@ import { set } from "draft-js/lib/EditorState";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { values } from "draft-js/lib/DefaultDraftBlockRenderMap";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+const auth = getAuth();
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -98,8 +106,17 @@ const FileView = () => {
     setFileDeleteModalShow(true);
   };
 
+  const navigate = useNavigate();
+
+  
   useEffect(() => {
     // console.log("asa",state)
+    let authToken = sessionStorage.getItem('Auth Token')
+    if (auth.currentUser == null && authToken == null) {
+      navigate("/signin");
+      return;
+    }
+    
     if (window.location.pathname.split("/")[4] == "refresh") {
       setSnackbaropen(true);
       setsuccessMsg(true);

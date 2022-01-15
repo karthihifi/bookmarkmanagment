@@ -9,6 +9,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import ReactLoading from "react-loading";
 import "./RootView.css";
 import LoadingScreen from "./LoadingScreen"
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+const auth = getAuth();
+
 
 const baseURL =
   "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
@@ -62,7 +71,15 @@ const RootView = () => {
     </Fragment>
   );
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    let authToken = sessionStorage.getItem('Auth Token')
+    if (auth.currentUser == null && authToken == null) {
+      navigate("/signin");
+      return;
+    }
+
     const FolderUrl = axios.get(baseURL);
     const CategoriesUrl = axios.get(baseUrlCategories);
     let CategoriesHelp = [];

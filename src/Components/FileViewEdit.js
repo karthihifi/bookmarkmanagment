@@ -9,8 +9,25 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import "./FileViewEdit.css";
 import htmlToDraft from "html-to-draftjs";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+const auth = getAuth();
 
 const FileViewEdit = (props) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let authToken = sessionStorage.getItem("Auth Token");
+    if (auth.currentUser == null && authToken == null) {
+      navigate("/signin");
+      return;
+    }
+  });
+
   const { state } = useLocation();
   // console.log(state);
   const { filedata, LinksData } = state;

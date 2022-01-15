@@ -114,8 +114,8 @@ function SignInPage() {
                         userCredential._tokenResponse.refreshToken
                       );
                       navigate("/");
-                      console.log(user);
-                      console.log(auth);
+                      console.log(userCredential);
+                      // console.log(auth);
                       // auth.signOut();
                     })
                     .catch((error) => {

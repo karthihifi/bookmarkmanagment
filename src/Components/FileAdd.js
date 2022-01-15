@@ -31,12 +31,26 @@ import FileAddNavbar from "./FileAddNavbar";
 import AppBarBottom from "./AppBarBottom";
 import NavBarRootView from "./NavBarRootView";
 import "./FileAdd.css";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+const auth = getAuth();
 
 const FileAdd = (props) => {
   // let { id } = useParams();
   // console.log("File Add", id);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    let authToken = sessionStorage.getItem("Auth Token");
+    if (auth.currentUser == null && authToken == null) {
+      navigate("/signin");
+      return;
+    }
+  });
 
   const [editorState, setContentState] = useState(EditorState.createEmpty());
   const [inputUrlList, setUrlList] = useState([{ title: "", url: "" }]);
@@ -120,7 +134,13 @@ const FileAdd = (props) => {
   let RefList = FileReference;
   let tagList = FileTags;
 
+  // if (useLocation() != null) {
+  //   const { state } = useLocation();
+
+  //   const { id, folder } = state;
+  // }
   const { state } = useLocation();
+
   const { id, folder } = state;
   console.log("/file/" + id + folder);
   let newID = "";
