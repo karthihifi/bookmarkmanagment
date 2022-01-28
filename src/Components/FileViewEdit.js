@@ -9,6 +9,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import "./FileViewEdit.css";
 import htmlToDraft from "html-to-draftjs";
+import axios from "axios";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -20,6 +21,16 @@ const auth = getAuth();
 const FileViewEdit = (props) => {
   const navigate = useNavigate();
 
+  const { state } = useLocation();
+  const { filedata, LinksData } = state;
+
+  const [FileTitle, setFileTitle] = useState(filedata.title);
+  const [FileCat, setFileCat] = useState(filedata.category);
+  const [FileImgurl, setFileFileImgurl] = useState(filedata.imageurl);
+  const [FileComments, setFileComments] = useState(filedata.comments);
+  const [FileReference, setFileReference] = useState([{ title: "", url: "" }]);
+  const [FileTags, setFileTags] = useState([""]);
+
   useEffect(() => {
     let authToken = sessionStorage.getItem("Auth Token");
     if (auth.currentUser == null && authToken == null) {
@@ -28,9 +39,14 @@ const FileViewEdit = (props) => {
     }
   });
 
-  const { state } = useLocation();
-  // console.log(state);
-  const { filedata, LinksData } = state;
+  const onSaveChanges = () => {
+    console.log(LinksData,inputUrlList,filedata)
+    if (inputUrlList.length < LinksData.length ) {
+      console.log("Deletion happpened");
+    } else if(inputUrlList.length > LinksData.length){
+      console.log("Insertion happpened");
+    }
+  };
   // console.log("Edit View", htmlToDraft(convertToRaw(filedata.comments)));
 
   const blocksFromHtml = htmlToDraft(filedata.comments);
@@ -50,6 +66,7 @@ const FileViewEdit = (props) => {
   const onEditorStateChange = (editorState) => {
     setContentState(editorState);
     console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    setFileComments(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
 
   if (inputUrlList.length == 0) {
@@ -109,9 +126,15 @@ const FileViewEdit = (props) => {
             <Col sm={10}>
               <Form.Control
                 type="email"
-                placeholder="Email"
-                value={filedata.title}
+                placeholder="title"
+                name="title"
+                defaultValue={filedata.title}
+                // value={filedata.title}
                 size="sm"
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  setFileTitle(event.target.value);
+                }}
               />
             </Col>
           </Form.Group>
@@ -128,7 +151,12 @@ const FileViewEdit = (props) => {
               <Form.Control
                 type="text"
                 placeholder="Password"
-                value={filedata.category}
+                defaultValue={filedata.category}
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  setFileCat(event.target.value);
+                }}
+                // value={filedata.category}
                 size="sm"
               />
             </Col>
@@ -142,8 +170,13 @@ const FileViewEdit = (props) => {
               <Form.Control
                 type="email"
                 placeholder="Email"
-                value={filedata.imageurl}
+                defaultValue={filedata.imageurl}
+                // value={filedata.imageurl}
                 size="sm"
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  setFileFileImgurl(event.target.value);
+                }}
               />
             </Col>
           </Form.Group>
@@ -226,7 +259,7 @@ const FileViewEdit = (props) => {
       </div>
       <div className="FileViewEdit-footer">
         <div className="FileViewEdit-footer-btn">
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" onClick={onSaveChanges}>
             Submit
           </Button>{" "}
           <Button variant="secondary" size="sm">
