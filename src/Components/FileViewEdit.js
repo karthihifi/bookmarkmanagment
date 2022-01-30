@@ -23,7 +23,7 @@ const FileViewEdit = (props) => {
 
   const { state } = useLocation();
   const { filedata, LinksData } = state;
-  console.log("props",window.location.pathname)
+  console.log("props", window.location.pathname);
 
   const [FileTitle, setFileTitle] = useState(filedata.title);
   const [FileCat, setFileCat] = useState(filedata.category);
@@ -88,7 +88,7 @@ const FileViewEdit = (props) => {
         });
         axios.post(basurl7, {}).then((response) => {
           axios.post(basurl8, {}).then((response) => {
-            navigate(window.location.pathname.split("/edit")[0])
+            navigate(window.location.pathname.split("/edit")[0]);
           });
         });
       });
@@ -114,7 +114,7 @@ const FileViewEdit = (props) => {
         }
         axios.post(basurl7, {}).then((response) => {
           axios.post(basurl8, {}).then((response) => {
-            navigate(window.location.pathname.split("/edit")[0])
+            navigate(window.location.pathname.split("/edit")[0]);
           });
         });
       });
@@ -338,7 +338,13 @@ const FileViewEdit = (props) => {
           <Button variant="primary" size="sm" onClick={onSaveChanges}>
             Submit
           </Button>{" "}
-          <Button variant="secondary" size="sm">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              navigate(window.location.pathname.split("/edit")[0]);
+            }}
+          >
             Cancel
           </Button>
         </div>
