@@ -23,6 +23,7 @@ const FileViewEdit = (props) => {
 
   const { state } = useLocation();
   const { filedata, LinksData } = state;
+  console.log("props",window.location.pathname)
 
   const [FileTitle, setFileTitle] = useState(filedata.title);
   const [FileCat, setFileCat] = useState(filedata.category);
@@ -39,12 +40,84 @@ const FileViewEdit = (props) => {
     }
   });
 
+  // let payload = {};
+  let newPathID;
+
+  const basurl = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/ContentManagService.draftEdit`;
+  const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/files`;
+  let basurl2 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=${filedata.ID},IsActiveEntity=false)`;
+
+  let basurl3 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/files(ID=${filedata.ID},IsActiveEntity=false)/file_path`;
+  let basurl4 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
+
+  // let basurl5 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
+  // let basurl6 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
+
+  const basurl7 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/ContentManagService.draftPrepare`;
+  const basurl8 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${filedata.up__ID},IsActiveEntity=false)/ContentManagService.draftActivate`;
+
   const onSaveChanges = () => {
-    console.log(LinksData,inputUrlList,filedata)
-    if (inputUrlList.length < LinksData.length ) {
-      console.log("Deletion happpened");
-    } else if(inputUrlList.length > LinksData.length){
+    console.log(LinksData, inputUrlList, filedata);
+    if (inputUrlList.length < LinksData.length) {
+      // console.log("Deletion happpened");
+      // console.log(newDelList, LinksData);
+      // LinksData.forEach((item, index) => {
+      //   console.log(item.ID);
+      //   let found = newDelList.find((item) => item == index);
+      //   if (found == undefined) {
+      //     return;
+      //   }
+      //   console.log(found,LinksData[found].ID);
+      // });
+
+      axios.post(basurl, { PreserveChanges: true }).then((response) => {
+        LinksData.forEach((item, index) => {
+          let found = newDelList.find((item) => item == index);
+          console.log(found);
+          if (found == undefined) {
+            return;
+          }
+          console.log(item.ID);
+          basurl4 =
+            "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=" +
+            item.ID +
+            ",IsActiveEntity=false)";
+          axios.delete(basurl4, {}).then((resp) => {
+            console.log(resp);
+          });
+        });
+        axios.post(basurl7, {}).then((response) => {
+          axios.post(basurl8, {}).then((response) => {
+            navigate(window.location.pathname.split("/edit")[0])
+          });
+        });
+      });
+    } else if (inputUrlList.length > LinksData.length) {
       console.log("Insertion happpened");
+      axios.post(basurl, { PreserveChanges: true }).then((response) => {
+        for (let i = LinksData.length; i < inputUrlList.length; i++) {
+          let payload1 = {
+            title: inputUrlList[i].title,
+            url: inputUrlList[i].url,
+          };
+          axios.post(basurl3, {}).then((resp) => {
+            console.log(resp);
+            newPathID = resp.data.ID;
+            basurl4 =
+              "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=" +
+              newPathID +
+              ",IsActiveEntity=false)";
+            axios.patch(basurl4, payload1).then((resp) => {
+              console.log(resp);
+            });
+          });
+        }
+        axios.post(basurl7, {}).then((response) => {
+          axios.post(basurl8, {}).then((response) => {
+            navigate(window.location.pathname.split("/edit")[0])
+          });
+        });
+      });
     }
   };
   // console.log("Edit View", htmlToDraft(convertToRaw(filedata.comments)));
@@ -61,6 +134,7 @@ const FileViewEdit = (props) => {
   // console.log(DefaultState);
   const [editorState, setContentState] = useState(EditorState.createEmpty());
   const [inputUrlList, setUrlList] = useState(LinksData);
+  const [newDelList, setDelList] = useState([]);
   // console.log("adad", inputUrlList);
 
   const onEditorStateChange = (editorState) => {
@@ -74,12 +148,14 @@ const FileViewEdit = (props) => {
   }
   const addRow = () => {
     setUrlList([...inputUrlList, { title: "", url: "" }]);
+    // setNewUrlList([...newUrlList, { title: "", url: "" }]);
   };
 
   const removeRow = (index) => {
     const list = [...inputUrlList];
     list.splice(index, 1);
     setUrlList(list);
+    setDelList([...newDelList, index]);
   };
 
   // handle input change
