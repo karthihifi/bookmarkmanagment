@@ -50,26 +50,35 @@ const FolderDrawerCat = (props) => {
       }
 
       let val = event.target.outerText;
+      // val = val.split(" ").join("");
+      // console.log(val,classname)
       // if (props.view == "File") {
       //   val = val.replace(/\s/g, "");
       // }
       if (props.view != "File") {
         if (classname != val) {
           cont.childNodes[i].style.display = "none";
+          // console.log("none",cont.childNodes[i].style.display)
         } else {
           cont.childNodes[i].style.display = "block";
+          // console.log("block",cont.childNodes[i].style.display)
         }
       }
     }
 
     if (props.view == "File") {
       let val = event.target.outerText;
-      val = val.replace(/\s/g, "");
-      console.log(val);
+      // val = val.replace(/\s/g, "");
+      // console.log(val);
+      val = val.split(' ');
+      console.log(event.target.outerText,val,"assa")
+      val = val.join(' ');
+      console.log(val,"test")
       let temparr = props.FullDefaultData;
       let filteredcat = temparr.filter((file) => {
         return file.category == val;
       });
+      console.log('filteredcat',filteredcat)
       if (filteredcat != undefined) {
         // console.log("filteredcat", filteredcat);
         props.setStartIndex(0);

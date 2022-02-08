@@ -189,7 +189,8 @@ const FileAdd = (props) => {
     if (error == true) {
       return;
     }
-    // console.log(FileTitle);
+    console.log("URL List",RefList);
+    
     setLoadingDone(false);
     axios.post(basurl, { PreserveChanges: true }).then((response) => {
       axios.post(basurl1, {}).then((response) => {
@@ -210,13 +211,17 @@ const FileAdd = (props) => {
                 `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
                 newID +
                 ",IsActiveEntity=false)/file_path";
+              console.log(basurl3);
               axios.post(basurl3, {}).then((response) => {
                 newPathID = response.data.ID;
                 basurl4 =
                   "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=" +
                   newPathID +
                   ",IsActiveEntity=false)";
-                axios.patch(basurl4, payload1).then((response) => {});
+                console.log(response);
+                axios.patch(basurl4, payload1).then((response) => {
+                  console.log('Fin',response);
+                });
               });
             }
           }
@@ -407,6 +412,7 @@ const FileAdd = (props) => {
                           let newrefitems = [...FileReference];
                           newrefitems[index].url = event.target.value;
                           setFileReference(newrefitems);
+                          console.log(newrefitems);
                         }}
                       />
                       <FormHelperText id="my-helper-text">
