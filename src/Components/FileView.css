@@ -73,6 +73,10 @@ a:visited {
   text-overflow: ellipsis; */
 }
 
+.FileView-filter{
+  font-size: 1.2em;
+}
+
 .FileView-date {
   cursor: pointer;
   width: 18%;
@@ -118,6 +122,8 @@ a:visited {
   font-size: 0.6em;
   position: relative;
   padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
   /* padding: 15px 2.43902439%; */
 }
 .FileView-header {

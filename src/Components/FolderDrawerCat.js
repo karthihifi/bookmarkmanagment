@@ -67,7 +67,7 @@ const FolderDrawerCat = (props) => {
     }
 
     if (props.view == "File") {
-      let val = event.target.outerText;
+      let val = event.target.outerText.split('(')[0];
       // val = val.replace(/\s/g, "");
       // console.log(val);
       val = val.split(' ');

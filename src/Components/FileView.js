@@ -8,7 +8,12 @@ import "./FileView.css";
 import NavBarRootView from "./NavBarRootView";
 import { Breadcrumb } from "react-bootstrap";
 import { BiX, BiCommentEdit } from "react-icons/bi";
-import { MdOutlineClose } from "react-icons/md";
+import {
+  MdOutlineClose,
+  MdOutlineSortByAlpha,
+  MdOutlineUpdate,
+  MdVisibility,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +24,13 @@ import LoadingScreen from "./LoadingScreen";
 import { set } from "draft-js/lib/EditorState";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import {
+  Popover,
+  Overlay,
+  OverlayTrigger,
+  Button,
+  Tooltip,
+} from "react-bootstrap";
 import { values } from "draft-js/lib/DefaultDraftBlockRenderMap";
 import {
   getAuth,
@@ -108,15 +120,14 @@ const FileView = () => {
 
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     // console.log("asa",state)
-    let authToken = sessionStorage.getItem('Auth Token')
+    let authToken = sessionStorage.getItem("Auth Token");
     if (auth.currentUser == null && authToken == null) {
       navigate("/signin");
       return;
     }
-    
+
     if (window.location.pathname.split("/")[4] == "refresh") {
       setSnackbaropen(true);
       setsuccessMsg(true);
@@ -151,7 +162,20 @@ const FileView = () => {
           setFullDefaultData(responseOne.data.value);
           setFullLength(Math.ceil(responseOne.data.value.length / 3));
           for (let index = 0; index < responseOne.data.value.length; index++) {
-            Category.push(responseOne.data.value[index].category);
+            // Category.push(responseOne.data.value[index].category);
+            let tempfilter = responseOne.data.value.filter(
+              (item) => item.category == responseOne.data.value[index].category
+            );
+            console.log(
+              responseOne.data.value[index].category,
+              tempfilter.length
+            );
+            Category.push(
+              responseOne.data.value[index].category +
+                "(" +
+                tempfilter.length +
+                ")"
+            );
           }
           const cat1 = [...new Set(Category)];
           // console.log("set",cat1)
@@ -170,6 +194,58 @@ const FileView = () => {
   //     history.goBack()
   // }
 
+  const popover = (
+    <Popover id="popover-basic">
+      {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
+      <Popover.Body>
+        <div className="card_container-popover">
+          <span>
+            <MdOutlineUpdate></MdOutlineUpdate>
+          </span>
+          <span
+            onClick={() => {
+              let newFullData = [...FullData];
+              console.log("newFullData", newFullData);
+              newFullData.sort((a, b) => {
+                let da = new Date(a.lastupdate),
+                  db = new Date(b.lastupdate);
+                return da - db;
+              });
+              setFullData(newFullData);
+              console.log(newFullData);
+              var popover = document.getElementById("popover-basic");
+              popover.classList.remove("show");
+            }}
+          >
+            By LastUpdated
+          </span>
+        </div>
+        <div className="card_container-popover">
+          <span>
+            <MdVisibility />
+          </span>
+          <span
+            onClick={() => {
+              let newFullData = [...FullData];
+              // console.log("newFullData", newFullData);
+              newFullData.sort((a, b) => {
+                let da = a.visitedtimes,
+                  db = b.visitedtimes;
+                return db - da;
+              });
+              setFullData(newFullData);
+              console.log(newFullData);
+              var popover = document.getElementById("popover-basic");
+              popover.classList.remove("show");
+            }}
+          >
+            By VisitedTimes
+          </span>
+        </div>
+      </Popover.Body>
+    </Popover>
+  );
+
   return (
     <div className="FileView-root">
       <NavBarRootView
@@ -177,12 +253,12 @@ const FileView = () => {
         FolderId={id}
         view="File"
         Categories={CategoryData}
-        setFullData = {setFullData}
-        FullData = {FullData}
-        FullDefaultData ={FullDefaultData}
-        setStartIndex ={setStartIndex}
-        setEndIndex ={setEndIndex}
-        setFullLength ={setFullLength}
+        setFullData={setFullData}
+        FullData={FullData}
+        FullDefaultData={FullDefaultData}
+        setStartIndex={setStartIndex}
+        setEndIndex={setEndIndex}
+        setFullLength={setFullLength}
       />
       {LoadingDone == false ? (
         <LoadingScreen></LoadingScreen>
@@ -197,6 +273,22 @@ const FileView = () => {
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>{folder}</Breadcrumb.Item>
               </Breadcrumb>
+              <div>
+                <OverlayTrigger
+                  trigger="click"
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={popover}
+                  rootClose
+                >
+                  <span className="FileView-filter">
+                    <MdOutlineSortByAlpha></MdOutlineSortByAlpha>
+                  </span>
+                </OverlayTrigger>
+              </div>
+              {/* <span className="FileView-filter">
+                <MdOutlineSortByAlpha></MdOutlineSortByAlpha>
+              </span> */}
             </div>
           </div>
           <div id="FileView-Container">
