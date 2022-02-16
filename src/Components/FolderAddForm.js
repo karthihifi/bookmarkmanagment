@@ -53,7 +53,7 @@ const FolderAddForm = (props) => {
               required
               size="sm"
               onChange={(event) => {
-                console.log(event.target.value)
+                console.log(event.target.value);
                 props.setFolderName(event.target.value);
               }}
             />
@@ -106,6 +106,10 @@ const FolderAddForm = (props) => {
               type="checkbox"
               id="default-checkbox"
               label="Add to Favourities"
+              onChange={(event) => {
+                props.setFav(event.target.checked);
+                console.log(event.target.checked)
+              }}
               //   defaultChecked={props.FolderData.favourites}
             />
           </Col>

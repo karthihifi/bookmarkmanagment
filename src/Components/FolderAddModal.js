@@ -13,6 +13,7 @@ function FolderAddModal(props) {
   const [Category, setCategory] = useState("Study");
   const [Imageurl, setImageurl] = useState("");
   const [FolderId, setFolderId] = useState("");
+  const [Fav, setFav] = useState(false);
   // const [ErrorMsg, setErrorMsg] = useState("");
   // const [Snackbaropen, setSnackbaropen] = useState(false);
   // console.log("Folder Modal", Category);
@@ -43,6 +44,7 @@ function FolderAddModal(props) {
       email: "test@gmail.com", //{ Email },
       maincategory: { Category },
       imageurl: { Imageurl },
+      favourites: {Fav}
     };
 
     let payload1 = {
@@ -50,6 +52,7 @@ function FolderAddModal(props) {
       email: "test@gmail.com", //{ Email },
       maincategory: payload.maincategory.Category,
       imageurl: payload.imageurl.Imageurl,
+      favourites: payload.favourites.Fav
     };
 
     if (payload1.folder_name == "") {
@@ -165,6 +168,7 @@ function FolderAddModal(props) {
           setEmail={setEmail}
           Category={Category}
           setCategory={setCategory}
+          setFav= {setFav}
           CategoriesHelp={props.CategoriesHelp}
           Imageurl={Imageurl}
           setImageurl={setImageurl}
