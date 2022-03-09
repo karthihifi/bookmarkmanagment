@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 const deltereq = (props) => () => {
   console.log(props.props);
   let url =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
     props.props.FolderData.ID +
     ",IsActiveEntity=true)";
   axios

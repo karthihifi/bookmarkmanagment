@@ -7,7 +7,7 @@ import { PinDropSharp } from "@mui/icons-material";
 
 const FolderAddForm = (props) => {
   const baseUrlCategories =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/VH_categories";
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
   // 'Access-Control-Allow-Origin' : 'http://localhost:3000' }
 
   const [CategoriesHelp, setCategoriesHelp] = useState([]);

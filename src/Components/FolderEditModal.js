@@ -15,15 +15,15 @@ function FolderEditModal(props) {
 
   const onSubmit = (ID) => () => {
     const basurl =
-      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
       ID +
       ",IsActiveEntity=true)/ContentManagService.draftEdit";
     const basurl2 =
-      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
       ID +
       ",IsActiveEntity=false)";
     const basurl1 =
-      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
       ID +
       ",IsActiveEntity=false)/ContentManagService.draftActivate";
 

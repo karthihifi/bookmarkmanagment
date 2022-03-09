@@ -19,8 +19,8 @@ function FolderAddModal(props) {
   // console.log("Folder Modal", Category);
 
   const basurl =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
-  const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${FolderId},IsActiveEntity=false)/ContentManagService.draftActivate`;
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder";
+  const basurl1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${FolderId},IsActiveEntity=false)/ContentManagService.draftActivate`;
 
   const [validated, setValidated] = useState(false);
 
@@ -76,7 +76,7 @@ function FolderAddModal(props) {
         setFolderId(response.data.ID);
         console.log(response.data.ID);
         let url =
-          "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+          "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
           response.data.ID +
           ",IsActiveEntity=false)/ContentManagService.draftActivate";
         console.log(url);

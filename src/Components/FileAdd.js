@@ -147,19 +147,19 @@ const FileAdd = (props) => {
   let newPathID = "";
   let newtagID = "";
 
-  const basurl = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftEdit`;
-  const basurl1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
-  let basurl2 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=${newID},IsActiveEntity=false)`;
-  // const basurl3 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+  const basurl = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftEdit`;
+  const basurl1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+  let basurl2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=${newID},IsActiveEntity=false)`;
+  // const basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
 
-  let basurl3 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/file_path`;
-  let basurl4 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
+  let basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/file_path`;
+  let basurl4 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
 
-  let basurl5 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
-  let basurl6 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
+  let basurl5 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
+  let basurl6 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
 
-  const basurl7 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftPrepare`;
-  const basurl8 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftActivate`;
+  const basurl7 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftPrepare`;
+  const basurl8 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftActivate`;
 
   console.log(basurl);
 
@@ -197,7 +197,7 @@ const FileAdd = (props) => {
         console.log(response);
         newID = response.data.ID;
         basurl2 =
-          "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=" +
+          "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=" +
           newID +
           ",IsActiveEntity=false)";
         axios.patch(basurl2, payload).then((response) => {
@@ -208,14 +208,14 @@ const FileAdd = (props) => {
                 url: RefList[i].url,
               };
               basurl3 =
-                `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+                `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
                 newID +
                 ",IsActiveEntity=false)/file_path";
               console.log(basurl3);
               axios.post(basurl3, {}).then((response) => {
                 newPathID = response.data.ID;
                 basurl4 =
-                  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/file_path(ID=" +
+                  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=" +
                   newPathID +
                   ",IsActiveEntity=false)";
                 console.log(response);
@@ -229,13 +229,13 @@ const FileAdd = (props) => {
             for (let i = 0; i < tagList.length; i++) {
               let payload2 = { tag_name: tagList[i] };
               basurl5 =
-                `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+                `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
                 newID +
                 ",IsActiveEntity=false)/tags";
               axios.post(basurl5, {}).then((response) => {
                 newtagID = response.data.ID;
                 basurl6 =
-                  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/tag_path(ID=" +
+                  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/tag_path(ID=" +
                   newtagID +
                   ",IsActiveEntity=false)";
                 axios.patch(basurl6, payload2).then((response) => {});

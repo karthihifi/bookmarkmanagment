@@ -27,7 +27,7 @@ const Card = (props) => {
   const [FolderDeleteModalShow, setFolderDeleteModalShow] = useState(false);
   const [CardextradetailsShow, setCardextradetailsShow] = useState(false);
 
-  const baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${CurrentFolderDatatoDelete.ID},IsActiveEntity=false)`;
+  const baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${CurrentFolderDatatoDelete.ID},IsActiveEntity=false)`;
 
   const UpdateFolderData = (fulldata) => {
     let FolderData = [];
@@ -58,7 +58,7 @@ const Card = (props) => {
     SetCurrentFolderDatatoDelete(folder.folder);
     console.log(baseURL);
     let url =
-      "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+      "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
       folder.folder.ID +
       ",IsActiveEntity=true)";
       var popover = document.getElementById("popover-basic");

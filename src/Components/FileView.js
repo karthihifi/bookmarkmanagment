@@ -72,10 +72,10 @@ const FileView = () => {
     const { refresh } = state;
   }
 
-  let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files?$count=true&$orderby=visitedtimes%20desc`;
+  let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files?$count=true&$orderby=visitedtimes%20desc`;
 
   const baseURL1 =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
 
   let Category = ["All"];
 

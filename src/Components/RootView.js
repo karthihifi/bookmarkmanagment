@@ -20,11 +20,11 @@ const auth = getAuth();
 
 
 const baseURL =
-  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder";
+  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder";
 const headers = { "content-type": "application/json;odata.metadata=minimal" };
 
 const baseUrlCategories =
-  "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/VH_categories";
+  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
 
 const RootView = () => {
   const [Categories, setCategories] = useState([]);

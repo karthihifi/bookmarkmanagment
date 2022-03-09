@@ -30,11 +30,11 @@ const FileViewSingle = (props) => {
   let homeurl = window.location.origin + "/file/" + id + "/" + folder;
   console.log(homeurl);
 
-  let baseURL = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/file_path`;
+  let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/file_path`;
 
-  const baseURL1 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/tags`;
+  const baseURL1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/tags`;
 
-  const baseURL2 = `https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)`;
+  const baseURL2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)`;
 
   let navigate = useNavigate()
 

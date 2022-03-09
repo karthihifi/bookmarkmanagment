@@ -7,21 +7,21 @@ import { Component, useEffect, useState, useParams } from "react";
 const deltereq = (props) => () => {
   //   console.log(props.props);
   //   let url =
-  //     "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+  //     "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
   //     props.props.FileData.ID +
   //     ",IsActiveEntity=true)";
   let baseurl =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
     props.props.FolderId +
     ",IsActiveEntity=true)/ContentManagService.draftEdit";
 
   let baseurl1 =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/files(ID=" +
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=" +
     props.props.FileData.ID +
     ",IsActiveEntity=true)";
 
   let baseurl2 =
-    "https://5aa7bb4ftrial-dev-contentmanagement-srv.cfapps.eu10.hana.ondemand.com/content-manag/Folder(ID=" +
+    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
     props.props.FolderId +
     ",IsActiveEntity=false)/ContentManagService.draftActivate";
 
