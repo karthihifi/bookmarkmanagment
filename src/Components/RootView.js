@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ReactLoading from "react-loading";
 import "./RootView.css";
-import LoadingScreen from "./LoadingScreen"
+import LoadingScreen from "./LoadingScreen";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -18,13 +18,13 @@ import { useNavigate } from "react-router-dom";
 
 const auth = getAuth();
 
-
 const baseURL =
-  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder";
+  "https://eabb4168trial-dev-contentmanagement-srv.cfapps.us10-001.hana.ondemand.com/content-manag/Folder";
 const headers = { "content-type": "application/json;odata.metadata=minimal" };
 
 const baseUrlCategories =
-  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
+  // "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
+  "https://eabb4168trial-dev-contentmanagement-srv.cfapps.us10-001.hana.ondemand.com/content-manag/VH_categories";
 
 const RootView = () => {
   const [Categories, setCategories] = useState([]);
@@ -39,7 +39,7 @@ const RootView = () => {
     let catgories = [];
     let catgories1 = [];
     let catTemp = [];
-    let catDummy = ['All'];
+    let catDummy = ["All"];
 
     for (let i = 0; i < fulldata.length; i++) {
       catTemp.push(fulldata[i].maincategory);
@@ -48,7 +48,7 @@ const RootView = () => {
     catgories = [...new Set(catTemp)];
     catgories1 = [...new Set(catDummy)];
     setCategories(catgories);
-    setCategoriessidebar(catgories1)
+    setCategoriessidebar(catgories1);
   };
 
   const handleClose = (event, reason) => {
@@ -74,7 +74,7 @@ const RootView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token')
+    let authToken = sessionStorage.getItem("Auth Token");
     if (auth.currentUser == null && authToken == null) {
       navigate("/signin");
       return;
@@ -97,12 +97,12 @@ const RootView = () => {
           Object.values(responseTwo.data.value).forEach((item) =>
             CategoriesHelp.push(item.maincategory)
           );
-          CategoriesHelp.push('All')
+          CategoriesHelp.push("All");
           let uniqueCategoriesHelp = [...new Set(CategoriesHelp)];
           setFullData(responses[0].data.value);
           updateCategories(responses[0].data.value);
           setCategoriesHelp(uniqueCategoriesHelp);
-          setLoadingDone(true)
+          setLoadingDone(true);
         })
       )
       .catch((errors) => {
@@ -126,7 +126,7 @@ const RootView = () => {
       ) : (
         <div id="RootView-Container" className="RootView-Container">
           {Categories.map((name) => (
-            <div className={"RootView-Container" + '_' + name}>
+            <div className={"RootView-Container" + "_" + name}>
               <div className="grid-item_header">{name}</div>
               <Card
                 maincategory={name}
