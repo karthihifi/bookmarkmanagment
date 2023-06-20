@@ -4,7 +4,19 @@ import FolderEditForm from "./FolderEditForm";
 import { Component, useEffect, useState, Fragment } from "react";
 import axios from "axios";
 
-function FolderEditModal(props) {
+import { folder, category } from "./lib/types/interface";
+
+interface folderEditProps {
+  show: boolean;
+  FolderData: folder;
+  CategoriesHelp: category[];
+  onHide: () => void;
+  setSnackbaropen: (boolean) => void;
+  setMsg: (string) => void;
+}
+
+const FolderEditModal: React.FC<folderEditProps> = (props) => {
+// function FolderEditModal(props) {
   // console.log("Edit Modal", props);
 
   const [SubmitBtnVisible, setSubmitBtnVisible] = useState(false);
@@ -57,32 +69,32 @@ function FolderEditModal(props) {
                 props.setMsg("Updaed Successfully");
                 window.location.reload();
               })
-              .catch((err, resp) => {
-                if (err.response.data.error.message) {
-                  props.setMsg(err.response.data.error.message);
-                  props.setSnackbaropen(true);
-                }
+              .catch((err) => {
+                // if (err.response.data.error.message) {
+                //   props.setMsg(err.response.data.error.message);
+                //   props.setSnackbaropen(true);
+                // }
               });
           })
-          .catch((err, resp) => {
-            if (err.response.data.error.message) {
-              props.setMsg(err.response.data.error.message);
-              props.setSnackbaropen(true);
-            }
+          .catch((err) => {
+            // if (err.response.data.error.message) {
+            //   props.setMsg(err.response.data.error.message);
+            //   props.setSnackbaropen(true);
+            // }
           });
       })
-      .catch((err, resp) => {
-        if (err.response.data.error.message) {
-          props.setMsg(err.response.data.error.message);
-          props.setSnackbaropen(true);
-        }
+      .catch((err) => {
+        // if (err.response.data.error.message) {
+        //   props.setMsg(err.response.data.error.message);
+        //   props.setSnackbaropen(true);
+        // }
       });
   };
 
   const onTitleChange = (event) => {
     setnewTitle(event.target.value);
     SubmitBtnVisible == false &&
-    event.target.value == props.FolderData.folder_name
+      event.target.value == props.FolderData.folder_name
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 
@@ -134,10 +146,10 @@ function FolderEditModal(props) {
   };
 
   const onfavChange = (event) => {
-    console.log(props.FolderData.favourites, event.target.value);
+    console.log(props.FolderData.favourities, event.target.value);
     setnewfav(event.target.value);
     // SubmitBtnVisible == false &&
-    event.target.value == props.FolderData.favourites
+    event.target.value == props.FolderData.favourities
       ? setSubmitBtnVisible(false)
       : setSubmitBtnVisible(true);
 

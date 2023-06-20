@@ -16,10 +16,32 @@ import "./RootView.css";
 import FileView from "./FileView";
 import DeleteConf from "./DeleteConf";
 
-const Card = (props) => {
-  const [FolderData, SetFolderData] = useState([]);
-  const [CategoriesHelp, setCategoriesHelp] = useState([]);
-  const [CurrentFolderData, SetCurrentFolderData] = useState({});
+import { folder, category } from "./lib/types/interface"
+
+interface folderCardprops {
+  maincategory: string;
+  categoryHelp: category[];
+  fulldata: folder[];
+  setSnackbaropen: (boolean) => void;
+  setMsg: (string) => void;
+}
+
+let folderDefault: folder = {
+  folder_name: '',
+  email: '',
+  favourities: false,
+  filecount: 0,
+  ID: '',
+  imageurl: '',
+  lastvisited: new Date(),
+  maincategory: '',
+  visitedimes: 0
+}
+const Card: React.FC<folderCardprops> = (props) => {
+  // const Card = (props) => {
+  const [FolderData, SetFolderData] = useState<folder[]>([]);
+  const [CategoriesHelp, setCategoriesHelp] = useState<category[]>([]);
+  const [CurrentFolderData, SetCurrentFolderData] = useState<folder>(folderDefault);
   const [CurrentFolderDatatoDelete, SetCurrentFolderDatatoDelete] = useState(
     {}
   );
@@ -27,16 +49,20 @@ const Card = (props) => {
   const [FolderDeleteModalShow, setFolderDeleteModalShow] = useState(false);
   const [CardextradetailsShow, setCardextradetailsShow] = useState(false);
 
-  const baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${CurrentFolderDatatoDelete.ID},IsActiveEntity=false)`;
+  // const baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${CurrentFolderDatatoDelete.ID},IsActiveEntity=false)`;
 
   const UpdateFolderData = (fulldata) => {
     let FolderData = [];
 
+
     for (let i = 0; i < fulldata.length; i++) {
+      console.log(props.maincategory, fulldata[i].maincategory)
       if (props.maincategory == fulldata[i].maincategory) {
         FolderData.push(fulldata[i]);
       }
     }
+
+    console.log("Card View:", FolderData);
     SetFolderData(FolderData);
   };
 
@@ -46,24 +72,24 @@ const Card = (props) => {
     console.log("cat1", props.categoryHelp);
   }, []);
 
-  const onEdit = (folder) => () => {
+  const onEdit = (folder: folder) => () => {
     // console.log(folder.folder);
     var popover = document.getElementById("popover-basic");
     popover.classList.remove("show");
-    SetCurrentFolderData(folder.folder);
+    SetCurrentFolderData(folder);
     setFolderEditModalShow(true);
   };
 
   const onDelete = (folder) => () => {
-    SetCurrentFolderDatatoDelete(folder.folder);
-    console.log(baseURL);
-    let url =
-      "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
-      folder.folder.ID +
-      ",IsActiveEntity=true)";
-      var popover = document.getElementById("popover-basic");
-      popover.classList.remove("show");
-      setFolderDeleteModalShow(true)
+    // SetCurrentFolderDatatoDelete(folder.folder);
+    // console.log(baseURL);
+    // let url =
+    //   "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
+    //   folder.folder.ID +
+    //   ",IsActiveEntity=true)";
+    // var popover = document.getElementById("popover-basic");
+    // popover.classList.remove("show");
+    // setFolderDeleteModalShow(true);
     // axios
     //   .delete(url)
     //   .then((response) => console.log(response))
@@ -105,7 +131,7 @@ const Card = (props) => {
       {FolderData.map((folder) => (
         <div className="root_card">
           <img className="root_card-img" src={folder.imageurl} />
-          <div class="card_container">
+          <div className="card_container">
             <div className="card_container-header">
               <Link to={"/file/" + folder.ID + "/" + folder.folder_name}>
                 <b>{folder.folder_name}</b>
@@ -125,7 +151,7 @@ const Card = (props) => {
               </div>
             </div>
             <div className="card_container-body">
-              {folder.filecount != null
+              {folder.filecount > 0
                 ? "File Count : " + folder.filecount
                 : "No Files Yet"}
             </div>
@@ -134,7 +160,7 @@ const Card = (props) => {
                 Last Updated : {folder.lastvisited}
               </div>
               <div className="card-fav">
-                {folder.favourites == true ? (
+                {folder.favourities == true ? (
                   <AiFillHeart></AiFillHeart>
                 ) : (
                   <AiOutlineHeart></AiOutlineHeart>
@@ -149,8 +175,8 @@ const Card = (props) => {
         FolderData={CurrentFolderData}
         CategoriesHelp={props.categoryHelp}
         onHide={() => setFolderEditModalShow(false)}
-        setSnackbaropen = {props.setSnackbaropen}
-        setMsg = {props.setMsg}
+        setSnackbaropen={props.setSnackbaropen}
+        setMsg={props.setMsg}
       />
       <DeleteConf
         FolderData={CurrentFolderDatatoDelete}

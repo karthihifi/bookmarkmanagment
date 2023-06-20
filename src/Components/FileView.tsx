@@ -18,7 +18,10 @@ import { Link } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import MuiAlert from "@mui/material/Alert";
+import Alert from '@mui/joy/Alert';
+// import IconButton from '@mui/joy/IconButton';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+// import MuiAlert from "@mui/material/Alert";
 import DeleteConfFile from "./DeleteConfFile";
 import LoadingScreen from "./LoadingScreen";
 import { set } from "draft-js/lib/EditorState";
@@ -39,11 +42,15 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+import { file } from "./lib/types/interface";
+import { getFileDetails } from "./lib/graphql/queries";
+import { category } from "./lib/types/interface"
+
 const auth = getAuth();
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// const Alert = React.forwardRef(function Alert(props, ref:any) {
+//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
 
 const cat = [];
 const FileView = () => {
@@ -72,12 +79,13 @@ const FileView = () => {
     const { refresh } = state;
   }
 
-  let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files?$count=true&$orderby=visitedtimes%20desc`;
+  // let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files?$count=true&$orderby=visitedtimes%20desc`;
 
-  const baseURL1 =
-    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
+  // const baseURL1 =
+  //   "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=d0ad8a57-a423-435e-9deb-84497e866330,IsActiveEntity=true)/files(ID=935a6833-53f9-4c3a-a115-715ec2c22a5c,IsActiveEntity=true)/file_path";
 
-  let Category = ["All"];
+  // let Category = ["All"];
+  let Category: category[] = [{ category: 'All', count: 25 }];
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -105,7 +113,7 @@ const FileView = () => {
         size="small"
         aria-label="close"
         color="inherit"
-        onClick={handleClose}
+        onClick={() => handleClose}
       >
         <CloseIcon fontSize="small" />
       </IconButton>
@@ -147,44 +155,69 @@ const FileView = () => {
     //   setMsg(true);
     // }
 
-    const FileUrl = axios.get(baseURL);
+    getFileDetails("LluX8HIgcvVxilRBsgYc", folder).then((resp) => {
+      console.log(resp);
+      const responseOne = resp.files;
+      setFullData(responseOne);
+      setFullDefaultData(responseOne);
+      setFullLength(Math.ceil(responseOne.length / 3));
+      for (let index = 0; index < responseOne.length; index++) {
+        // Category.push(responseOne.data.value[index].category);
+        let tempfilter = responseOne.filter(
+          (item) => item.category == responseOne[index].category
+        );
+        console.log(responseOne[index].category, tempfilter.length);
+        Category.push(
+          {
+            category: responseOne[index].category,
+            count: tempfilter.length
+          }
+          // responseOne[index].category + "(" + tempfilter.length + ")"
+        );
+      }
+      const cat1 = [...new Set(Category)];
+      console.log("set", cat1)
+      setCategoryData(cat1);
+    });
+
+    // const FileUrl = axios.get(baseURL);
     // const FileUrl1 = axios.get(baseURL1);
     let CategoriesHelp = [];
 
-    axios
-      .all([FileUrl])
-      .then(
-        axios.spread((...responses) => {
-          const responseOne = responses[0];
-          // const responseTwo = responses[1]
-          // console.log(responseOne.data);
-          setFullData(responseOne.data.value);
-          setFullDefaultData(responseOne.data.value);
-          setFullLength(Math.ceil(responseOne.data.value.length / 3));
-          for (let index = 0; index < responseOne.data.value.length; index++) {
-            // Category.push(responseOne.data.value[index].category);
-            let tempfilter = responseOne.data.value.filter(
-              (item) => item.category == responseOne.data.value[index].category
-            );
-            console.log(
-              responseOne.data.value[index].category,
-              tempfilter.length
-            );
-            Category.push(
-              responseOne.data.value[index].category +
-                "(" +
-                tempfilter.length +
-                ")"
-            );
-          }
-          const cat1 = [...new Set(Category)];
-          // console.log("set",cat1)
-          setCategoryData(cat1);
-        })
-      )
-      .catch((errors) => {
-        // react on errors.
-      });
+    // axios
+    //   .all([FileUrl])
+    //   .then(
+    //     axios.spread((...responses) => {
+    //       const responseOne = responses[0];
+    //       // const responseTwo = responses[1]
+    //       // console.log(responseOne.data);
+    //       setFullData(responseOne.data.value);
+    //       setFullDefaultData(responseOne.data.value);
+    //       setFullLength(Math.ceil(responseOne.data.value.length / 3));
+    //       for (let index = 0; index < responseOne.data.value.length; index++) {
+    //         // Category.push(responseOne.data.value[index].category);
+    //         let tempfilter = responseOne.data.value.filter(
+    //           (item) => item.category == responseOne.data.value[index].category
+    //         );
+    //         console.log(
+    //           responseOne.data.value[index].category,
+    //           tempfilter.length
+    //         );
+    //         Category.push(
+    //           responseOne.data.value[index].category +
+    //             "(" +
+    //             tempfilter.length +
+    //             ")"
+    //         );
+    //       }
+    //       const cat1 = [...new Set(Category)];
+    //       // console.log("set",cat1)
+    //       setCategoryData(cat1);
+    //     })
+    //   )
+    //   .catch((errors) => {
+    //     // react on errors.
+    //   });
   }, []);
 
   // var location: Location;
@@ -207,8 +240,8 @@ const FileView = () => {
               let newFullData = [...FullData];
               console.log("newFullData", newFullData);
               newFullData.sort((a, b) => {
-                let da = new Date(a.lastupdate),
-                  db = new Date(b.lastupdate);
+                let da = new Date(a.lastupdate) as any,
+                  db = new Date(b.lastupdate) as any;
                 return da - db;
               });
               setFullData(newFullData);
@@ -348,33 +381,41 @@ const FileView = () => {
               }}
             />
           </Stack>
-          <Snackbar
+          {/* <Snackbar
             open={Snackbaropen}
             autoHideDuration={6000}
             onClose={handleClose}
           >
-            {successMsg == true ? (
-              <Alert
-                onClose={handleClose}
-                severity="info"
-                sx={{ width: "100%" }}
-              >
-                New Aritcle Added.Click{" "}
-                <a href={window.location.href.replace("/refresh", "")}>here</a>{" "}
-                to refresh...!
-              </Alert>
-            ) : ErrorMsg == true ? (
-              <Alert
-                onClose={handleClose}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Error Occured!
-              </Alert>
+            {successMsg === true ? (
+              // <Alert
+              //   onClose={() => handleClose}
+              //   severity="info"
+              //   sx={{ width: "100%" }}
+              // >
+              //   New Aritcle Added.Click{" "}
+              //   <a href={window.location.href.replace("/refresh", "")}>here</a>{" "}
+              //   to refresh...!
+              // </Alert>
+            )
+              : ErrorMsg == true ? (
+            <Alert
+              // onClose={()=>handleClose}
+              // severity="error"
+              // sx={{ width: "100%" }}
+              variant="soft"
+              color="danger"
+              endDecorator={
+                <IconButton size="small" color="primary" onClick={() => handleClose}>
+                  <CloseRoundedIcon />
+                </IconButton>
+              }
+            >
+              Error Occured!
+            </Alert>
             ) : (
-              ""
+            ""
             )}
-          </Snackbar>
+          </Snackbar> */}
           <DeleteConfFile
             FolderId={id}
             FileData={CurrentFileDatatoDelete}

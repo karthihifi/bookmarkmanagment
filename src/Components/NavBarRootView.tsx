@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
+import { Nav, NavDropdown, Navbar, Container, NavbarProps } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaMeteor } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -15,7 +15,47 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
+import { category } from "./lib/types/interface"
+import { createCategory } from "./lib/graphql/mutations";
+import FolderCategoryAddModal from './FolderCategoryAddModal'
+
 const auth = getAuth();
+
+interface navBarProps {
+  view?: string;
+  Categories?: category[];
+  Msg?: string;
+  setMsg?: (string) => void;
+  setSnackbaropen?: (boolean) => void;
+  LoadingDone?: boolean;
+  setLoadingDone?: (boolean) => void;
+
+  folder?: string;
+  FolderId?: string;
+  setFullData?: (any) => void;
+  FullData?: any;
+  FullDefaultData?: any;
+  setStartIndex?: (number) => void;
+  setEndIndex?: (number) => void;
+  setFullLength?: (number) => void;
+
+  url?: any
+  data?: any
+  LinksData?: any
+  TagsData?: any
+
+
+  // folder={folder}
+  // FolderId={id}
+  // view="File"
+  // Categories={CategoryData}
+  // setFullData={setFullData}
+  // FullData={FullData}
+  // FullDefaultData={FullDefaultData}
+  // setStartIndex={setStartIndex}
+  // setEndIndex={setEndIndex}
+  // setFullLength={setFullLength}
+}
 
 const getnavbaritems = (view) => {
   if (view == "Folder") {
@@ -37,12 +77,14 @@ const getnavbaritems1 = (view) => {
   }
 };
 
-function NavBarRootView(props) {
+const NavBarRootView: React.FC<navBarProps> = (props) => {
+  // function NavBarRootView(props) {
   const navigate = useNavigate();
   // console.log("File View", props.LinksData);
   console.log("view", props.view);
 
   const [Drawerstate, setDrawerstate] = useState(false);
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
     console.log(open);
@@ -122,7 +164,12 @@ function NavBarRootView(props) {
                   >
                     {getnavbaritems(props.view)}
                   </NavDropdown.Item>
-                  <NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => {
+                    if (props.view == "Folder" || props.view == "File") {
+                      setShowCreateCategory(true);
+                      console.log('New Category')
+                    }
+                  }}>
                     {getnavbaritems1(props.view)}
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -170,10 +217,10 @@ function NavBarRootView(props) {
                 <span
                   className="RootView_Navbar-img"
                   onClick={() => {
-                    console.log('signout',auth)
+                    console.log('signout', auth)
                     auth.signOut();
                     sessionStorage.removeItem('Auth Token');
-                    
+
                     navigate("/signin")
                   }}
                 >
@@ -194,6 +241,11 @@ function NavBarRootView(props) {
         LoadingDone={props.LoadingDone}
         setLoadingDone={props.setLoadingDone}
       />
+      <FolderCategoryAddModal
+        show={showCreateCategory}
+        onHide={setShowCreateCategory}
+        view ={props.view}
+      ></FolderCategoryAddModal>
     </div>
   );
 }

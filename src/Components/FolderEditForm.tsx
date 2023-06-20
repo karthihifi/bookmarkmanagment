@@ -1,9 +1,21 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Component, useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
+import { folder, category } from "./lib/types/interface";
 
-const FolderEditForm = (props) => {
-  const [CategoriesHelp, setCategoriesHelp] = useState([]);
+interface folderEditFormProps {
+  CategoriesHelp: category[];
+  FolderData: folder;
+  onTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  newCategory: string;
+  onImgUrlChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onfavChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const FolderEditForm: React.FC<folderEditFormProps> = (props) => {
+  // const FolderEditForm = (props) => {
+  const [CategoriesHelp, setCategoriesHelp] = useState<category[]>([]);
   const [maincategory, setmaincategory] = useState("");
   const [UpdatedFolderData, setUpdatedFolderData] = useState({
     ID: "",
@@ -19,19 +31,21 @@ const FolderEditForm = (props) => {
     console.log("cat", maincategory);
   }, []);
 
-  const CategoriesDropdown = (props) => {
-    return CategoriesHelp.map((folder) => (
-      <option key={folder} value={folder}>
-        {folder}
-      </option>
-    ));
-  };
+  // const CategoriesDropdown = () => {
+  //   return CategoriesHelp.map((category) => (
+  //     <option key={category.category} value={category.category}>
+  //       {category.category}
+  //     </option>
+  //   ));
+  // };
 
   return (
     <div>
       <Form>
         <Form.Group as={Row} className="mb-3">
-          <Form.Label size="sm" column sm="2">
+          <Form.Label
+            // size="sm" 
+            column sm="2">
             Folder
           </Form.Label>
           <Col sm="10">
@@ -54,14 +68,19 @@ const FolderEditForm = (props) => {
               defaultValue={props.FolderData.maincategory}
               value={props.newCategory} //{maincategory}
               onChange={props.onCategoryChange}
-              // onChange={(val) => {
-              //   // console.log(val.target.value);
-              //   setmaincategory(val.target.value);
-              //   props.onCategoryChange()
-              //   // setUpdatedFolderData(UpdatedFolderData.maincategory = val.target.value);
-              // }}
+            // onChange={(val) => {
+            //   // console.log(val.target.value);
+            //   setmaincategory(val.target.value);
+            //   props.onCategoryChange()
+            //   // setUpdatedFolderData(UpdatedFolderData.maincategory = val.target.value);
+            // }}
             >
-              <CategoriesDropdown></CategoriesDropdown>
+              {CategoriesHelp.map((category) => (
+                <option key={category.category} value={category.category}>
+                  {category.category}
+                </option>
+              ))}
+              {/* <CategoriesDropdown></CategoriesDropdown> */}
             </Form.Select>
           </Col>
         </Form.Group>
@@ -84,11 +103,11 @@ const FolderEditForm = (props) => {
           <Col sm={{ span: 10, offset: 2 }}>
             <Form.Check
               onChange={props.onfavChange}
-              size="sm"
+              // size="sm"
               type="checkbox"
               id="default-checkbox"
               label="Add to Favourities"
-              defaultChecked={props.FolderData.favourites}
+              defaultChecked={props.FolderData.favourities}
             />
           </Col>
         </Form.Group>

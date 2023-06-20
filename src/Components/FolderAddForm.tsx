@@ -5,38 +5,64 @@ import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { PinDropSharp } from "@mui/icons-material";
 
-const FolderAddForm = (props) => {
-  const baseUrlCategories =
-    "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
+
+import { folder, category } from "./lib/types/interface"
+import { getFolder, getCategories } from "./lib/graphql/queries";
+
+interface forderAddFormProps {
+  FolderName: string;
+  setFolderName: (string) => void;
+  Email: string
+  setEmail: (string) => void;
+  Category: string
+  setCategory: (string) => void;
+  setFav: (boolean) => void;
+  CategoriesHelp: number[]
+  Imageurl: string
+  setImageurl: (string) => void;
+  ClearForm: () => void;
+  validated: boolean
+  handleSubmit: (any) => void;
+}
+
+const FolderAddForm: React.FC<forderAddFormProps> = (props) => {
+  // const FolderAddForm = (props) => {
+  // const baseUrlCategories =
+  //   "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/VH_categories";
   // 'Access-Control-Allow-Origin' : 'http://localhost:3000' }
 
-  const [CategoriesHelp, setCategoriesHelp] = useState([]);
+  const [CategoriesHelp, setCategoriesHelp] = useState<category[]>([]);
 
   useEffect(() => {
-    const CategoriesUrl = axios.get(baseUrlCategories);
-    let CategoriesHelp = [];
+    // const CategoriesUrl = axios.get(baseUrlCategories);
+    // let CategoriesHelp: category[] = [];
 
-    axios
-      .all([CategoriesUrl])
-      .then(
-        axios.spread((...responses) => {
-          const responseOne = responses[0];
-          Object.values(responseOne.data.value).forEach((item) =>
-            CategoriesHelp.push(item.maincategory)
-          );
-          setCategoriesHelp(CategoriesHelp);
-        })
-      )
-      .catch((errors) => {
-        // react on errors.
-      });
+    getCategories("LluX8HIgcvVxilRBsgYc").then((categories) => {
+      console.log(categories)
+      setCategoriesHelp(categories);
+    });
+
+    // axios
+    //   .all([CategoriesUrl])
+    //   .then(
+    //     axios.spread((...responses) => {
+    //       const responseOne = responses[0];
+    //       Object.values(responseOne.data.value).forEach((item) =>
+    //         CategoriesHelp.push(item.maincategory)
+    //       );
+    //       setCategoriesHelp(CategoriesHelp);
+    //     })
+    //   )
+    //   .catch((errors) => {
+    //     // react on errors.
+    //   });
   }, []);
 
   // console.log("Form", props);
   const CategoriesDropdown = (props) => {
-    return CategoriesHelp.map((folder) => (
-      <option key={folder} value={folder}>
-        {folder}
+    return CategoriesHelp.map((cat) => (
+      <option key={cat.category} value={cat.category}>
+        {cat.category}
       </option>
     ));
   };
@@ -45,7 +71,9 @@ const FolderAddForm = (props) => {
     <div>
       <Form validated={props.validated} onSubmit={props.handleSubmit}>
         <Form.Group as={Row} className="mb-3">
-          <Form.Label size="sm" column sm="2">
+          <Form.Label
+            // size="sm" 
+            column sm="2">
             Folder
           </Form.Label>
           <Col sm="10">
@@ -78,7 +106,14 @@ const FolderAddForm = (props) => {
                 props.setCategory(val.target.value);
               }}
             >
-              <CategoriesDropdown></CategoriesDropdown>
+              {
+                CategoriesHelp.map((cat) => (
+                  <option key={cat.category} value={cat.category}>
+                    {cat.category}
+                  </option>
+                ))
+              }
+              {/* <CategoriesDropdown></CategoriesDropdown> */}
             </Form.Select>
           </Col>
         </Form.Group>
@@ -94,7 +129,7 @@ const FolderAddForm = (props) => {
               onChange={(event) => {
                 props.setImageurl(event.target.value);
               }}
-              //   defaultValue={props.FolderData.imageurl}
+            //   defaultValue={props.FolderData.imageurl}
             />
           </Col>
         </Form.Group>
@@ -102,7 +137,7 @@ const FolderAddForm = (props) => {
         <Form.Group as={Row} className="mb-3" controlId="formBasicCheckbox">
           <Col sm={{ span: 10, offset: 2 }}>
             <Form.Check
-              size="sm"
+              // size="sm"
               type="checkbox"
               id="default-checkbox"
               label="Add to Favourities"
@@ -110,7 +145,7 @@ const FolderAddForm = (props) => {
                 props.setFav(event.target.checked);
                 console.log(event.target.checked)
               }}
-              //   defaultChecked={props.FolderData.favourites}
+            //   defaultChecked={props.FolderData.favourites}
             />
           </Col>
         </Form.Group>

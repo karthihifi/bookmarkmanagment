@@ -7,7 +7,22 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-function FolderAddModal(props) {
+import { createFolder } from "./lib/graphql/mutations";
+import { graphqlFolderInput } from "./lib/types/interface"
+
+interface folderAddModalProps {
+  show: boolean;
+  CategoriesHelp: number[];  //={[1, 2]}
+  onHide: () => void;    //={() => setFolderAddModalShow(false)}
+  Msg: string;
+  setMsg: (string) => void;
+  setSnackbaropen: (boolean) => void;
+  LoadingDone: boolean;
+  setLoadingDone: (boolean) => void;
+}
+
+const FolderAddModal: React.FC<folderAddModalProps> = (props) => {
+  // function FolderAddModal(props) {
   const [FolderName, setFolderName] = useState("");
   const [Email, setEmail] = useState("");
   const [Category, setCategory] = useState("Study");
@@ -44,15 +59,16 @@ function FolderAddModal(props) {
       email: "test@gmail.com", //{ Email },
       maincategory: { Category },
       imageurl: { Imageurl },
-      favourites: {Fav}
+      favourites: { Fav }
     };
 
-    let payload1 = {
+    let payload1: graphqlFolderInput = {
       folder_name: payload.folder_name.FolderName,
       email: "test@gmail.com", //{ Email },
       maincategory: payload.maincategory.Category,
       imageurl: payload.imageurl.Imageurl,
-      favourites: payload.favourites.Fav
+      favourities: payload.favourites.Fav,
+
     };
 
     if (payload1.folder_name == "") {
@@ -63,58 +79,73 @@ function FolderAddModal(props) {
     props.onHide();
     props.setLoadingDone(false)
 
-    axios({
-      method: "POST",
-      url: basurl,
-      data: payload1,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-type": "application/json",
-      },
-    })
-      .then((response) => {
-        setFolderId(response.data.ID);
-        console.log(response.data.ID);
-        let url =
-          "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
-          response.data.ID +
-          ",IsActiveEntity=false)/ContentManagService.draftActivate";
-        console.log(url);
-        axios({
-          method: "POST",
-          url: url,
-          data: {},
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
-          .then((res) => {
-            if (payload1.folder_name != "") {
-              props.setMsg(`New Collection ${payload1.folder_name} Created`);
-              setValidated(false);
-              setFolderName("");
-              setEmail("");
-              setImageurl("");
-              props.onHide();
-              // props.setLoadingDone(true)
-              props.setSnackbaropen(true);
-              window.location.reload(); 
-            }
-          })
-          .catch((err, resp) => {
-            if (err.response.data.error.message) {
-              props.setMsg(err.response.data.error.message);
-              console.log("Error", props.Msg);
-              props.onHide();
-              props.setLoadingDone(true)
-              props.setSnackbaropen(true);
-            }
-          });
-      })
-      .catch((err) => {
-        props.setLoadingDone(true)
-        console.log("Error", err);
-      });
+
+    createFolder("LluX8HIgcvVxilRBsgYc", payload1).then((resp) => {
+      console.log('Create Folder Response :', resp);
+      props.setMsg(`New Collection ${payload1.folder_name} Created`);
+      setValidated(false);
+      setFolderName("");
+      setEmail("");
+      setImageurl("");
+      props.onHide();
+      // props.setLoadingDone(true)
+      props.setSnackbaropen(true);
+      window.location.reload();
+    });
+
+
+    // axios({
+    //   method: "POST",
+    //   url: basurl,
+    //   data: payload1,
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Content-type": "application/json",
+    //   },
+    // })
+    //   .then((response) => {
+    //     setFolderId(response.data.ID);
+    //     console.log(response.data.ID);
+    //     let url =
+    //       "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=" +
+    //       response.data.ID +
+    //       ",IsActiveEntity=false)/ContentManagService.draftActivate";
+    //     console.log(url);
+    //     axios({
+    //       method: "POST",
+    //       url: url,
+    //       data: {},
+    //       headers: {
+    //         "Content-type": "application/json",
+    //       },
+    //     })
+    //       .then((res) => {
+    //         if (payload1.folder_name != "") {
+    //           props.setMsg(`New Collection ${payload1.folder_name} Created`);
+    //           setValidated(false);
+    //           setFolderName("");
+    //           setEmail("");
+    //           setImageurl("");
+    //           props.onHide();
+    //           // props.setLoadingDone(true)
+    //           props.setSnackbaropen(true);
+    //           window.location.reload();
+    //         }
+    //       })
+    //       .catch((err) => {
+    //         // if (err.response.data.error.message) {
+    //         //   props.setMsg(err.response.data.error.message);
+    //         //   console.log("Error", props.Msg);
+    //         //   props.onHide();
+    //         //   props.setLoadingDone(true)
+    //         //   props.setSnackbaropen(true);
+    //         // }
+    //       });
+    //   })
+      // .catch((err) => {
+      //   props.setLoadingDone(true)
+      //   console.log("Error", err);
+      // });
   };
 
   const ClearForm = () => {
@@ -168,7 +199,7 @@ function FolderAddModal(props) {
           setEmail={setEmail}
           Category={Category}
           setCategory={setCategory}
-          setFav= {setFav}
+          setFav={setFav}
           CategoriesHelp={props.CategoriesHelp}
           Imageurl={Imageurl}
           setImageurl={setImageurl}

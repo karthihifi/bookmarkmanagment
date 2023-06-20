@@ -13,13 +13,24 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+import { getSingleFile } from "./lib/graphql/queries";
+
 const auth = getAuth();
 
+type fileHeader = {
+  ID: string,
+  title: string,
+  category: string,
+  imageurl: string,
+  comments: string,
+  lastvisited: string,
+  visitedimes: number,
+}
 const FileViewSingle = (props) => {
   let { id, folder, fileid, file } = useParams();
   const [LinksData, setLinksData] = useState([]);
   const [TagsData, setTagsData] = useState([]);
-  const [FileData, setFileData] = useState({});
+  const [FileData, setFileData] = useState<fileHeader>({ ID: '', category: '', comments: '', imageurl: '', lastvisited: '', title: '', visitedimes: 0 });
 
   const folderUrl = () => {
     // var url = "http://localhost:3000/file/" + id + "/" + folder;
@@ -30,45 +41,63 @@ const FileViewSingle = (props) => {
   let homeurl = window.location.origin + "/file/" + id + "/" + folder;
   console.log(homeurl);
 
-  let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/file_path`;
+  // let baseURL = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/file_path`;
 
-  const baseURL1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/tags`;
+  // const baseURL1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)/tags`;
 
-  const baseURL2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)`;
+  // const baseURL2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=true)/files(ID=${fileid},IsActiveEntity=true)`;
 
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(baseURL);
+    // console.log(baseURL);
 
-    let authToken = sessionStorage.getItem('Auth Token')
+    let authToken = sessionStorage.getItem("Auth Token");
     if (auth.currentUser == null && authToken == null) {
       navigate("/signin");
       return;
     }
 
-    const FileUrl = axios.get(baseURL);
-    const FileUrl1 = axios.get(baseURL1);
-    const FileUrl2 = axios.get(baseURL2);
+    getSingleFile(id, fileid).then((resp) => {
+      console.log("File Single Rsp:", resp);
+      const { references, tags } = resp;
+      setLinksData(references);
+      setTagsData(tags);
+      let fileData: fileHeader = {
+        ID: resp.ID,
+        category: resp.category,
+        comments: resp.comments,
+        imageurl: resp.imageurl,
+        lastvisited: new Date(resp.lastvisited).toDateString(),
+        title: resp.title,
+        visitedimes: resp.visitedimes,
+      };
+      console.log(fileData);
+      setFileData(fileData);
+    });
+
+    // const FileUrl = axios.get(baseURL);
+    // const FileUrl1 = axios.get(baseURL1);
+    // const FileUrl2 = axios.get(baseURL2);
     let CategoriesHelp = [];
 
-    axios
-      .all([FileUrl, FileUrl1, FileUrl2])
-      .then(
-        axios.spread((...responses) => {
-          const responseOne = responses[0];
-          const responseTwo = responses[1];
-          const responseThree = responses[2];
-          //   console.log(responseTwo.data);
-          setLinksData(responseOne.data.value);
-          setTagsData(responseTwo.data.value);
-          setFileData(responseThree.data);
-          console.log(FileData.title);
-        })
-      )
-      .catch((errors) => {
-        // react on errors.
-      });
+    // axios
+    //   .all([FileUrl, FileUrl1, FileUrl2])
+    //   .then(
+    //     axios.spread((...responses) => {
+    //       const responseOne = responses[0];
+    //       const responseTwo = responses[1];
+    //       const responseThree = responses[2];
+    //       //   console.log(responseTwo.data);
+    //       setLinksData(responseOne.data.value);
+    //       setTagsData(responseTwo.data.value);
+    //       setFileData(responseThree.data);
+    //       console.log(FileData.title);
+    //     })
+    //   )
+    //   .catch((errors) => {
+    //     // react on errors.
+    //   });
   }, []);
 
   return (
@@ -101,7 +130,7 @@ const FileViewSingle = (props) => {
             </Breadcrumb.Item>
             <Breadcrumb.Item
               href={homeurl}
-              //   href={"http://localhost:3000/file/" + id + "/" + folder}
+            //   href={"http://localhost:3000/file/" + id + "/" + folder}
             >
               {folder}
             </Breadcrumb.Item>
@@ -130,12 +159,12 @@ const FileViewSingle = (props) => {
               <div>Tags : </div>
               {TagsData.map((tag, index) => (
                 <div className="FileViewSingle-badge">
-                  <Badge bg="secondary">{tag.tag_name}</Badge>{" "}
+                  <Badge bg="secondary">{tag}</Badge>{" "}
                 </div>
               ))}
             </div>
           </div>
-          <div dangerouslySetInnerHTML={{__html: FileData.comments}} />
+          <div dangerouslySetInnerHTML={{ __html: FileData.comments }} />
           {/* <p className="FileViewSingle-comment">{FileData.comments}</p> */}
         </div>
       </div>

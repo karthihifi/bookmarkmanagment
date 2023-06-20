@@ -23,7 +23,7 @@ import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 // import { htmlToText } from "html-to-text";
-import { Component, useEffect, useState, useParams } from "react";
+import { Component, useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,6 +36,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+
+import { graphqlFileInput } from "./lib/types/interface";
+import { createFile } from "./lib/graphql/mutations";
 
 const auth = getAuth();
 
@@ -130,7 +133,7 @@ const FileAdd = (props) => {
     favourites: null,
   };
 
-  console.log(payload);
+  console.log("File Payload :", payload);
   let RefList = FileReference;
   let tagList = FileTags;
 
@@ -147,21 +150,21 @@ const FileAdd = (props) => {
   let newPathID = "";
   let newtagID = "";
 
-  const basurl = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftEdit`;
-  const basurl1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
-  let basurl2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=${newID},IsActiveEntity=false)`;
-  // const basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+  // const basurl = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftEdit`;
+  // const basurl1 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
+  // let basurl2 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=${newID},IsActiveEntity=false)`;
+  // // const basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files`;
 
-  let basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/file_path`;
-  let basurl4 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
+  // let basurl3 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/file_path`;
+  // let basurl4 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newPathID},IsActiveEntity=false)`;
 
-  let basurl5 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
-  let basurl6 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
+  // let basurl5 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/filesID=${newID},IsActiveEntity=false)/tags`;
+  // let basurl6 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=${newtagID},IsActiveEntity=false)`;
 
-  const basurl7 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftPrepare`;
-  const basurl8 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftActivate`;
+  // const basurl7 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftPrepare`;
+  // const basurl8 = `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/ContentManagService.draftActivate`;
 
-  console.log(basurl);
+  // console.log(basurl);
 
   const addArticle = () => {
     let error = false;
@@ -189,74 +192,100 @@ const FileAdd = (props) => {
     if (error == true) {
       return;
     }
-    console.log("URL List",RefList);
-    
+    console.log("URL List", RefList);
+
     setLoadingDone(false);
-    axios.post(basurl, { PreserveChanges: true }).then((response) => {
-      axios.post(basurl1, {}).then((response) => {
-        console.log(response);
-        newID = response.data.ID;
-        basurl2 =
-          "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=" +
-          newID +
-          ",IsActiveEntity=false)";
-        axios.patch(basurl2, payload).then((response) => {
-          if (RefList.length > 0) {
-            for (let i = 0; i < RefList.length; i++) {
-              let payload1 = {
-                title: RefList[i].title,
-                url: RefList[i].url,
-              };
-              basurl3 =
-                `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
-                newID +
-                ",IsActiveEntity=false)/file_path";
-              console.log(basurl3);
-              axios.post(basurl3, {}).then((response) => {
-                newPathID = response.data.ID;
-                basurl4 =
-                  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=" +
-                  newPathID +
-                  ",IsActiveEntity=false)";
-                console.log(response);
-                axios.patch(basurl4, payload1).then((response) => {
-                  console.log('Fin',response);
-                });
-              });
-            }
-          }
-          if (tagList.length > 0) {
-            for (let i = 0; i < tagList.length; i++) {
-              let payload2 = { tag_name: tagList[i] };
-              basurl5 =
-                `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
-                newID +
-                ",IsActiveEntity=false)/tags";
-              axios.post(basurl5, {}).then((response) => {
-                newtagID = response.data.ID;
-                basurl6 =
-                  "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/tag_path(ID=" +
-                  newtagID +
-                  ",IsActiveEntity=false)";
-                axios.patch(basurl6, payload2).then((response) => {});
-              });
-            }
-          }
-          axios.post(basurl7, {}).then((response) => {
-            axios.post(basurl8, {}).then((response) => {});
-          });
-          setRefresh(true);
-          setLoadingDone(true);
-          // history.go(0)
-          navigate(
-            "/file/" + id + "/" + folder + "/refresh",
-            { replace: true },
-            { state: { refresh: { Refresh } } }
-          );
-          // navigate(-1);
-        });
-      });
+
+    // let graphqlPayload: graphqlFileInput = {
+    const graphqlPayload = {
+      fileHeader: {
+        ParentID: id,
+        title: payload.title,
+        category: payload.category,
+        comments: payload.comments,
+        imageurl: payload.imageurl,
+      },
+      references: RefList,
+      tags: tagList,
+    };
+
+    console.log('GraphQl Payload :', graphqlPayload)
+    createFile(graphqlPayload).then((resp) => {
+      console.log(resp);
+      setRefresh(true);
+      setLoadingDone(true);
+      navigate(
+        "/file/" + id + "/" + folder + "/refresh",
+        // { replace: true },
+        { state: { refresh: { Refresh } } }
+      );
     });
+
+    // axios.post(basurl, { PreserveChanges: true }).then((response) => {
+    //   axios.post(basurl1, {}).then((response) => {
+    //     console.log(response);
+    //     newID = response.data.ID;
+    //     basurl2 =
+    //       "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/files(ID=" +
+    //       newID +
+    //       ",IsActiveEntity=false)";
+    //     axios.patch(basurl2, payload).then((response) => {
+    //       if (RefList.length > 0) {
+    //         for (let i = 0; i < RefList.length; i++) {
+    //           let payload1 = {
+    //             title: RefList[i].title,
+    //             url: RefList[i].url,
+    //           };
+    //           basurl3 =
+    //             `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+    //             newID +
+    //             ",IsActiveEntity=false)/file_path";
+    //           console.log(basurl3);
+    //           axios.post(basurl3, {}).then((response) => {
+    //             newPathID = response.data.ID;
+    //             basurl4 =
+    //               "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/file_path(ID=" +
+    //               newPathID +
+    //               ",IsActiveEntity=false)";
+    //             console.log(response);
+    //             axios.patch(basurl4, payload1).then((response) => {
+    //               console.log("Fin", response);
+    //             });
+    //           });
+    //         }
+    //       }
+    //       if (tagList.length > 0) {
+    //         for (let i = 0; i < tagList.length; i++) {
+    //           let payload2 = { tag_name: tagList[i] };
+    //           basurl5 =
+    //             `https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/Folder(ID=${id},IsActiveEntity=false)/files(ID=` +
+    //             newID +
+    //             ",IsActiveEntity=false)/tags";
+    //           axios.post(basurl5, {}).then((response) => {
+    //             newtagID = response.data.ID;
+    //             basurl6 =
+    //               "https://b8076800trial-dev-contentmanagement-srv.cfapps.us10.hana.ondemand.com/content-manag/tag_path(ID=" +
+    //               newtagID +
+    //               ",IsActiveEntity=false)";
+    //             axios.patch(basurl6, payload2).then((response) => {});
+    //           });
+    //         }
+    //       }
+    //       axios.post(basurl7, {}).then((response) => {
+    //         axios.post(basurl8, {}).then((response) => {});
+    //       });
+    //       setRefresh(true);
+    //       setLoadingDone(true);
+    //       // history.go(0)
+    //       navigate(
+    //         "/file/" + id + "/" + folder + "/refresh",
+    //         { replace: true },
+    //         { state: { refresh: { Refresh } } }
+    //       );
+    //       // navigate(-1);
+    //     });
+    //   });
+    // });
   };
 
   function navbar() {
@@ -420,7 +449,10 @@ const FileAdd = (props) => {
                       </FormHelperText>
                     </FormControl>
                     <Stack direction="row" spacing={2} sx={{ width: "50ch" }}>
-                      <Button size="small" onClick={() => addRow(index)}>
+                      <Button size="small"
+                        //  onClick={() => addRow(index)}
+                        onClick={() => addRow()}
+                      >
                         Add Row
                       </Button>
                       {index == 0 ? (
@@ -462,7 +494,8 @@ const FileAdd = (props) => {
                     <Button
                       sx={{}}
                       size="small"
-                      onClick={() => addTagRow(index)}
+                      // onClick={() => addTagRow(index)}
+                      onClick={() => addTagRow()}
                     >
                       Add Row
                     </Button>

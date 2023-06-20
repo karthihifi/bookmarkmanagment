@@ -97,10 +97,10 @@ const FolderDrawerCat = (props) => {
     >
       <List>
         {props.Category.map((text, index) => (
-          <ListItemButton key={text}>
+          <ListItemButton key={text.category}>
             <ListItemText
-              value={text}
-              primary={text}
+              value={text.category}
+              primary={text.category}
               onClick={SetSelectedCategory}
             />
           </ListItemButton>
