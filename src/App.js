@@ -8,6 +8,7 @@ import FileViewSingle from "./Components/FileViewSingle";
 import FileViewEdit from "./Components/FileViewEdit";
 import FileAdd from "./Components/FileAdd";
 import SignInPage from "./Components/SignInPage";
+import FilesCardGridView from "./Components/FilesCardGridView";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<MainView />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/file/:id/:folder" element={<FileView />} />
+        <Route path="/file/:id/:folder/test" element={<FilesCardGridView />} />
         <Route path="/file/:id/:folder/refresh" element={<FileView />}></Route>
         <Route
           path="/file/:id/:folder/:fileid/:file"

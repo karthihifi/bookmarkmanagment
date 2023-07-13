@@ -8,7 +8,7 @@ import {
     graphqlCreateFileResp
 } from "../types/interface";
 
-const client = new GraphQLClient("http://localhost:8000/catalog");
+const client = new GraphQLClient("https://us-central1-bookmarkmanagement.cloudfunctions.net/app/catalog");
 
 export async function createFolder(userId: string, folderData: graphqlFolderInput): Promise<string> {
     const query = gql`

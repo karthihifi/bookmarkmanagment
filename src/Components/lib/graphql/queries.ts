@@ -10,7 +10,7 @@ import {
   graphqlFileSingle
 } from "../types/interface";
 
-const client = new GraphQLClient("http://localhost:8000/catalog");
+const client = new GraphQLClient("https://us-central1-bookmarkmanagement.cloudfunctions.net/app/catalog");
 
 export async function getFolder(id): Promise<folder[]> {
   const query = gql`
