@@ -7,6 +7,7 @@ import {
   graphqlFile,
   graphqlFileResp,
   graphqlCategories,
+  graphqlFileCategories,
   graphqlFileSingle
 } from "../types/interface";
 
@@ -42,6 +43,19 @@ export async function getCategories(id: string): Promise<category[]> {
   `;
   const { categories } = (await client.request(query, { id })) as graphqlCategories;
   return categories;
+}
+
+export async function getFileCategories(fileId: string): Promise<category[]> {
+  const query = gql`
+  query fileCategories($fileId: String!) {
+    fileCategories(fileId: $fileId) {
+      category
+      count
+    }
+  }
+`;
+const { fileCategories } = (await client.request(query, { fileId })) as graphqlFileCategories;
+return fileCategories;
 }
 
 export async function getSingleFile(parentId: string, fileId: string): Promise<file> {

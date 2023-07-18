@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,18 +7,22 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import "./FileView.css";
 import { FormControl } from 'react-bootstrap';
+// import {} from "../../public/Chicken_Hi.jpg"
 
 const FilesCardGridNavbar = () => {
     return (
         <Navbar bg="dark" expand="lg" variant="dark" sticky="top" className="fixed-top-nav">
             <Container>
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand href="#home" className='NavbarBrand'>
+                    <img src="https://bulma.io/images/bulma-logo.png"  className="NavbarLogo d-inline-block align-top"/>{' '}
+                    {/* <img src="../../public/Begining_logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link href="#home">New Article</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                        <Nav.Link href="#link">Add Category</Nav.Link>
+                        <NavDropdown title="Categories" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
                                 Another action

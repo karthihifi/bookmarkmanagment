@@ -45,6 +45,12 @@ export type graphqlCategories = {
     categories: category[]
 }
 
+export type groupedFile = category & graphqlFile
+
+export type graphqlFileCategories = {
+    fileCategories: category[]
+}
+
 export type graphqlFileSingle = {
     fileDetails: file
 }
