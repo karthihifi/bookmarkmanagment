@@ -10,6 +10,7 @@ import { Typography } from "@mui/material";
 import "./FileView.css";
 import 'bulma/css/bulma.min.css';
 import Link from '@mui/material/Link';
+import OpenInFullRoundedIcon from '@mui/icons-material/OpenInFullRounded';
 
 interface fileProps {
     fileDetails: file
