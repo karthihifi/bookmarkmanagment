@@ -16,9 +16,9 @@ function App() {
       <Routes>
         <Route path="/" element={<MainView />} />
         <Route path="/signin" element={<SignInPage />} />
-        <Route path="/file/:id/:folder" element={<FileView />} />
-        <Route path="/file/:id/:folder/test" element={<FilesCardGridView />} />
-        <Route path="/file/:id/:folder/refresh" element={<FileView />}></Route>
+        <Route path="/file/:id/:folder" element={<FilesCardGridView />} />
+        {/* <Route path="/file/:id/:folder/test" element={<FileView />} /> */}
+        <Route path="/file/:id/:folder/refresh" element={<FilesCardGridView />}></Route>
         <Route
           path="/file/:id/:folder/:fileid/:file"
           element={<FileViewSingle />}

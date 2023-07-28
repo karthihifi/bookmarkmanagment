@@ -7,31 +7,38 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import "./FileView.css";
 import { FormControl } from 'react-bootstrap';
+import { useState } from 'react';
+import { category } from "./lib/types/interface";
+import image from "../Assets/images/logo192.png"
 // import {} from "../../public/Chicken_Hi.jpg"
 
-const FilesCardGridNavbar = () => {
+interface fileGroupNavbar {
+    searchFiles: (event) => void,
+    categories: category[]
+}
+
+
+const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
+
+    const [SearchValue, setSearchValue] = useState('');
+
     return (
         <Navbar bg="dark" expand="lg" variant="dark" sticky="top" className="fixed-top-nav">
             <Container>
-                <Navbar.Brand href="#home" className='NavbarBrand'>
-                    <img src="https://bulma.io/images/bulma-logo.png"  className="NavbarLogo d-inline-block align-top"/>{' '}
+                <Navbar.Brand href={window.location.origin} className='NavbarBrand'>
+                    {/* <img src="https://bulma.io/images/bulma-logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
+                    <img src={image} className="NavbarLogo image is-48x48 d-inline-block align-top" />{' '}
                     {/* <img src="../../public/Begining_logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">New Article</Nav.Link>
-                        <Nav.Link href="#link">Add Category</Nav.Link>
-                        <NavDropdown title="Categories" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
+                        <Nav.Link className="has-text-weight-semibold" href="#home">New Article</Nav.Link>
+                        <Nav.Link className="has-text-weight-semibold" href="#link">Add Category</Nav.Link>
+                        <NavDropdown className="has-text-weight-semibold" title="Categories" id="basic-nav-dropdown">
+                            {props.categories.map((item) => {
+                                return (<NavDropdown.Item className="has-text-weight-semibold is-5 is-capitalized" href={'#' + item.category}>{item.category}</NavDropdown.Item>)
+                            })}
                         </NavDropdown>
                     </Nav>
                     <Form className="d-flex">
@@ -41,8 +48,17 @@ const FilesCardGridNavbar = () => {
                             className="me-2"
                             size="sm"
                             aria-label="Search"
+                            onChange={(event) => {
+                                // console.log(event.target.value)
+                                setSearchValue(event.target.value)
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    props.searchFiles(SearchValue)
+                                }
+                            }}
                         />
-                        <Button variant="outline-info" size="sm">Search</Button>
+                        <Button className="has-text-weight-semibold" onClick={() => props.searchFiles(SearchValue)} variant="outline-info" size="sm">Search</Button>
                     </Form>
                 </Navbar.Collapse>
             </Container>

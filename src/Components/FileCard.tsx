@@ -9,14 +9,20 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Typography } from "@mui/material";
 import "./FileView.css";
 import 'bulma/css/bulma.min.css';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import OpenInFullRoundedIcon from '@mui/icons-material/OpenInFullRounded';
+import { Link, useParams } from "react-router-dom";
 
 interface fileProps {
     fileDetails: file
 }
 
+
+
 const FileCard: React.FC<fileProps> = (props) => {
+
+    let { id, folder } = useParams();
+
     return (
         <div className="card">
             <div className="header">
@@ -29,9 +35,23 @@ const FileCard: React.FC<fileProps> = (props) => {
                     </figure>
                 </div>
                 <div>
-                    <h4 className="title is-4 is-capitalized">
+                    <Link to={
+                        "/file/" +
+                        id +
+                        "/" +
+                        folder +
+                        "/" +
+                        props.fileDetails.ID +
+                        "/" +
+                        props.fileDetails.title
+                    }>
+                        <h4 className="title is-4 is-capitalized">
+                            {props.fileDetails.title}
+                        </h4>
+                    </Link>
+                    {/* <h4 className="title is-4 is-capitalized">
                         {props.fileDetails.title}
-                    </h4>
+                    </h4> */}
                     <h6 className="subtitle is-italic has-text-primary has-text-weight-semibold is-6 is-size-7">{props.fileDetails.category},{new Date(props.fileDetails.lastvisited).toDateString()}</h6>
                 </div>
             </div>

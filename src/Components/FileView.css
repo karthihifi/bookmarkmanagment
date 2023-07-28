@@ -249,6 +249,7 @@ a:visited {
 .FileView_Grid-category {
   margin: 15px 0;
   text-transform: uppercase;
+  margin-bottom: 5px;
 }
 
 
@@ -313,7 +314,7 @@ a:visited {
 }
 
 .NavbarLogo{
-  height: 30px;
+  /* height: 30px; */
   width: 112px;
 }
 

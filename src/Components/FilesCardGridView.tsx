@@ -9,6 +9,7 @@ import FilesCardGridNavbar from "./FileCardGridNavbar"
 // import Container from 'react-bootstrap/Container';
 // import { Stack } from "react-bootstrap";
 import NavBarRootView from "./NavBarRootView";
+import LoadingScreen from "./LoadingScreen"
 import "./FileView.css";
 
 const FilesCardGridView = () => {
@@ -24,16 +25,42 @@ const FilesCardGridView = () => {
     const [FileData, setFileData] = useState<file[]>([]);
     const [CategoryData, setCategoryData] = useState<category[]>([]);
     const [GroupedFileData, setGroupedFileData] = useState<groupedFile[]>([]);
+    const [AllData, setAllData] = useState<groupedFile[]>([]);
+    const [LoadingDone, setLoadingDone] = useState(false);
+
+    const searchFiles = (searchValue: string) => {
+        if (searchValue.trim() !== '') {
+            console.log(searchValue)
+            const filteredData = AllData.map((category) => {
+                const files = category.files.filter((item) => {
+                    if (item.title.toLowerCase().includes(searchValue.toLowerCase())) {
+                        return item
+                    }
+                })
+                return {
+                    category: category.category,
+                    count: files.length,
+                    files: files,
+                    folder_name: category.folder_name
+                }
+            })
+            setGroupedFileData(filteredData)
+            console.log(filteredData)
+        } else {
+            setGroupedFileData(AllData)
+        }
+    }
 
     useEffect(() => {
         Promise.all([getFileDetails("LluX8HIgcvVxilRBsgYc", folder), getFileCategories(id)]).then((response) => {
             const [{ files }, fileCategories] = response;
             setFileData(files)
-            setCategoryData(fileCategories)
+            setCategoryData(fileCategories);
+            console.log('fileCategories : ', fileCategories);
 
             let groupedFiles: groupedFile[] = []
             fileCategories.forEach((item) => {
-                const filteredFiles = files.filter(fileItem => { return item.category == fileItem.category })
+                const filteredFiles = files.filter(fileItem => { return item.category === fileItem.category })
                 let groupFile: groupedFile = {
                     category: item.category,
                     count: filteredFiles.length,
@@ -43,6 +70,8 @@ const FilesCardGridView = () => {
                 groupedFiles.push(groupFile)
             })
             setGroupedFileData(groupedFiles);
+            setAllData(groupedFiles);
+            setLoadingDone(true)
             console.log(groupedFiles);
         })
 
@@ -50,17 +79,21 @@ const FilesCardGridView = () => {
 
     return (
         <div className="FileView_Grid-root">
-            <FilesCardGridNavbar></FilesCardGridNavbar>
-            <div className="container">
-                {GroupedFileData.map((item) => {
-                    return (
-                        <div>
-                            <h4 className="title is-4 FileView_Grid-category" style={{ display: item.count > 0 ? "visible" : "none" }}>{item.category} ({item.count})</h4>
-                            <FileCardGroup fileDetails={item.files}></FileCardGroup>
-                        </div>
-                    )
-                })}
-            </div>
+            <FilesCardGridNavbar categories={CategoryData} searchFiles={searchFiles}></FilesCardGridNavbar>
+            {LoadingDone === false ? (
+                <LoadingScreen></LoadingScreen>
+            ) : (
+                <div className="container">
+                    {GroupedFileData.map((item) => {
+                        return (
+                            <div id={item.category}>
+                                <div className="title is-4 FileView_Grid-category" style={{ display: item.count > 0 ? "visible" : "none" }}>{item.category} ({item.count})</div>
+                                <FileCardGroup fileDetails={item.files}></FileCardGroup>
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
         </div>
 
     )
