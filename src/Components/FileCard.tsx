@@ -52,7 +52,7 @@ const FileCard: React.FC<fileProps> = (props) => {
                     {/* <h4 className="title is-4 is-capitalized">
                         {props.fileDetails.title}
                     </h4> */}
-                    <h6 className="subtitle is-italic has-text-primary has-text-weight-semibold is-6 is-size-7">{props.fileDetails.category},{new Date(props.fileDetails.lastvisited).toDateString()}</h6>
+                    <h6 className="subtitle is-italic has-text-info has-text-weight-semibold is-6 is-size-7">{props.fileDetails.category},{new Date(props.fileDetails.lastvisited).toDateString()}</h6>
                 </div>
             </div>
 
@@ -84,7 +84,7 @@ const FileCard: React.FC<fileProps> = (props) => {
                     {
                         props.fileDetails.tags.map((item) => {
                             return (
-                                <span className="tagName tag is-primary is-info">{item}</span>
+                                <span className="tagName tag is-info is-light">{item}</span>
                             )
                         })
                     }

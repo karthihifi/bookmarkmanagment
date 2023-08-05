@@ -86,10 +86,10 @@ const FilesCardGridView = () => {
                 <div className="container">
                     {GroupedFileData.map((item) => {
                         return (
-                            <div id={item.category}>
-                                <div className="title is-4 FileView_Grid-category" style={{ display: item.count > 0 ? "visible" : "none" }}>{item.category} ({item.count})</div>
+                            <section id={item.category}>
+                                <h4 className="has-text-weight-bold is-size-4 FileView_Grid-category" style={{ display: item.count > 0 ? "visible" : "none" }}>{item.category} ({item.count})</h4>
                                 <FileCardGroup fileDetails={item.files}></FileCardGroup>
-                            </div>
+                            </section>
                         )
                     })}
                 </div>

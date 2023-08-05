@@ -10,6 +10,7 @@ import { FormControl } from 'react-bootstrap';
 import { useState } from 'react';
 import { category } from "./lib/types/interface";
 import image from "../Assets/images/logo192.png"
+import { useNavigate, useParams } from 'react-router-dom';
 // import {} from "../../public/Chicken_Hi.jpg"
 
 interface fileGroupNavbar {
@@ -19,7 +20,8 @@ interface fileGroupNavbar {
 
 
 const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
-
+    const navigate = useNavigate();
+    const { id, folder } = useParams();
     const [SearchValue, setSearchValue] = useState('');
 
     return (
@@ -33,7 +35,11 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link className="has-text-weight-semibold" href="#home">New Article</Nav.Link>
+                        <Nav.Link className="has-text-weight-semibold" onClick={() => {
+                            navigate("/fileadd", {
+                                state: { id: id, folder: folder },
+                            });
+                        }}>New Article</Nav.Link>
                         <Nav.Link className="has-text-weight-semibold" href="#link">Add Category</Nav.Link>
                         <NavDropdown className="has-text-weight-semibold" title="Categories" id="basic-nav-dropdown">
                             {props.categories.map((item) => {
