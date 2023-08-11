@@ -157,7 +157,7 @@ const Card: React.FC<folderCardprops> = (props) => {
             </div>
             <div className="card_container-footer">
               <div className="card-lastupd">
-                Last Updated : {folder.lastvisited}
+                Last Updated : {new Date(folder.lastvisited).toDateString()}
               </div>
               <div className="card-fav">
                 {folder.favourities == true ? (
