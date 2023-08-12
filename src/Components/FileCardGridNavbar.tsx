@@ -79,6 +79,7 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                                 if (event.key === 'Enter') {
                                     props.searchFiles(event.target.value)
                                     props.searchFiles(event.target.value)
+                                    event.preventDefault();
                                 }
                             }}
                             renderInput={(params) => (
