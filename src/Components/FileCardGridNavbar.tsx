@@ -7,11 +7,14 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import "./FileView.css";
 import { FormControl } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { category } from "./lib/types/interface";
 import image from "../Assets/images/logo192.png"
 import { useNavigate, useParams } from 'react-router-dom';
 // import {} from "../../public/Chicken_Hi.jpg"
+import { getFileDetails, } from "./lib/graphql/queries";
+import { file } from "./lib/types/interface";
+import { Autocomplete, TextField } from '@mui/material';
 
 interface fileGroupNavbar {
     searchFiles: (event) => void,
@@ -23,7 +26,13 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
     const navigate = useNavigate();
     const { id, folder } = useParams();
     const [SearchValue, setSearchValue] = useState('');
+    const [FileData, setFileData] = useState<file[]>([]);
 
+    useEffect(() => {
+        getFileDetails("LluX8HIgcvVxilRBsgYc", folder).then((response) => {
+            setFileData(response.files);
+        })
+    })
     return (
         <Navbar bg="dark" expand="lg" variant="dark" sticky="top" className="fixed-top-nav">
             <Container>
@@ -48,7 +57,43 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                         </NavDropdown>
                     </Nav>
                     <Form className="d-flex">
-                        <Form.Control
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={FileData.map((option) => option.title)}
+                            sx={{ width: "20rem", background: 'white' }}
+                            size='small'
+                            onChange={(event, newValue) => {
+                                console.log(newValue)
+                                if (newValue == null) {
+                                    setSearchValue('')
+                                    props.searchFiles('');
+                                } else {
+                                    setSearchValue(newValue)
+                                    props.searchFiles(newValue);
+                                }
+                                // newValue == null ? setSearchValue('') :
+                                //     setSearchValue(newValue)
+                            }}
+                            onKeyDown={(event: any) => {
+                                if (event.key === 'Enter') {
+                                    props.searchFiles(event.target.value)
+                                    props.searchFiles(event.target.value)
+                                }
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search"
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        type: 'search',
+                                    }}
+                                />
+                            )}
+                        />
+                        {/* <Form.Control
+                            autoComplete=''
                             type="search"
                             placeholder="Search"
                             className="me-2"
@@ -63,7 +108,7 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                                     props.searchFiles(SearchValue)
                                 }
                             }}
-                        />
+                        /> */}
                         <Button className="has-text-weight-semibold" onClick={() => props.searchFiles(SearchValue)} variant="outline-info" size="sm">Search</Button>
                     </Form>
                 </Navbar.Collapse>

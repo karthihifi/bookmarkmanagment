@@ -6,6 +6,8 @@ import {
   Typography,
   Toolbar,
   OutlinedInput,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -15,6 +17,7 @@ import {
   InputLabel,
   FormHelperText,
   Stack,
+  Autocomplete
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Editor } from "react-draft-wysiwyg";
@@ -26,7 +29,7 @@ import htmlToDraft from "html-to-draftjs";
 import { Component, useEffect, useState } from "react";
 import LoadingScreen from "./LoadingScreen";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FileAddNavbar from "./FileAddNavbar";
 import AppBarBottom from "./AppBarBottom";
 import NavBarRootView from "./NavBarRootView";
@@ -37,23 +40,34 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
-import { graphqlFileInput } from "./lib/types/interface";
+import { graphqlFileInput, category } from "./lib/types/interface";
 import { createFile } from "./lib/graphql/mutations";
+import { getFileCategories } from "./lib/graphql/queries";
 
 const auth = getAuth();
 
 const FileAdd = (props) => {
-  // let { id } = useParams();
+  // const { id } = useParams();
   // console.log("File Add", id);
 
   const navigate = useNavigate();
+
+  const { state } = useLocation();
+
+  const { id, folder } = state;
+  console.log("/file/" + id + folder);
+
   useEffect(() => {
     let authToken = sessionStorage.getItem("Auth Token");
     if (auth.currentUser == null && authToken == null) {
       navigate("/signin");
       return;
     }
-  });
+
+    getFileCategories(id).then((response) => {
+      setFileCategories(response)
+    })
+  },[]);
 
   const [editorState, setContentState] = useState(EditorState.createEmpty());
   const [inputUrlList, setUrlList] = useState([{ title: "", url: "" }]);
@@ -72,6 +86,8 @@ const FileAdd = (props) => {
 
   const [LoadingDone, setLoadingDone] = useState(true);
   const [Refresh, setRefresh] = useState(false);
+
+  const [FileCategories, setFileCategories] = useState<category[]>([]);
 
   // let history = useHistory();
 
@@ -142,10 +158,10 @@ const FileAdd = (props) => {
 
   //   const { id, folder } = state;
   // }
-  const { state } = useLocation();
+  // const { state } = useLocation();
 
-  const { id, folder } = state;
-  console.log("/file/" + id + folder);
+  // const { id, folder } = state;
+  // console.log("/file/" + id + folder);
   let newID = "";
   let newPathID = "";
   let newtagID = "";
@@ -359,7 +375,7 @@ const FileAdd = (props) => {
 
               <FormControl variant="standard" error={FileCatError} required>
                 <InputLabel htmlFor="my-input">Article Category</InputLabel>
-                <Input
+                {/* <Input
                   id="my-input"
                   aria-describedby="my-helper-text"
                   placeholder="Article Category"
@@ -368,7 +384,34 @@ const FileAdd = (props) => {
                     setFileCatError(false);
                     // console.log(FileTitle)
                   }}
-                />
+                /> */}
+
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  onChange={(event) => {
+                    setFileCat(event.target.value as string);
+                    setFileCatError(false);
+                    // console.log(FileTitle)
+                  }}
+                  label="Category"
+                  style={{ width: '10rem' }}
+                >
+                  {FileCategories.map((item) => {
+                    return (
+                      <MenuItem value={item.category}>
+                        {item.category}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+                {/* <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={top100Films}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Movie" />}
+                /> */}
                 <FormHelperText id="my-helper-text">
                   Enter Article Category.
                 </FormHelperText>
