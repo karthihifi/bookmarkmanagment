@@ -61,7 +61,7 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                             disablePortal
                             id="combo-box-demo"
                             options={FileData.map((option) => option.title)}
-                            sx={{ width: "20rem", background: 'white' }}
+                            sx={{ width: "20rem", background: 'white', marginRight: '10px',borderRadius: '5px' }}
                             size='small'
                             onChange={(event, newValue) => {
                                 console.log(newValue)
