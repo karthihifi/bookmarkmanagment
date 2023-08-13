@@ -9,7 +9,8 @@ import "./FileView.css";
 import { FormControl } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { category } from "./lib/types/interface";
-import image from "../Assets/images/logo192.png"
+// import image from "../Assets/images/logo192.png"
+import image from "../Assets/images/starbucks.png"
 import { useNavigate, useParams } from 'react-router-dom';
 // import {} from "../../public/Chicken_Hi.jpg"
 import { getFileDetails, } from "./lib/graphql/queries";
