@@ -15,6 +15,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
+import image from "../Assets/images/starbucks.png"
 import { category } from "./lib/types/interface"
 import { createCategory } from "./lib/graphql/mutations";
 import FolderCategoryAddModal from './FolderCategoryAddModal'
@@ -108,7 +109,7 @@ const NavBarRootView: React.FC<navBarProps> = (props) => {
           {props.view == "File" || props.view == "Folder" ? (
             <div className="RootView_Navbar-menu">
               <Navbar.Brand onClick={toggleDrawer(true)}>
-                <span>
+                <span className="NavBar-Span">
                   <AiOutlineMenu size="30px"></AiOutlineMenu>
                 </span>
               </Navbar.Brand>
@@ -135,9 +136,7 @@ const NavBarRootView: React.FC<navBarProps> = (props) => {
           )}
 
           <Navbar.Brand href={window.location.origin}>
-            <span>
-              <FaMeteor size="30px"></FaMeteor>
-            </span>
+            <img src={image} className="NavbarLogo image is-48x48 d-inline-block align-top" />{' '}
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -146,7 +145,7 @@ const NavBarRootView: React.FC<navBarProps> = (props) => {
             <Nav className="me-auto">
               {props.view != "FileViewEdit" ? (
                 <NavDropdown
-                  className="RootView_Navbar-Add"
+                  className="RootView_Navbar-Add has-text-weight-semibold is-5 is-capitalized"
                   title={props.view == "FileViewAdd" ? "" : "Add"}
                   id="collasible-nav-dropdown"
                 >
@@ -244,7 +243,7 @@ const NavBarRootView: React.FC<navBarProps> = (props) => {
       <FolderCategoryAddModal
         show={showCreateCategory}
         onHide={setShowCreateCategory}
-        view ={props.view}
+        view={props.view}
       ></FolderCategoryAddModal>
     </div>
   );

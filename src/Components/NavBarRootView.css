@@ -5,3 +5,9 @@
 .RootView_Navbar-menu{
     cursor: pointer;
 }
+
+.NavBar-Span{
+    display: flex;
+    align-items: center;
+    /* text-align: center; */
+}

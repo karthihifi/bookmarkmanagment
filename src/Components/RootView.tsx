@@ -13,7 +13,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-import { folder,category } from "./lib/types/interface"
+import { folder, category } from "./lib/types/interface";
 import { getFolder, getCategories } from "./lib/graphql/queries";
 
 const auth = getAuth();
@@ -36,7 +36,12 @@ const RootView = () => {
 
   const action = (
     <Fragment>
-      <IconButton aria-label="close" size="small" color="inherit" onClick={() => handleClose}>
+      <IconButton
+        aria-label="close"
+        size="small"
+        color="inherit"
+        onClick={() => handleClose}
+      >
         <CloseIcon fontSize="small" />
       </IconButton>
     </Fragment>
@@ -59,12 +64,11 @@ const RootView = () => {
     });
 
     getCategories("LluX8HIgcvVxilRBsgYc").then((categories) => {
-      console.log(categories)
+      console.log(categories);
       setCategories(categories);
       setCategoriessidebar(categories);
       setCategoriesHelp(categories);
     });
-
   }, []);
 
   return (
@@ -83,7 +87,10 @@ const RootView = () => {
       ) : (
         <div id="RootView-Container" className="RootView-Container">
           {Categories.map((item) => (
-            <div className={"RootView-Container" + "_" + item.category}>
+            <div
+              className={"RootView-Container" + "_" + item.category}
+              style={{ display: item.count > 0 ? "visible" : "none" }}
+            >
               <div className="grid-item_header">{item.category}</div>
               <Card
                 maincategory={item.category}
