@@ -1,100 +1,142 @@
 /* eslint-disable jsx-a11y/alt-text */
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import "./FileView.css";
-import { FormControl } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { FormControl } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import { category } from "./lib/types/interface";
 // import image from "../Assets/images/logo192.png"
-import image from "../Assets/images/starbucks.png"
-import { useNavigate, useParams } from 'react-router-dom';
+import image from "../Assets/images/starbucks.png";
+import { useNavigate, useParams } from "react-router-dom";
 // import {} from "../../public/Chicken_Hi.jpg"
-import { getFileDetails, } from "./lib/graphql/queries";
+import { getFileDetails } from "./lib/graphql/queries";
 import { file } from "./lib/types/interface";
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField } from "@mui/material";
+import AddFileCategoryModal from "./Files/AddFileCategoryModal";
+import "bootstrap/dist/css/bootstrap.css";
+import FolderCategoryAddModal from "./FolderCategoryAddModal";
 
 interface fileGroupNavbar {
-    searchFiles: (event) => void,
-    categories: category[]
+    searchFiles: (event) => void;
+    categories: category[];
 }
-
 
 const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
     const navigate = useNavigate();
     const { id, folder } = useParams();
-    const [SearchValue, setSearchValue] = useState('');
+    const [SearchValue, setSearchValue] = useState("");
+    const [ShowAddCategory, setShowAddCategory] = useState(false);
     const [FileData, setFileData] = useState<file[]>([]);
 
     useEffect(() => {
         getFileDetails("LluX8HIgcvVxilRBsgYc", folder).then((response) => {
             setFileData(response.files);
-        })
-    })
+        });
+    });
     return (
-        <Navbar bg="dark" expand="lg" variant="dark" sticky="top" className="fixed-top-nav">
-            <Container>
-                <Navbar.Brand href={window.location.origin} className='NavbarBrand'>
-                    {/* <img src="https://bulma.io/images/bulma-logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
-                    <img src={image} className="NavbarLogo image is-48x48 d-inline-block align-top" />{' '}
-                    {/* <img src="../../public/Begining_logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link className="has-text-weight-semibold" onClick={() => {
-                            navigate("/fileadd", {
-                                state: { id: id, folder: folder },
-                            });
-                        }}>New Article</Nav.Link>
-                        <Nav.Link className="has-text-weight-semibold" href="#link">Add Category</Nav.Link>
-                        <NavDropdown className="has-text-weight-semibold" title="Categories" id="basic-nav-dropdown">
-                            {props.categories.map((item) => {
-                                return (<NavDropdown.Item className="has-text-weight-semibold is-5 is-capitalized" href={'#' + item.category}>{item.category}</NavDropdown.Item>)
-                            })}
-                        </NavDropdown>
-                    </Nav>
-                    <Form className="d-flex">
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={FileData.map((option) => option.title)}
-                            sx={{ width: "20rem", background: 'white', marginRight: '10px',borderRadius: '5px' }}
-                            size='small'
-                            onChange={(event, newValue) => {
-                                console.log(newValue)
-                                if (newValue == null) {
-                                    setSearchValue('')
-                                    props.searchFiles('');
-                                } else {
-                                    setSearchValue(newValue)
-                                    props.searchFiles(newValue);
-                                }
-                                // newValue == null ? setSearchValue('') :
-                                //     setSearchValue(newValue)
-                            }}
-                            onKeyDown={(event: any) => {
-                                if (event.key === 'Enter') {
-                                    props.searchFiles(event.target.value)
-                                    props.searchFiles(event.target.value)
-                                    event.preventDefault();
-                                }
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Search"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        type: 'search',
-                                    }}
-                                />
-                            )}
-                        />
-                        {/* <Form.Control
+        <div>
+            <Navbar
+                bg="dark"
+                expand="lg"
+                variant="dark"
+                sticky="top"
+                className="fixed-top-nav"
+            >
+                <Container>
+                    <Navbar.Brand href={window.location.origin} className="NavbarBrand">
+                        {/* <img src="https://bulma.io/images/bulma-logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
+                        <img
+                            src={image}
+                            className="NavbarLogo image is-48x48 d-inline-block align-top"
+                        />{" "}
+                        {/* <img src="../../public/Begining_logo.png" className="NavbarLogo d-inline-block align-top" />{' '} */}
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link
+                                className="has-text-weight-semibold"
+                                onClick={() => {
+                                    navigate("/fileadd", {
+                                        state: { id: id, folder: folder },
+                                    });
+                                }}
+                            >
+                                New Article
+                            </Nav.Link>
+                            <Nav.Link
+                                className="has-text-weight-semibold"
+                                onClick={() => {
+                                    console.log('clicked')
+                                    setShowAddCategory(true)
+                                }}
+                            >
+                                Add Category
+                            </Nav.Link>
+                            <NavDropdown
+                                className="has-text-weight-semibold"
+                                title="Categories"
+                                id="basic-nav-dropdown"
+                            >
+                                {props.categories.map((item) => {
+                                    return (
+                                        <NavDropdown.Item
+                                            className="has-text-weight-semibold is-5 is-capitalized"
+                                            href={"#" + item.category}
+                                        >
+                                            {item.category}
+                                        </NavDropdown.Item>
+                                    );
+                                })}
+                            </NavDropdown>
+                        </Nav>
+                        <Form className="d-flex">
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={FileData.map((option) => option.title)}
+                                sx={{
+                                    width: "20rem",
+                                    background: "white",
+                                    marginRight: "10px",
+                                    borderRadius: "5px",
+                                }}
+                                size="small"
+                                onChange={(event, newValue) => {
+                                    console.log(newValue);
+                                    if (newValue == null) {
+                                        setSearchValue("");
+                                        props.searchFiles("");
+                                    } else {
+                                        setSearchValue(newValue);
+                                        props.searchFiles(newValue);
+                                    }
+                                    // newValue == null ? setSearchValue('') :
+                                    //     setSearchValue(newValue)
+                                }}
+                                onKeyDown={(event: any) => {
+                                    if (event.key === "Enter") {
+                                        props.searchFiles(event.target.value);
+                                        props.searchFiles(event.target.value);
+                                        event.preventDefault();
+                                    }
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Search"
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            type: "search",
+                                        }}
+                                    />
+                                )}
+                            />
+                            {/* <Form.Control
                             autoComplete=''
                             type="search"
                             placeholder="Search"
@@ -111,91 +153,24 @@ const FilesCardGridNavbar: React.FC<fileGroupNavbar> = (props) => {
                                 }
                             }}
                         /> */}
-                        <Button className="has-text-weight-semibold" onClick={() => props.searchFiles(SearchValue)} variant="outline-info" size="sm">Search</Button>
-                    </Form>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-        // <nav className="navbar is-dark " role="navigation" aria-label="main navigation">
-        //     <div className="navbar-brand">
-        //         <a className="navbar-item" href="https://bulma.io">
-        //             {/* <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" /> */}
-        //         </a>
-
-        //         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        //             <span aria-hidden="true"></span>
-        //             <span aria-hidden="true"></span>
-        //             <span aria-hidden="true"></span>
-        //         </a>
-        //     </div>
-
-        //     <div id="navbarBasicExample" className="navbar-menu">
-        //         <div className="navbar-start">
-        //             <a className="navbar-item">
-        //                 Home
-        //             </a>
-
-        //             <a className="navbar-item">
-        //                 New Article
-        //             </a>
-
-        //             <div className="navbar-item has-dropdown is-hoverable">
-        //                 <a className="navbar-link">
-        //                     More
-        //                 </a>
-
-        //                 <div className="navbar-dropdown">
-        //                     <a className="navbar-item">
-        //                         About
-        //                     </a>
-        //                     <a className="navbar-item">
-        //                         Jobs
-        //                     </a>
-        //                     <a className="navbar-item">
-        //                         Contact
-        //                     </a>
-        //                     <hr className="navbar-divider" />
-        //                     <a className="navbar-item">
-        //                         Report an issue
-        //                     </a>
-        //                 </div>
-        //             </div>
-        //         </div>
-
-        //         <div className="navbar-end">
-        //             <div className="navbar-item">
-        //                 {/* <Form className="d-flex">
-        //     <Form.Control
-        //       type="search"
-        //       placeholder="Search"
-        //       className="me-2"
-        //       aria-label="Search"
-        //     /> */}
-        //                 {/* <Button variant="outline-success">Search</Button> */}
-        //                 <div className="field">
-        //                     <p className="control has-icons-left">
-        //                         <input className="input is-primary is-small is-rounded" type="text" placeholder="Search" />
-        //                         <span className="icon is-small is-left">
-        //                             <i className="fas fa-envelope"></i>
-        //                         </span>
-        //                     </p>
-        //                 </div>
-        //                 {/* <input className="input is-primary is-small is-rounded" type="text" placeholder="Search"></input> */}
-        //                 {/* <button className="button is-info is-light is-small">Info</button> */}
-        //                 {/* </Form> */}
-        //                 {/* <div className="buttons">
-        //                     <a className="button is-primary">
-        //                         <strong>Sign up</strong>
-        //                     </a>
-        //                     <a className="button is-light">
-        //                         Log in
-        //                     </a>
-        //                 </div> */}
-        //             </div>
-        //         </div>
-        //     </div>
-        // </nav>
+                            <Button
+                                className="has-text-weight-semibold"
+                                onClick={() => props.searchFiles(SearchValue)}
+                                variant="outline-info"
+                                size="sm"
+                            >
+                                Search
+                            </Button>
+                        </Form>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <AddFileCategoryModal
+                show={ShowAddCategory}
+                onHide={() => setShowAddCategory(false)}
+            ></AddFileCategoryModal>
+        </div>
     );
-}
+};
 
 export default FilesCardGridNavbar;

@@ -7,14 +7,14 @@ import { useState } from 'react';
 interface FolderAddCategoryProps {
     show: boolean;
     onHide: (boolean) => void;
-    view :string
+    view: string
 }
 const FolderCategoryAddModal: React.FC<FolderAddCategoryProps> = (props) => {
 
     const [category, setCategory] = useState<string>();
     return (
         <Modal
-            {...props}
+            show={props.show}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
